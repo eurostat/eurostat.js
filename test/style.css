@@ -1,0 +1,48 @@
+.gra {
+	stroke: gray;
+	stroke-width: 1px;
+}
+
+.bn_0 {
+	stroke: #777;
+	stroke-width: 1px;
+}
+
+.bn_1 {
+	stroke: #777;
+	stroke-width: 0.2px;
+}
+
+.bn_2 {
+	stroke: #777;
+	stroke-width: 0.2px;
+}
+
+.bn_3 {
+	stroke: #777;
+	stroke-width: 0.2px;
+}
+
+.bn_oth {
+	stroke: #444;
+	stroke-width: 1px;
+}
+
+.bn_co {
+	stroke: #1f78b4;
+	stroke-width: 1px;
+}
+
+.cntbn {
+	stroke: #777;
+	stroke-width: 1px;
+}
+
+
+.cntrg {
+	fill: lightgray;
+}
+
+.cntrg:hover {
+	fill: darkgray;
+}
