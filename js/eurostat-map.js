@@ -203,7 +203,6 @@
 		opts = opts || {};
 		opts.nd = opts.nd || "lightgray";
 		opts.colorFun = opts.colorFun || d3.interpolateYlOrRd;
-
 		var classToStyle = {};
 		for (var ecl = 0; ecl < clnb; ecl++)
 			classToStyle[ecl] = opts.colorFun( ecl/(clnb-1) );
