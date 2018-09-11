@@ -31,10 +31,9 @@
 		opts.filtersDefinitionFun = opts.filtersDefinitionFun || function(svg) {};
 
 
-		//try pattern with square?
 		//add classification method as parameter
 		//map with proportionnal circles
-		//support flags
+		//support data flags
 		//check how no-data is handled
 		//insets (with nuts2json)
 
