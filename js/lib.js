@@ -119,7 +119,7 @@
 	EstLib.getParameterByName = function(name) {
 		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
 		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-			results = regex.exec(location.search);
+		results = regex.exec(location.search);
 		return !results? null : decodeURIComponent(results[1].replace(/\+/g, " "));
 	};
 
@@ -186,7 +186,7 @@
 			"A", radius, radius, 0, arcSweep, 0, end.x, end.y,
 			"L", x, y,
 			"L", start.x, start.y
-		].join(" ");
+			].join(" ");
 	};
 
 
@@ -256,87 +256,87 @@
 
 	EstLib.loadAutoComplete = function(id, data, minLength){
 		$( "#"+id )
-			// don't navigate away from the field on tab when selecting an item
-			.bind( "keydown", function( event ) {
-				if ( event.keyCode === $.ui.keyCode.TAB &&
+		// don't navigate away from the field on tab when selecting an item
+		.bind( "keydown", function( event ) {
+			if ( event.keyCode === $.ui.keyCode.TAB &&
 					$( this ).autocomplete( "instance" ).menu.active ) {
-					event.preventDefault();
-				}
-			})
-			.autocomplete({
-				minLength: minLength,
-				source: function( request, response ) {
-					// delegate back to autocomplete, but extract the last term
-					response( $.ui.autocomplete.filter(
+				event.preventDefault();
+			}
+		})
+		.autocomplete({
+			minLength: minLength,
+			source: function( request, response ) {
+				// delegate back to autocomplete, but extract the last term
+				response( $.ui.autocomplete.filter(
 						data, EstLib.extractLast( request.term ) ) );
-				},
-				focus: function() { return false; },
-				select: function( event, ui ) {
-					var terms = EstLib.split( this.value );
-					// remove the current input
-					terms.pop();
-					// add the selected item
-					terms.push( ui.item.value );
-					// add placeholder to get the comma-and-space at the end
-					terms.push( "" );
-					this.value = terms.join( ", " );
+			},
+			focus: function() { return false; },
+			select: function( event, ui ) {
+				var terms = EstLib.split( this.value );
+				// remove the current input
+				terms.pop();
+				// add the selected item
+				terms.push( ui.item.value );
+				// add placeholder to get the comma-and-space at the end
+				terms.push( "" );
+				this.value = terms.join( ", " );
 
-					//ensures new input is checked
-					$(this).trigger("input");
+				//ensures new input is checked
+				$(this).trigger("input");
 
-					return false;
-				}
-			})
-			.autocomplete( "instance" )._renderItem = function( ul, item ) {
+				return false;
+			}
+		})
+		.autocomplete( "instance" )._renderItem = function( ul, item ) {
 			return $("<li>")
-				.append( "<a>" + item.label + "</a>" )
-				.appendTo(ul);
+			.append( "<a>" + item.label + "</a>" )
+			.appendTo(ul);
 		};
 	};
 
 
 	EstLib.loadAutoCompleteRemote = function(id, data, minLength, cacheLoadFunction){
 		$( "#"+id )
-			// don't navigate away from the field on tab when selecting an item
-			.bind( "keydown", function( event ) {
-				if ( event.keyCode === $.ui.keyCode.TAB &&
+		// don't navigate away from the field on tab when selecting an item
+		.bind( "keydown", function( event ) {
+			if ( event.keyCode === $.ui.keyCode.TAB &&
 					$( this ).autocomplete( "instance" ).menu.active ) {
-					event.preventDefault();
-				}
-			})
-			.autocomplete({
-				minLength: minLength,
-				source: function(request, response) {
-					var term = EstLib.extractLast(request.term);
-					if(!term || term.length<minLength) return;
-					$.when(
+				event.preventDefault();
+			}
+		})
+		.autocomplete({
+			minLength: minLength,
+			source: function(request, response) {
+				var term = EstLib.extractLast(request.term);
+				if(!term || term.length<minLength) return;
+				$.when(
 						EstLib.ajax({data:data+term + "%25"} )
-					).then(function(data) {
-							//for(var i=0; i<data.length; i++) data[i].VALUE = EstLib.replaceAll(data[i].VALUE, ",", " -");
-							response( EstLib.arrayKeysToLowerCase(data) );
-						}, function(XMLHttpRequest, textStatus) { console.warn(textStatus); }
-					);
-				},
-				focus: function() { return false; },
-				select: function( event, ui ) {
-					var terms = EstLib.split( this.value );
-					// remove the current input
-					terms.pop();
-					// add the selected item
-					terms.push( ui.item.value );
-					// add placeholder to get the comma-and-space at the end
-					terms.push( "" );
-					this.value = terms.join( ", " );
+				).then(function(data) {
+					//for(var i=0; i<data.length; i++) data[i].VALUE = EstLib.replaceAll(data[i].VALUE, ",", " -");
+					response( EstLib.arrayKeysToLowerCase(data) );
+				}, function(XMLHttpRequest, textStatus) { console.warn(textStatus); }
+				);
+			},
+			focus: function() { return false; },
+			select: function( event, ui ) {
+				var terms = EstLib.split( this.value );
+				// remove the current input
+				terms.pop();
+				// add the selected item
+				terms.push( ui.item.value );
+				// add placeholder to get the comma-and-space at the end
+				terms.push( "" );
+				this.value = terms.join( ", " );
 
-					//load into cache
-					if(cacheLoadFunction) cacheLoadFunction(ui.item.id, true);
+				//load into cache
+				if(cacheLoadFunction) cacheLoadFunction(ui.item.id, true);
 
-					//ensures new input is checked
-					$(this).trigger("input");
+				//ensures new input is checked
+				$(this).trigger("input");
 
-					return false;
-				}
-			});
+				return false;
+			}
+		});
 	};
 
 	/**
@@ -450,10 +450,10 @@
 		 $("<text>").attr("x",25).attr("y",13).attr("fill","black").html(text).appendTo(svg);
 		 d.append(svg);*/
 		d.append(
-			"<svg width=130 height=15 title='"+ttp+"'>" +
-			"<rect width=20 height=15 style='fill:"+fillColor+";stroke-width:1px;stroke:#aaa' />" +
-			"<text x=25 y=13 fill=black>"+text+"</text>" +
-			"</svg>"
+				"<svg width=130 height=15 title='"+ttp+"'>" +
+				"<rect width=20 height=15 style='fill:"+fillColor+";stroke-width:1px;stroke:#aaa' />" +
+				"<text x=25 y=13 fill=black>"+text+"</text>" +
+				"</svg>"
 		);
 		return d;
 	};
@@ -554,16 +554,16 @@
 			x.push(alpha.charAt(b10 & 0x3f));
 		}
 		switch (s.length - imax) {
-			case 1:
-				b10 = getbyte(s,i) << 16;
-				x.push(alpha.charAt(b10 >> 18) + alpha.charAt((b10 >> 12) & 0x3F) +
+		case 1:
+			b10 = getbyte(s,i) << 16;
+			x.push(alpha.charAt(b10 >> 18) + alpha.charAt((b10 >> 12) & 0x3F) +
 					padchar + padchar);
-				break;
-			case 2:
-				b10 = (getbyte(s,i) << 16) | (getbyte(s,i+1) << 8);
-				x.push(alpha.charAt(b10 >> 18) + alpha.charAt((b10 >> 12) & 0x3F) +
+			break;
+		case 2:
+			b10 = (getbyte(s,i) << 16) | (getbyte(s,i+1) << 8);
+			x.push(alpha.charAt(b10 >> 18) + alpha.charAt((b10 >> 12) & 0x3F) +
 					alpha.charAt((b10 >> 6) & 0x3f) + padchar);
-				break;
+			break;
 		}
 		return x.join('');
 	};
@@ -633,18 +633,18 @@
 	EstLib.getNumbered = function(number,lg){
 		lg=lg||"en";
 		switch(lg){
-			case "fr":
-				switch(number){
-					case 1: return "1er";
-					default: return number+"ème";
-				}
-			default:
-				switch(number){
-					case 1: return "1st";
-					case 2: return "2nd";
-					case 3: return "3rd";
-					default: return number+"th";
-				}
+		case "fr":
+			switch(number){
+			case 1: return "1er";
+			default: return number+"ème";
+			}
+		default:
+			switch(number){
+			case 1: return "1st";
+			case 2: return "2nd";
+			case 3: return "3rd";
+			default: return number+"th";
+			}
 		}
 	};
 
@@ -662,8 +662,8 @@
 	 * @return {string}
 	 */
 	EstLib.getLang2Chars = function(){
-	    var lg = EstLib.getParameterByName("lang") || EstLib.getLang() || "en";
-	    return lg.substring(0, 2);
+		var lg = EstLib.getParameterByName("lang") || EstLib.getLang() || "en";
+		return lg.substring(0, 2);
 	};
 
 	/**
@@ -683,8 +683,8 @@
 	 */
 	EstLib.getMaxSize = function(){
 		var w = window,
-	    e = document.documentElement,
-	    g = document.getElementsByTagName("body")[0];
+		e = document.documentElement,
+		g = document.getElementsByTagName("body")[0];
 		return {
 			width: w.innerWidth || e.clientWidth || g.clientWidth,
 			height: w.innerHeight|| e.clientHeight|| g.clientHeight };
@@ -693,55 +693,59 @@
 
 
 
-    EstLib.tooltip= function(config) {
-    	config = config || {};
-    	config.div = config.div || "tooltip";
-    	config.width = config.width || "150px";
-    	config.font = config.font || "14px";
-    	config.background = config.background || "white";
-    	config.padding = config.padding || "5px";
-    	config.border = config.border || "0px";
-    	config["border-radius"] = config["border-radius"] || "5px";
-    	config["box-shadow"] = config["box-shadow"] || "5px 5px 5px grey";
+	EstLib.tooltip= function(config) {
+		config = config || {};
+		config.div = config.div || "tooltip";
+		config.width = config.width || "150px";
+		config.font = config.font || "14px";
+		config.background = config.background || "white";
+		config.padding = config.padding || "5px";
+		config.border = config.border || "0px";
+		config["border-radius"] = config["border-radius"] || "5px";
+		config["box-shadow"] = config["box-shadow"] || "5px 5px 5px grey";
+		config["font-family"] = config["font-family"] || "'Myriad Pro', Myriad, MyriadPro-Regular,'Myriad Pro Regular', MyriadPro, 'Myriad Pro', 'Liberation Sans','Nimbus Sans L', 'Helvetica Neue', vegur, Vegur, Helvetica, Arial,sans-serif";
 
-    	config.transitionDuration = config.transitionDuration || 200;
-    	config.xOffset = config.xOffset || 30;
-    	config.yOffset = config.yOffset || 20;
+		config.transitionDuration = config.transitionDuration || 200;
+		config.xOffset = config.xOffset || 30;
+		config.yOffset = config.yOffset || 20;
 
-    	var tooltip;
+		var tooltip;
 
-    	function my() {
-    		tooltip = d3.select("#"+config.div);
+		function my() {
+			tooltip = d3.select("#"+config.div);
 
-            tooltip.style("width",config.width);
-            tooltip.style("font",config.font);
-            tooltip.style("background",config.background);
-            tooltip.style("padding",config.padding);
-            tooltip.style("border",config.border);
-            tooltip.style("border-radius",config["border-radius"]);
-            tooltip.style("box-shadow",config["box-shadow"]);
+			tooltip.style("width",config.width);
+			tooltip.style("font",config.font);
+			tooltip.style("background",config.background);
+			tooltip.style("padding",config.padding);
+			tooltip.style("border",config.border);
+			tooltip.style("border-radius",config["border-radius"]);
+			tooltip.style("box-shadow",config["box-shadow"]);
+			tooltip.style("position","absolute");
+			tooltip.style("font-family",config["font-family"]);
+			console.log( config["font-family"] );
 
-            tooltip.style("position","absolute");
-            tooltip.style("pointer-events","none");
-            tooltip.style("opacity","0");
-    	}
+			tooltip.style("position","absolute");
+			tooltip.style("pointer-events","none");
+			tooltip.style("opacity","0");
+		}
 
-    	my.mouseover = function(html){
-    		tooltip.html(html)
-            .style("left", (d3.event.pageX+config.xOffset) + "px").style("top", (d3.event.pageY-config.yOffset) + "px")
-            .transition().duration(config.transitionDuration).style("opacity",1);
-        };
+		my.mouseover = function(html){
+			tooltip.html(html)
+			.style("left", (d3.event.pageX+config.xOffset) + "px").style("top", (d3.event.pageY-config.yOffset) + "px")
+			.transition().duration(config.transitionDuration).style("opacity",1);
+		};
 
-        my.mousemove = function(){
-        	tooltip.style("left", (d3.event.pageX+config.xOffset) + "px").style("top", (d3.event.pageY-config.yOffset) + "px");
-        };
+		my.mousemove = function(){
+			tooltip.style("left", (d3.event.pageX+config.xOffset) + "px").style("top", (d3.event.pageY-config.yOffset) + "px");
+		};
 
-        my.mouseout = function(){
-        	tooltip.transition().duration(config.transitionDuration).style("opacity",0);
-        };
+		my.mouseout = function(){
+			tooltip.transition().duration(config.transitionDuration).style("opacity",0);
+		};
 
-    	my();
-    	return my;
+		my();
+		return my;
 	};
 
 
@@ -752,7 +756,7 @@
 		config.alttxt = config.alttxt || "Loading...";
 
 		var ldiv = $("<div>").css({"width":"100%","height":"100%","top":"0","left":"0","position":"fixed","display":"block","opacity":"0.7","background-color":"#fff","z-index":"99","text-align":"center"}).appendTo("body");
-			$("<img>").attr("src", config.imgsrc).attr("alt", config.alttxt).css({"position":"absolute","top":"50%","left":"50%","z-index":"100"}).appendTo(ldiv);
+		$("<img>").attr("src", config.imgsrc).attr("alt", config.alttxt).css({"position":"absolute","top":"50%","left":"50%","z-index":"100"}).appendTo(ldiv);
 
 		return ldiv;
 	};
