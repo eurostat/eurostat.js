@@ -55,12 +55,12 @@
 }
 
 .symbol {
-	fill: darkcyan;
+	fill: #f11;
 	fill-opacity: .6;
 	stroke: #fff;
 	stroke-width: 0.6px;
 }
 
 .symbol:hover {
-	fill: darkgray;
+	fill: #faa;
 }
