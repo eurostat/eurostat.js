@@ -36,6 +36,7 @@
 		//map with proportionnal circles
 		//support flags
 		//check how no-data is handled
+		//insets (with nuts2json)
 
 		d3.queue()
 		.defer(d3.json, "https://raw.githubusercontent.com/eurostat/Nuts2json/gh-pages/" + opts.NUTSyear + "/" + opts.proj + "/" + opts.scale + "/" + opts.nutsLvl + ".json")
