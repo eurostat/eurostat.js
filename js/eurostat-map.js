@@ -27,11 +27,7 @@
 		opts.coastalMarginColor = opts.coastalMarginColor || "white";
 		opts.tooltip = opts.tooltip==null? true : opts.tooltip;
 		opts.unitText = opts.unitText || "";
-
-		var classToStyle = {};
-		for (var ecl = 0; ecl < opts.clnb; ecl++)
-			classToStyle[ecl] = d3.interpolateYlOrRd( ecl/(opts.clnb-1) );
-		classToStyle.nd = "lightgray"
+		opts.classToFillStyle = opts.classToFillStyle || EstLib.getColorLegend(opts.clnb);
 
 
 		//style with dotted texture
@@ -142,8 +138,7 @@
 					}
 
 					//build list of classes and classification based on quantiles
-					var classes = [...Array(opts.clnb).keys()];
-					var classif = d3.scaleQuantile().domain(values).range(classes);
+					var classif = d3.scaleQuantile().domain(values).range( [...Array(opts.clnb).keys()] );
 					classif.quantiles();
 
 					//draw NUTS regions regions
@@ -182,8 +177,7 @@
 							.style("fill", "none").style("stroke-linecap", "round").style("stroke-linejoin", "round")
 							.attr("class", function(bn) {
 								bn = bn.properties;
-								if (bn.co === "T")
-									return "bn_co";
+								if (bn.co === "T") return "bn_co";
 								var cl = [ "bn_" + bn.lvl ];
 								if (bn.oth === "T") cl.push("bn_oth");
 								return cl.join(" ");
@@ -192,7 +186,7 @@
 
 					//apply style to nuts regions depending on class
 					g.selectAll("path._rg_").attr("fill", function() {
-						return classToStyle[ d3.select(this).attr("ecl") ];
+						return opts.classToFillStyle[ d3.select(this).attr("ecl") ];
 					});
 
 
@@ -202,5 +196,17 @@
 				});
 
 	};
+
+
+
+	EstLib.getColorLegend = function(clnb) {
+		var classToStyle = {};
+		for (var ecl = 0; ecl < clnb; ecl++)
+			classToStyle[ecl] = d3.interpolateYlOrRd( ecl/(clnb-1) );
+		classToStyle.nd = "lightgray";
+		return classToStyle;
+	}
+
+
 
 }(d3, window.EstLib = window.EstLib || {} ));
