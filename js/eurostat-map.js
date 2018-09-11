@@ -28,6 +28,7 @@
 		opts.tooltip = opts.tooltip==null? true : opts.tooltip;
 		opts.unitText = opts.unitText || "";
 		opts.classToFillStyle = opts.classToFillStyle || EstLib.getColorLegend(opts.clnb);
+		opts.filtersDefinitionFun = opts.filtersDefinitionFun || function(svg) {};
 
 
 		//style with dotted texture
@@ -59,6 +60,9 @@
 						//define filter for coastal margin
 						svg.append("filter").attr("id", "blur").attr("x","-100%").attr("y", "-100%").attr("width","400%")
 							.attr("height", "400%").append("feGaussianBlur").attr("in", "SourceGraphic").attr("stdDeviation", "4");
+					
+					//add additional filters
+					opts.filtersDefinitionFun(svg);
 
 					//draw background rectangle
 					svg.append("rect").attr("id", "bck").attr("x", 0)
@@ -199,7 +203,7 @@
 
 
 
-	//build a color legend object based on number of color
+	//build a color legend object
 	EstLib.getColorLegend = function(clnb, opts) {
 		opts = opts || {};
 		//see https://github.com/d3/d3-scale-chromatic/
@@ -214,5 +218,34 @@
 	}
 
 
+
+	//dotted map
+	
+	//build a dotted legend object
+	EstLib.getDottedLegend = function(clnb, opts) {
+		opts = opts || {};
+		opts.nd = opts.nd || "white";
+		var classToStyle = {};
+		for (var ecl = 0; ecl < clnb; ecl++)
+			classToStyle[ecl] = "url(#pattern_"+ecl+")";
+		classToStyle.nd = opts.nd;
+		return classToStyle;
+	}
+	//build patterns for dotted fill style
+	EstLib.getDottedPatternDefinitionFun = function(clnb) {
+		var patternSize = clnb+1;
+		return function(svg) {
+			for(var i=0; i<clnb; i++) {
+				var diam=i+1;
+				var patt = svg.append("pattern").attr("id","pattern_"+i).attr("x","0").attr("y","0").attr("width",patternSize).attr("height",patternSize).attr("patternUnits","userSpaceOnUse");
+				patt.append("rect").attr("x","0").attr("y","0").attr("width",patternSize).attr("height",patternSize).style("stroke","none").style("fill","white")
+				patt.append("circle").attr("cx",patternSize/2).attr("cy",patternSize/2).attr("r",diam*0.5).style("stroke","none").style("fill","black")
+			}
+		};
+	};
+
+	
+
+	
 
 }(d3, window.EstLib = window.EstLib || {} ));

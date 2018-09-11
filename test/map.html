@@ -25,14 +25,21 @@
 	<div id="tooltip"></div>
 
 	<script>
-		//show loading image
-		var loadingDiv = EstLib.loadingImage({ imgsrc : "https://raw.githubusercontent.com/eurostat/eurostat.js/master/img/loading.png" });
-
-		//load parameters from URL
 		var opts = EstLib.loadURLParameters();
-		opts.preFun = function() { loadingDiv.hide(); };
-		opts.unitText = "people/km²";
+		opts.width = 800;
+		opts.scale = "20M";
+		opts.nutsLvl = "3";
+		opts.time = "2016";
+		opts.proj = "3035";
+		opts.NUTSyear = 2013;
+		opts.clnb = 10;
+		opts.bckFillColor = "white";
+		opts.drawCoastalMargin = false;
 
+		opts.filtersDefinitionFun = EstLib.getDottedPatternDefinitionFun(opts.clnb, 10);
+		opts.classToFillStyle = EstLib.getDottedLegend(opts.clnb);
+		
+		
 		//make map with generic function
 		EstLib.map("map", "demo_r_d3dens", { time : opts.time }, opts);
 	</script>
