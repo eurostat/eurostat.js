@@ -723,7 +723,6 @@
 			tooltip.style("box-shadow",config["box-shadow"]);
 			tooltip.style("position","absolute");
 			tooltip.style("font-family",config["font-family"]);
-			console.log( config["font-family"] );
 
 			tooltip.style("position","absolute");
 			tooltip.style("pointer-events","none");
