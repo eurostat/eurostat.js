@@ -113,6 +113,7 @@
 					//draw graticule
 					g.append("g").selectAll("path").data(topojson.feature(nuts,nuts.objects.gra).features)
 						.enter().append("path").attr("d", path)
+						.style("fill", "none")
 						.attr("class", "gra");
 
 					//draw country regions
@@ -168,8 +169,9 @@
 					//draw country boundaries
 					g.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.cntbn).features)
 						.enter().append("path").attr("d", path)
+						.style("fill", "none").style("stroke-linecap", "round").style("stroke-linejoin", "round")
 						.attr("class", function(bn) {
-							if (bn.properties.co === "T")return "bn bn_co"; return "cntbn";
+							if (bn.properties.co === "T")return "bn_co"; return "cntbn";
 						});
 
 					//draw NUTS boundaries
@@ -177,11 +179,12 @@
 					bn.sort(function(bn1, bn2) { return bn2.properties.lvl - bn1.properties.lvl; });
 					g.append("g").selectAll("path").data(bn).enter()
 							.append("path").attr("d", path)
+							.style("fill", "none").style("stroke-linecap", "round").style("stroke-linejoin", "round")
 							.attr("class", function(bn) {
 								bn = bn.properties;
 								if (bn.co === "T")
-									return "bn bn_co";
-								var cl = [ "bn", "bn_" + bn.lvl ];
+									return "bn_co";
+								var cl = [ "bn_" + bn.lvl ];
 								if (bn.oth === "T") cl.push("bn_oth");
 								return cl.join(" ");
 							});

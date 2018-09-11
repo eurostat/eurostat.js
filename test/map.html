@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>European population map</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-queue.v3.min.js"></script>
+<script src="https://d3js.org/topojson.v1.min.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsonstat@0.13.3/json-stat.js"></script>
+<script src="https://rawgit.com/eurostat/eurostat.js/master/js/lib.js"></script>
+<script src="https://rawgit.com/eurostat/eurostat.js/master/js/eurostat-lib.js"></script>
+<script src="https://rawgit.com/eurostat/eurostat.js/master/js/eurostat-map.js"></script>
+
+</head>
+
+<body>
+	<svg id="map"></svg>
+	<div id="tooltip"></div>
+
+	<script>
+		//show loading image
+		var loadingDiv = EstLib.loadingImage({ imgsrc : "https://raw.githubusercontent.com/eurostat/eurostat.js/master/img/loading.png" });
+
+		//load parameters from URL
+		var opts = EstLib.loadURLParameters();
+		opts.preFun = function() { loadingDiv.hide(); };
+		opts.unitText = "people/km²";
+
+		//make map with generic function
+		EstLib.map("map", "demo_r_d3dens", { time : opts.time }, opts);
+	</script>
+
+</body>
