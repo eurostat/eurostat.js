@@ -29,7 +29,7 @@
 }
 
 .bn_co {
-	stroke: #1f78b4;
+	stroke: #777;
 	stroke-width: 1px;
 }
 
@@ -39,10 +39,14 @@
 }
 
 
+.nutsrg:hover {
+	fill: #bbb;
+}
+
 .cntrg {
-	fill: lightgray;
+	fill: #eee;
 }
 
 .cntrg:hover {
-	fill: darkgray;
+	fill: #ddd;
 }

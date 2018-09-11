@@ -148,20 +148,15 @@
 					//draw NUTS regions regions
 					g.append("g").selectAll("path").data(nutsRG)
 							.enter().append("path").attr("d", path)
-							.attr("class", "_rg_")
+							.attr("class", "nutsrg")
 							.attr("ecl", function(rg) {
 								if (!rg.properties.val) return "nd";
 								return +classif(+rg.properties.val);
 							}).on("mouseover", function(rg) {
-								var rg_ = d3.select(this);
-								rg_.attr("fill___", rg_.style("fill"));
-								rg_.style("fill", "purple");
 								if(opts.tooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (opts.unitText?" "+opts.unitText:""));
 							}).on("mousemove", function() {
 								if(opts.tooltip) tooltip.mousemove();
 							}).on("mouseout", function() {
-								var rg_ = d3.select(this);
-								rg_.style("fill", rg_.attr("fill___"));
 								if(opts.tooltip) tooltip.mouseout();
 							});
 
@@ -189,7 +184,7 @@
 
 
 					//apply style to nuts regions depending on class
-					g.selectAll("path._rg_").attr("fill", function() {
+					g.selectAll("path.nutsrg").attr("fill", function() {
 						return opts.classToFillStyle[ d3.select(this).attr("ecl") ];
 					});
 

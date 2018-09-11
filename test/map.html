@@ -10,9 +10,6 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-queue.v3.min.js"></script>
 <script src="https://d3js.org/topojson.v1.min.js"></script>
-<script src="https://d3js.org/d3-color.v1.min.js"></script>
-<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsonstat@0.13.3/json-stat.js"></script>
 <script src="../js/lib.js"></script>
 <script src="../js/eurostat-lib.js"></script>
@@ -26,14 +23,10 @@
 
 	<script>
 		var opts = EstLib.loadURLParameters();
-		opts.width = 800;
+		opts.width = 1000;
 		opts.scale = "20M";
 		opts.nutsLvl = "3";
-		opts.time = "2016";
-		opts.proj = "3035";
-		opts.NUTSyear = 2013;
-		opts.clnb = 10;
-		opts.bckFillColor = "white";
+		opts.bckFillColor = "#bbb";
 		opts.drawCoastalMargin = false;
 
 		opts.filtersDefinitionFun = EstLib.getDottedPatternDefinitionFun(opts.clnb, 10);
