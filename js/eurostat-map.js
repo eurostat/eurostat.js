@@ -194,7 +194,7 @@
 						var maxSize = 20;
 						var radius = d3.scaleSqrt().domain([0, Math.max(...values)]).range([0, maxSize]);
 
-						//TODO compute list of centroides of nutsRG
+						//compute list of centroides of nutsRG
 						for(var i=0; i<nutsRG.length; i++) {
 							var nr = nutsRG[i];
 							nr.geometry = {"type": "Point", "coordinates": d3.geoPath().centroid(nr)};
@@ -203,12 +203,20 @@
 						g.selectAll(".symbol")
 						.data(nutsRG.sort(function(a, b) { return b.properties.val - a.properties.val; }))
 						.enter().append("path").attr("class", "symbol")
-						.attr("d", path.pointRadius(function(d) { return radius(d.properties.val); }));
+						.attr("d", path.pointRadius(function(d) { return radius(d.properties.val); }))
+						.on("mouseover", function(rg) {
+							if(opts.tooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (opts.unitText?" "+opts.unitText:""));
+						}).on("mousemove", function() {
+							if(opts.tooltip) tooltip.mousemove();
+						}).on("mouseout", function() {
+							if(opts.tooltip) tooltip.mouseout();
+						});
 
 					} else {
 						//choropleth map
 						//apply style to nuts regions depending on class
-						g.selectAll("path.nutsrg").attr("fill", function() {
+						g.selectAll("path.nutsrg")
+						.attr("fill", function() {
 							return opts.classToFillStyle[ d3.select(this).attr("ecl") ];
 						});
 					}
