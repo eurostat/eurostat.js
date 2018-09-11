@@ -199,10 +199,13 @@
 
 
 
+	//build a color legend object based on number of color
 	EstLib.getColorLegend = function(clnb, opts) {
 		opts = opts || {};
-		opts.nd = opts.nd || "lightgray";
+		//see https://github.com/d3/d3-scale-chromatic/
+		//ex: interpolateGnBu
 		opts.colorFun = opts.colorFun || d3.interpolateYlOrRd;
+		opts.nd = opts.nd || "lightgray";
 		var classToStyle = {};
 		for (var ecl = 0; ecl < clnb; ecl++)
 			classToStyle[ecl] = opts.colorFun( ecl/(clnb-1) );
