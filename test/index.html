@@ -11,9 +11,9 @@
 <script src="https://d3js.org/d3-queue.v3.min.js"></script>
 <script src="https://d3js.org/topojson.v1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsonstat@0.13.3/json-stat.js"></script>
-<script src="../js/lib.js"></script>
-<script src="../js/eurostat-lib.js"></script>
-<script src="../js/eurostat-map.js"></script>
+<script src="https://rawgit.com/eurostat/eurostat.js/master/js/lib.js"></script>
+<script src="https://rawgit.com/eurostat/eurostat.js/master/js/eurostat-lib.js"></script>
+<script src="https://rawgit.com/eurostat/eurostat.js/master/js/eurostat-map.js"></script>
 
 </head>
 
@@ -22,19 +22,21 @@
 	<div id="tooltip"></div>
 
 	<script>
+
+		//set parameters
 		var opts = EstLib.loadURLParameters();
 		opts.width = 1000;
-		opts.scale = "20M";
-		opts.nutsLvl = "3";
+		opts.scale = "60M";
 		opts.bckFillColor = "#bbb";
 		opts.drawCoastalMargin = false;
 
-		opts.filtersDefinitionFun = EstLib.getDottedPatternDefinitionFun(opts.clnb, 10);
+		opts.filtersDefinitionFun = EstLib.getDottedPatternDefinitionFun(
+				opts.clnb, 10);
 		opts.classToFillStyle = EstLib.getDottedLegend(opts.clnb);
-		
-		
-		//make map with generic function
+
+		//make map
 		EstLib.map("map", "demo_r_d3dens", { time : opts.time }, opts);
+
 	</script>
 
 </body>
