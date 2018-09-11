@@ -31,7 +31,7 @@
 		opts.filtersDefinitionFun = opts.filtersDefinitionFun || function(svg) {};
 
 
-		//deploy example with dotted map
+		//try pattern with square?
 		//add classification method as parameter
 		//map with proportionnal circles
 		//support flags
@@ -215,9 +215,9 @@
 
 
 
-	//dotted map
+	//point pattern map
 	
-	//build a dotted legend object
+	//build a point pattern legend object
 	EstLib.getDottedLegend = function(clnb, opts) {
 		opts = opts || {};
 		opts.nd = opts.nd || "white";
@@ -227,21 +227,23 @@
 		classToStyle.nd = opts.nd;
 		return classToStyle;
 	}
-	//build patterns for dotted fill style
-	EstLib.getDottedPatternDefinitionFun = function(clnb) {
+	//make function which build point patterns style
+	EstLib.getDottedPatternDefinitionFun = function(clnb, opts) {
+		opts = opts || {};
+		opts.shape = opts.shape || "circle";
 		var patternSize = clnb+1;
 		return function(svg) {
 			for(var i=0; i<clnb; i++) {
 				var diam=i+1;
 				var patt = svg.append("pattern").attr("id","pattern_"+i).attr("x","0").attr("y","0").attr("width",patternSize).attr("height",patternSize).attr("patternUnits","userSpaceOnUse");
-				patt.append("rect").attr("x","0").attr("y","0").attr("width",patternSize).attr("height",patternSize).style("stroke","none").style("fill","white")
-				patt.append("circle").attr("cx",patternSize/2).attr("cy",patternSize/2).attr("r",diam*0.5).style("stroke","none").style("fill","black")
+				patt.append("rect").attr("x",0).attr("y",0).attr("width",patternSize).attr("height",patternSize).style("stroke","none").style("fill","white")
+				if(opts.shape=="square")
+					patt.append("rect").attr("x",0).attr("y",0).attr("width",diam).attr("height",diam).style("stroke","none").style("fill","black")
+				else
+					patt.append("circle").attr("cx",patternSize/2).attr("cy",patternSize/2).attr("r",diam*0.5).style("stroke","none").style("fill","black")
 			}
 		};
 	};
 
-	
-
-	
 
 }(d3, window.EstLib = window.EstLib || {} ));
