@@ -136,9 +136,9 @@
 					//prepare NUTS regions data
 					var nutsRG = topojson.feature(nuts, nuts.objects.nutsrg).features;
 
-					//link values to NUTS regions and build values list to make classification
+					//link values to NUTS regions and build list of values to make classification
 					var values = [];
-					for (var i = 0; i < nutsRG.length; i++) {
+					for (var i=0; i<nutsRG.length; i++) {
 						var rg = nutsRG[i];
 						var value = data.Data({ geo : rg.properties.id });
 						if (!value || !value.value) continue;
@@ -189,7 +189,24 @@
 
 
 					if(opts.type == "ps") {
+						//proportionnal symbol map
+						//see https://bl.ocks.org/mbostock/4342045
+						var maxSize = 20;
+						var radius = d3.scaleSqrt().domain([0, Math.max(...values)]).range([0, maxSize]);
+
+						//TODO compute list of centroides of nutsRG
+						for(var i=0; i<nutsRG.length; i++) {
+							var nr = nutsRG[i];
+							nr.geometry = {"type": "Point", "coordinates": d3.geoPath().centroid(nr)};
+						}
+
+						g.selectAll(".symbol")
+						.data(nutsRG.sort(function(a, b) { return b.properties.val - a.properties.val; }))
+						.enter().append("path").attr("class", "symbol")
+						.attr("d", path.pointRadius(function(d) { return radius(d.properties.val); }));
+
 					} else {
+						//choropleth map
 						//apply style to nuts regions depending on class
 						g.selectAll("path.nutsrg").attr("fill", function() {
 							return opts.classToFillStyle[ d3.select(this).attr("ecl") ];

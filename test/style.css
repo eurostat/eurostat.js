@@ -53,3 +53,9 @@
 .cntrg:hover {
 	fill: darkgray;
 }
+
+.symbol {
+  fill: darkcyan;
+  fill-opacity: .9;
+  stroke: #fff;
+}
