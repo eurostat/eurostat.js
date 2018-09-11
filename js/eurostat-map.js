@@ -31,11 +31,11 @@
 		opts.filtersDefinitionFun = opts.filtersDefinitionFun || function(svg) {};
 
 
-		//style with dotted texture
-		//handle no data
+		//deploy example with dotted map
 		//add classification method as parameter
-		//flags
 		//map with proportionnal circles
+		//support flags
+		//check how no-data is handled
 
 		d3.queue()
 		.defer(d3.json, "https://raw.githubusercontent.com/eurostat/Nuts2json/gh-pages/" + opts.NUTSyear + "/" + opts.proj + "/" + opts.scale + "/" + opts.nutsLvl + ".json")
