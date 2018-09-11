@@ -199,11 +199,15 @@
 
 
 
-	EstLib.getColorLegend = function(clnb) {
+	EstLib.getColorLegend = function(clnb, opts) {
+		opts = opts || {};
+		opts.nd = opts.nd || "lightgray";
+		opts.colorFun = opts.colorFun || d3.interpolateYlOrRd;
+
 		var classToStyle = {};
 		for (var ecl = 0; ecl < clnb; ecl++)
-			classToStyle[ecl] = d3.interpolateYlOrRd( ecl/(clnb-1) );
-		classToStyle.nd = "lightgray";
+			classToStyle[ecl] = opts.colorFun( ecl/(clnb-1) );
+		classToStyle.nd = opts.nd;
 		return classToStyle;
 	}
 
