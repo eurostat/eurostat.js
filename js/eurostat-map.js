@@ -9,6 +9,7 @@
 
 	EstLib.map = function(svgId, ebcode, dimensions, opts) {
 		opts = opts || {};
+		opts.type = opts.type || "ch"; //or "ps"
 		opts.width = opts.width || 800;
 		opts.scale = opts.scale || "20M";
 		opts.nutsLvl = opts.nutsLvl || "3";
@@ -23,6 +24,7 @@
 		opts.zoomExtentMin = opts.zoomExtentMin || 0.5;
 		opts.zoomExtentMax = opts.zoomExtentMax || 6;
 		opts.bckFillColor = opts.bckFillColor || "#b3cde3";
+		opts.drawGraticule = opts.drawGraticule==null? true : opts.drawGraticule;
 		opts.drawCoastalMargin = opts.drawCoastalMargin==null? true : opts.drawCoastalMargin;
 		opts.coastalMarginColor = opts.coastalMarginColor || "white";
 		opts.tooltip = opts.tooltip==null? true : opts.tooltip;
@@ -31,11 +33,12 @@
 		opts.filtersDefinitionFun = opts.filtersDefinitionFun || function(svg) {};
 
 
-		//add classification method as parameter
 		//map with proportionnal circles
+		//add classification method as parameter
 		//support data flags
 		//check how no-data is handled
 		//insets (with nuts2json)
+		//transform nice map using that?
 
 		d3.queue()
 		.defer(d3.json, "https://raw.githubusercontent.com/eurostat/Nuts2json/gh-pages/" + opts.NUTSyear + "/" + opts.proj + "/" + opts.scale + "/" + opts.nutsLvl + ".json")
@@ -110,11 +113,13 @@
 							});
 					}
 
-					//draw graticule
-					g.append("g").selectAll("path").data(topojson.feature(nuts,nuts.objects.gra).features)
-						.enter().append("path").attr("d", path)
-						.style("fill", "none")
-						.attr("class", "gra");
+					if(opts.drawGraticule) {
+						//draw graticule
+						g.append("g").selectAll("path").data(topojson.feature(nuts,nuts.objects.gra).features)
+							.enter().append("path").attr("d", path)
+							.style("fill", "none")
+							.attr("class", "gra");
+					}
 
 					//draw country regions
 					g.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.cntrg).features)
@@ -147,18 +152,18 @@
 
 					//draw NUTS regions regions
 					g.append("g").selectAll("path").data(nutsRG)
-							.enter().append("path").attr("d", path)
-							.attr("class", "nutsrg")
-							.attr("ecl", function(rg) {
-								if (!rg.properties.val) return "nd";
-								return +classif(+rg.properties.val);
-							}).on("mouseover", function(rg) {
-								if(opts.tooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (opts.unitText?" "+opts.unitText:""));
-							}).on("mousemove", function() {
-								if(opts.tooltip) tooltip.mousemove();
-							}).on("mouseout", function() {
-								if(opts.tooltip) tooltip.mouseout();
-							});
+						.enter().append("path").attr("d", path)
+						.attr("class", "nutsrg")
+						.attr("ecl", function(rg) {
+							if (!rg.properties.val) return "nd";
+							return +classif(+rg.properties.val);
+						}).on("mouseover", function(rg) {
+							if(opts.tooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (opts.unitText?" "+opts.unitText:""));
+						}).on("mousemove", function() {
+							if(opts.tooltip) tooltip.mousemove();
+						}).on("mouseout", function() {
+							if(opts.tooltip) tooltip.mouseout();
+						});
 
 					//draw country boundaries
 					g.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.cntbn).features)
@@ -172,21 +177,24 @@
 					var bn = topojson.feature(nuts, nuts.objects.nutsbn).features;
 					bn.sort(function(bn1, bn2) { return bn2.properties.lvl - bn1.properties.lvl; });
 					g.append("g").selectAll("path").data(bn).enter()
-							.append("path").attr("d", path)
-							.style("fill", "none").style("stroke-linecap", "round").style("stroke-linejoin", "round")
-							.attr("class", function(bn) {
-								bn = bn.properties;
-								if (bn.co === "T") return "bn_co";
-								var cl = [ "bn_" + bn.lvl ];
-								if (bn.oth === "T") cl.push("bn_oth");
-								return cl.join(" ");
-							});
+						.append("path").attr("d", path)
+						.style("fill", "none").style("stroke-linecap", "round").style("stroke-linejoin", "round")
+						.attr("class", function(bn) {
+							bn = bn.properties;
+							if (bn.co === "T") return "bn_co";
+							var cl = [ "bn_" + bn.lvl ];
+							if (bn.oth === "T") cl.push("bn_oth");
+							return cl.join(" ");
+						});
 
 
-					//apply style to nuts regions depending on class
-					g.selectAll("path.nutsrg").attr("fill", function() {
-						return opts.classToFillStyle[ d3.select(this).attr("ecl") ];
-					});
+					if(opts.type == "ps") {
+					} else {
+						//apply style to nuts regions depending on class
+						g.selectAll("path.nutsrg").attr("fill", function() {
+							return opts.classToFillStyle[ d3.select(this).attr("ecl") ];
+						});
+					}
 
 
 					//execute postfunction
