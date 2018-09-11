@@ -29,7 +29,7 @@
 		opts.coastalMarginColor = opts.coastalMarginColor || "white";
 		opts.tooltip = opts.tooltip==null? true : opts.tooltip;
 		opts.unitText = opts.unitText || "";
-		opts.classToFillStyle = opts.classToFillStyle || EstLib.getColorLegend(opts.clnb);
+		if(opts.type==="ch") opts.classToFillStyle = opts.classToFillStyle || EstLib.getColorLegend(opts.clnb);
 		opts.filtersDefinitionFun = opts.filtersDefinitionFun || function(svg) {};
 
 
