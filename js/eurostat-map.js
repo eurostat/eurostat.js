@@ -33,12 +33,11 @@
 		opts.filtersDefinitionFun = opts.filtersDefinitionFun || function(svg) {};
 
 
-		//map with proportionnal circles
 		//add classification method as parameter
 		//support data flags
 		//check how no-data is handled
 		//insets (with nuts2json)
-		//transform nice map using that?
+		//transform nice nuts map using eurostat-map.js?
 
 		d3.queue()
 		.defer(d3.json, "https://raw.githubusercontent.com/eurostat/Nuts2json/gh-pages/" + opts.NUTSyear + "/" + opts.proj + "/" + opts.scale + "/" + opts.nutsLvl + ".json")
