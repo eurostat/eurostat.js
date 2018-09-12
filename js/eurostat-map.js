@@ -7,8 +7,7 @@
  */
 (function(d3, EstLib) {
 
-	//pattern: make diameter larger than size
-	//make symbols truly proportionnal
+	//ps: make symbols truly proportionnal
 	//adopt new shema (simple)
 	//add classification method as parameter
 	//add legend
