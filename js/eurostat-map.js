@@ -277,4 +277,73 @@
 	};
 
 
+
+
+
+
+
+
+
+	EstLib.map2 = function(){
+		var
+		codesHierarchy = {}, //codesHierarchy: code,children[]
+		div = "sunburst", //the div element where to build the svg element
+		radius = 150, //the chart size
+		;
+
+		//the output object
+		var out = {};
+
+		var
+		shapes
+		;
+
+
+
+		var build = function(){
+			//build
+			//shapes = shapesG.datum(codesHierarchy).selectAll("path")
+			//out.function35325(0);
+		};
+
+		//set data, with transition
+		//values: code:value
+		out.set = function(data, duration){
+			duration = duration || 0;
+
+/*
+			shapes.data(partition.value(function(d) { return values?values[d.code]:1; }).nodes)
+			.transition().duration(duration).attrTween("d", arcTween)
+			.each("end", function(){ out.drawLabels(duration*0.5); })
+			;*/
+			return out;
+		};
+
+
+
+		out.codesHierarchy = function(v) {
+			if (!arguments.length) return codesHierarchy;
+			codesHierarchy=v;
+			build();
+			return out;
+		};
+
+		out.div = function(v) {
+			if (!arguments.length) return div;
+			div=v;
+			build();
+			return out;
+		};
+
+		out.radius = function(v) {
+			if (!arguments.length) return radius;
+			radius=v;
+			build();
+			return out;
+		};
+
+		return out;
+	}
+
+
 }(d3, window.EstLib = window.EstLib || {} ));
