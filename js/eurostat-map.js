@@ -7,8 +7,11 @@
  */
 (function(d3, EstLib) {
 
-	//new shema (simple)
+	//pattern: make diameter larger than size
+	//make symbols truly proportionnal
+	//adopt new shema (simple)
 	//add classification method as parameter
+	//add legend
 	//support data flags
 	//check how no-data is handled
 	//insets (with nuts2json)
@@ -265,16 +268,18 @@
 	EstLib.getDottedPatternDefinitionFun = function(clnb, opts) {
 		opts = opts || {};
 		opts.shape = opts.shape || "circle";
-		var patternSize = clnb+1;
+		var s = opts.patternSize || 10;
+		opts.bckColor = opts.bckColor || "white";
+		opts.symbColor = opts.symbColor || "black";
 		return function(svg) {
 			for(var i=0; i<clnb; i++) {
-				var diam=i+1;
-				var patt = svg.append("pattern").attr("id","pattern_"+i).attr("x","0").attr("y","0").attr("width",patternSize).attr("height",patternSize).attr("patternUnits","userSpaceOnUse");
-				patt.append("rect").attr("x",0).attr("y",0).attr("width",patternSize).attr("height",patternSize).style("stroke","none").style("fill","white")
+				var si = s*i/(clnb-1);
+				var patt = svg.append("pattern").attr("id","pattern_"+i).attr("x","0").attr("y","0").attr("width",s).attr("height",s).attr("patternUnits","userSpaceOnUse");
+				patt.append("rect").attr("x",0).attr("y",0).attr("width",s).attr("height",s).style("stroke","none").style("fill",opts.bckColor)
 				if(opts.shape=="square")
-					patt.append("rect").attr("x",0).attr("y",0).attr("width",diam).attr("height",diam).style("stroke","none").style("fill","black")
+					patt.append("rect").attr("x",0).attr("y",0).attr("width",si).attr("height",si).style("stroke","none").style("fill",opts.symbColor)
 				else
-					patt.append("circle").attr("cx",patternSize/2).attr("cy",patternSize/2).attr("r",diam*0.5).style("stroke","none").style("fill","black")
+					patt.append("circle").attr("cx",s*0.5).attr("cy",s*0.5).attr("r",si*0.7).style("stroke","none").style("fill",opts.symbColor)
 			}
 		};
 	};
@@ -291,7 +296,7 @@
 		var
 		codesHierarchy = {}, //codesHierarchy: code,children[]
 		div = "sunburst", //the div element where to build the svg element
-		radius = 150, //the chart size
+		radius = 150 //the chart size
 		;
 
 		//the output object
