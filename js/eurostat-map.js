@@ -273,13 +273,13 @@
 		opts.symbColor = opts.symbColor || "black";
 		return function(svg) {
 			for(var i=0; i<clnb; i++) {
-				var si = s*i/(clnb-1);
+				var si = 1+(s-1)*i/(clnb-1);
 				var patt = svg.append("pattern").attr("id","pattern_"+i).attr("x","0").attr("y","0").attr("width",s).attr("height",s).attr("patternUnits","userSpaceOnUse");
 				patt.append("rect").attr("x",0).attr("y",0).attr("width",s).attr("height",s).style("stroke","none").style("fill",opts.bckColor)
 				if(opts.shape=="square")
 					patt.append("rect").attr("x",0).attr("y",0).attr("width",si).attr("height",si).style("stroke","none").style("fill",opts.symbColor)
 				else
-					patt.append("circle").attr("cx",s*0.5).attr("cy",s*0.5).attr("r",si*0.7).style("stroke","none").style("fill",opts.symbColor)
+					patt.append("circle").attr("cx",s*0.5).attr("cy",s*0.5).attr("r",si*0.6).style("stroke","none").style("fill",opts.symbColor)
 			}
 		};
 	};
