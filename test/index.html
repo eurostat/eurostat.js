@@ -27,22 +27,20 @@
 	<script>
 
 		//load parameters from URL
-		var opts = EstLib.loadURLParameters();
-		opts.scale = "60M";
-		opts.unitText = "unit";
-		opts.drawCoastalMargin = false;
-		//opts.type = "ps";
-		//opts.filtersDefinitionFun = EstLib.getDottedPatternDefinitionFun(opts.clnb, {shape:"square"});
-		//opts.classToFillStyle = EstLib.getDottedLegend(opts.clnb);
+		//var opts = EstLib.loadURLParameters();
 
-
-		EstLib.map(opts)
-		.ebcode("demo_r_d3dens")
-		.dimensions({ time : opts.time })
+		EstLib.map()
+		.scale("60M")
+		.ebcode("demo_r_d3dens").dimensions({ time : 2016 })
+		//.ebcode("demo_r_pjangrp3").dimensions({ age:"TOTAL",sex:"T",unit:"NR", time : 2016 })
+		.unitText("unit")
+		.clnb(100)
+		.drawCoastalMargin(false)
+		//.filtersDefinitionFun(EstLib.getFillPatternDefinitionFun(10, {shape:"circle"}))
+		//.classToFillStyle(EstLib.getFillPatternLegend(10))
+		//.type("ps")
 		.build();
 
-		//EstLib.map("map", "demo_r_pjangrp3", { age:"TOTAL",sex:"T",unit:"NR", time : opts.time }, opts).build();
-		
 		</script>
 
 </body>

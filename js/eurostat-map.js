@@ -17,50 +17,53 @@
 	//transform nice nuts map using eurostat-map.js?
 	//adopt data cache
 
-	EstLib.map = function(opts) {
-		opts = opts || {};
+	EstLib.map = function() {
 		//the id of the svg element to draw into
-		var svgId = opts.svgId || "map";
+		var svgId = "map";
 		//the width of the svg element, in px
-		var width = opts.width || 800;
+		var width = 800;
 		//the code of the eurobase database
-		var ebcode = opts.ebcode || "demo_r_d3dens";
+		var ebcode = "demo_r_d3dens";
 		//the dimension projector to extract the statistical data
-		var dimensions = opts.dimensions || { time : opts.time || 2017 };
+		var dimensions = { time : 2017 };
 		//the map type: "ch" for choropleth and "ps" for proportionnal circles
-		var type = opts.type || "ch"; //or "ps"
+		var type = "ch"; //or "ps"
 		//the map lod, among 3M, 10M, 20M, 60M
-		var scale = opts.scale || "20M";
+		var scale = "20M";
 		//the map projection (epsg code)
-		var proj = opts.proj || "3035";
+		var proj = "3035";
 		//the map nuts level, from 0 to 3
-		var nutsLvl = opts.nutsLvl || "3";
+		var nutsLvl = "3";
 		//the NUTS version, among 2010, 2013, 2016
-		var NUTSyear = opts.NUTSyear || 2013;
+		var NUTSyear = 2013;
 		//the number of classes of the map
-		var clnb = opts.clnb || 7;
+		var clnb = 7;
 		//the langage
-		var lg = opts.lg || "en";
+		var lg = "en";
 		//if the map is zoomable, specify the scale extent
-		var scaleExtent = opts.scaleExtent || [1,6];
+		var scaleExtent = [1,6];
 		//draw the graticule
-		var drawGraticule = opts.drawGraticule==null? true : opts.drawGraticule;
+		var drawGraticule = true;
 		//draw the coastal margin
-		var drawCoastalMargin = opts.drawCoastalMargin==null? true : opts.drawCoastalMargin;
+		var drawCoastalMargin = true;
 		//the color of the coastal margin
-		var coastalMarginColor = opts.coastalMarginColor || "white";
+		var coastalMarginColor = "white";
 		//show tooltip text when passing over map regions
-		var showTooltip = showTooltip==null? true : showTooltip;
+		var showTooltip = true;
 		//the text to use in the tooltip for the unit of the values
-		var unitText = opts.unitText || "";
+		var unitText = "";
+		//for choropleth maps, color interpolation function. see https://github.com/d3/d3-scale-chromatic/   -   ex: interpolateGnBu
+		var colorFun = d3.interpolateYlOrRd;
+		//fill color for no data regions
+		var noDataColor = "gray";
 		//for choropleth maps, the function returning the fill style depending on the class number (from 0 to clnb-1)
-		var classToFillStyle = opts.classToFillStyle || EstLib.getColorLegend(opts.clnb);
+		var classToFillStyle = EstLib.getColorLegend(clnb, colorFun, noDataColor);
 		//the function defining some fill patterns to be reused for the choropleth map
-		var filtersDefinitionFun = opts.filtersDefinitionFun || function(svg) {};
+		var filtersDefinitionFun = function(svg) {};
 		//a function executed after the data has returned
-		var preFun = opts.preFun || function() {};
+		var preFun = function() {};
 		//a function executed at the end of the map building
-		var postFun = opts.postFun || function() {};
+		var postFun = function() {};
 
 		//the output object
 		var out = {};
@@ -284,35 +287,30 @@
 
 
 	//build a color legend object
-	EstLib.getColorLegend = function(clnb, opts) {
-		opts = opts || {};
-		//see https://github.com/d3/d3-scale-chromatic/
-		//ex: interpolateGnBu
-		opts.colorFun = opts.colorFun || d3.interpolateYlOrRd;
-		opts.nd = opts.nd || "lightgray";
-		var classToStyle = {};
+	EstLib.getColorLegend = function(clnb, colorFun, noDataColor) {
+		colorFun = colorFun || d3.interpolateYlOrRd;
+		noDataColor = noDataColor || "lightgray";
+		var classToStyle = { nd:noDataColor };
 		for (var ecl = 0; ecl < clnb; ecl++)
-			classToStyle[ecl] = opts.colorFun( ecl/(clnb-1) );
-		classToStyle.nd = opts.nd;
+			classToStyle[ecl] = colorFun( ecl/(clnb-1) );
 		return classToStyle;
 	}
 
 
 
 	//point pattern map
-	
-	//build a point pattern legend object
-	EstLib.getDottedLegend = function(clnb, opts) {
-		opts = opts || {};
-		opts.nd = opts.nd || "white";
+
+	//build a point pattern legend object { nd:"white", 0:"url(#pattern_0)", 1:"url(#pattern_1)", ... }
+	EstLib.getFillPatternLegend = function(clnb, noDataColor) {
+		noDataColor = noDataColor || "white";
 		var classToStyle = {};
 		for (var ecl = 0; ecl < clnb; ecl++)
 			classToStyle[ecl] = "url(#pattern_"+ecl+")";
-		classToStyle.nd = opts.nd;
+		classToStyle.nd = noDataColor;
 		return classToStyle;
 	}
 	//make function which build point patterns style
-	EstLib.getDottedPatternDefinitionFun = function(clnb, opts) {
+	EstLib.getFillPatternDefinitionFun = function(clnb, opts) {
 		opts = opts || {};
 		opts.shape = opts.shape || "circle";
 		var s = opts.patternSize || 10;
