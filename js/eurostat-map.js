@@ -32,7 +32,6 @@
 		opts.zoom = opts.zoom==null? true : opts.zoom;
 		opts.zoomExtentMin = opts.zoomExtentMin || 0.5;
 		opts.zoomExtentMax = opts.zoomExtentMax || 6;
-		opts.bckFillColor = opts.bckFillColor || "#b3cde3";
 		opts.drawGraticule = opts.drawGraticule==null? true : opts.drawGraticule;
 		opts.drawCoastalMargin = opts.drawCoastalMargin==null? true : opts.drawCoastalMargin;
 		opts.coastalMarginColor = opts.coastalMarginColor || "white";
@@ -71,9 +70,9 @@
 					opts.filtersDefinitionFun(svg);
 
 					//draw background rectangle
-					svg.append("rect").attr("id", "bck").attr("x", 0)
-							.attr("y", 0).attr("width", opts.width).attr("height", height)
-							.style("fill", opts.bckFillColor);
+					svg.append("rect").attr("id", "sea").attr("x", 0).attr("y", 0)
+							.attr("width", opts.width).attr("height", height)
+							;
 
 					//prepare drawing group
 					var g = svg.append("g").attr("transform", "translate(0,0)");
