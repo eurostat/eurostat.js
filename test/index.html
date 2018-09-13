@@ -28,20 +28,20 @@
 
 		//load parameters from URL
 		var opts = EstLib.loadURLParameters();
-		opts.width = 1000;
 		opts.scale = "60M";
 		opts.unitText = "unit";
-
-		//opts.bckFillColor = "#bbb";
 		opts.drawCoastalMargin = false;
-
 		//opts.type = "ps";
-		//opts.filtersDefinitionFun = EstLib.getDottedPatternDefinitionFun(opts.clnb, {shape:"circle"});
+		//opts.filtersDefinitionFun = EstLib.getDottedPatternDefinitionFun(opts.clnb, {shape:"square"});
 		//opts.classToFillStyle = EstLib.getDottedLegend(opts.clnb);
 
 
-		EstLib.map("map", "demo_r_d3dens", { time : opts.time }, opts);
-		//EstLib.map("map", "demo_r_pjangrp3", { age:"TOTAL",sex:"T",unit:"NR", time : opts.time }, opts);
+		EstLib.map(opts)
+		.ebcode("demo_r_d3dens")
+		.dimensions({ time : opts.time })
+		.build();
+
+		//EstLib.map("map", "demo_r_pjangrp3", { age:"TOTAL",sex:"T",unit:"NR", time : opts.time }, opts).build();
 		
 		</script>
 
