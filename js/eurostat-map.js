@@ -15,7 +15,7 @@
 	//check how no-data is handled
 	//insets (with nuts2json)
 	//transform nice nuts map using eurostat-map.js?
-	//Adopt data cache
+	//adopt data cache
 
 	EstLib.map = function(opts) {
 		opts = opts || {};
