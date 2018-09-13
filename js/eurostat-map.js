@@ -259,6 +259,13 @@
 		return out;
 		};
 
+
+		out.updateWithGeoStatDataQuery = function() {};
+		out.updateWithStatDataQuery = function() {};
+		out.buildEmptyMap()
+		out.updateStyle = function() {};
+
+
 		out.svgId = function(v) { if (!arguments.length) return svgId; svgId=v; return out; };
 		out.width = function(v) { if (!arguments.length) return width; width=v; return out; };
 		out.ebcode = function(v) { if (!arguments.length) return ebcode; ebcode=v; return out; };
@@ -289,7 +296,7 @@
 	//build a color legend object
 	EstLib.getColorLegend = function(clnb, colorFun, noDataColor) {
 		colorFun = colorFun || d3.interpolateYlOrRd;
-		noDataColor = noDataColor || "lightgray";
+		noDataColor = noDataColor || "gray";
 		var classToStyle = { nd:noDataColor };
 		for (var ecl = 0; ecl < clnb; ecl++)
 			classToStyle[ecl] = colorFun( ecl/(clnb-1) );
@@ -302,7 +309,7 @@
 
 	//build a point pattern legend object { nd:"white", 0:"url(#pattern_0)", 1:"url(#pattern_1)", ... }
 	EstLib.getFillPatternLegend = function(clnb, noDataColor) {
-		noDataColor = noDataColor || "white";
+		noDataColor = noDataColor || "gray";
 		var classToStyle = {};
 		for (var ecl = 0; ecl < clnb; ecl++)
 			classToStyle[ecl] = "url(#pattern_"+ecl+")";
