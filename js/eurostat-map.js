@@ -16,7 +16,6 @@
 	//insets (with nuts2json)
 	//transform nice nuts map using eurostat-map.js?
 
-	
 	EstLib.map = function(svgId, ebcode, dimensions, opts) {
 		opts = opts || {};
 		opts.type = opts.type || "ch"; //or "ps"
