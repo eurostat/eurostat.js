@@ -56,8 +56,8 @@
 		var colorFun = d3.interpolateYlOrRd;
 		//fill color for no data regions
 		var noDataColor = "gray";
-		//for choropleth maps, the function returning the fill style depending on the class number (from 0 to clnb-1)
-		var classToFillStyle = EstLib.getColorLegend(clnb, colorFun, noDataColor);
+		//for choropleth maps, the function returning the fill style depending on the class number and the number of classes
+		var classToFillStyle = EstLib.getColorLegend(colorFun);
 		//the function defining some fill patterns to be reused for the choropleth map
 		var filtersDefinitionFun = function(svg) {};
 		//a function executed after the data has returned
@@ -217,8 +217,12 @@
 				});
 		};
 
+
+
+		//run when the stat values have changed
 		out.updateStatValues = function() {
-			//link values to NUTS regions and build list of values to make classification
+			//link values to NUTS regions
+			//build list of values
 			values = [];
 			for (var i=0; i<nutsRG.length; i++) {
 				var rg = nutsRG[i];
@@ -232,6 +236,8 @@
 			out.updateClassificationAndStyle();
 		}
 
+
+		//run when the classification has changed
 		out.updateClassificationAndStyle = function() {
 			//NB: no classification is required for proportional symbols map
 
@@ -254,6 +260,8 @@
 			return out;
 		}
 
+
+		//run when the map style/legend has changed
 		out.updateStyle = function() {
 
 			if(type == "ps") {
@@ -286,7 +294,7 @@
 				//apply style to nuts regions depending on class
 				svg.selectAll("path.nutsrg")
 				.attr("fill", function() {
-					return classToFillStyle[ d3.select(this).attr("ecl") ];
+					return classToFillStyle( d3.select(this).attr("ecl"), clnb );
 				});
 			}
 		};
@@ -319,29 +327,23 @@
 
 
 	//build a color legend object
-	EstLib.getColorLegend = function(clnb, colorFun, noDataColor) {
+	EstLib.getColorLegend = function(colorFun) {
 		colorFun = colorFun || d3.interpolateYlOrRd;
-		noDataColor = noDataColor || "gray";
-		var classToStyle = { nd:noDataColor };
-		for (var ecl = 0; ecl < clnb; ecl++)
-			classToStyle[ecl] = colorFun( ecl/(clnb-1) );
-		return classToStyle;
+		return function(ecl, clnb) {
+			return colorFun( ecl/(clnb-1) );
+		}
 	}
 
 
+	//fill pattern map
 
-	//point pattern map
-
-	//build a point pattern legend object { nd:"white", 0:"url(#pattern_0)", 1:"url(#pattern_1)", ... }
-	EstLib.getFillPatternLegend = function(clnb, noDataColor) {
-		noDataColor = noDataColor || "gray";
-		var classToStyle = {};
-		for (var ecl = 0; ecl < clnb; ecl++)
-			classToStyle[ecl] = "url(#pattern_"+ecl+")";
-		classToStyle.nd = noDataColor;
-		return classToStyle;
+	//build a fill pattern legend object { nd:"white", 0:"url(#pattern_0)", 1:"url(#pattern_1)", ... }
+	EstLib.getFillPatternLegend = function() {
+		return function(ecl) {
+			return "url(#pattern_"+ecl+")";
+		}
 	}
-	//make function which build point patterns style
+	//make function which build fill patterns style
 	EstLib.getFillPatternDefinitionFun = function(clnb, opts) {
 		opts = opts || {};
 		opts.shape = opts.shape || "circle";
