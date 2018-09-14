@@ -86,6 +86,7 @@
 			return out;
 		};
 
+		//use that for initial build of a map
 		out.build = function() {
 			out.updategeoData();
 			out.updateStatData();
