@@ -7,10 +7,10 @@
  */
 (function(d3, EstLib) {
 
+	//use cdn: https://cdn.jsdelivr.net/gh/eurostat/eurostat.js@v0.1/js/eurostat-map.js
 	//js dependencies
 	//typologies
 	//decompose
-	//cdn
 	//choice
 	//add legend element
 	//add classification method as parameter ?
