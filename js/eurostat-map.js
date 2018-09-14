@@ -66,6 +66,8 @@
 		var filtersDefinitionFun = function() {};
 		//the maximum size for the proportional circles
 		var psMaxSize = 30;
+		//text to show for no data case
+		var noDataText = "No data";
 
 		//the output object
 		var out = {};
@@ -214,7 +216,7 @@
 				.attr("class", "nutsrg")
 				.attr("fill", "white")
 				.on("mouseover", function(rg) {
-					if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (unitText?" "+unitText:""));
+					if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val? rg.properties.val + (unitText?" "+unitText:"") : noDataText));
 				}).on("mousemove", function() {
 					if(showTooltip) tooltip.mousemove();
 				}).on("mouseout", function() {
@@ -363,6 +365,7 @@
 		out.classToFillStyle = function(v) { if (!arguments.length) return classToFillStyle; classToFillStyle=v; return out; };
 		out.filtersDefinitionFun = function(v) { if (!arguments.length) return filtersDefinitionFun; filtersDefinitionFun=v; return out; };
 		out.psMaxSize = function(v) { if (!arguments.length) return psMaxSize; psMaxSize=v; return out; };
+		out.noDataText = function(v) { if (!arguments.length) return noDataText; noDataText=v; return out; };
 
 		return out;
 	};
