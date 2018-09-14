@@ -7,6 +7,7 @@
  */
 (function(d3, EstLib) {
 
+	//js dependancies
 	//decompose
 	//cdn
 	//test and fix clnb()
