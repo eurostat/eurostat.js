@@ -7,7 +7,6 @@
  */
 (function(d3, EstLib) {
 
-	//ps: make symbols truly proportionnal
 	//add classification method as parameter
 	//add legend
 	//support data flags
@@ -284,13 +283,13 @@
 					var geomc = {"type": "Point", "coordinates": d3.geoPath().centroid(nr)}
 					var nrc = {type:"feature", properties:nr.properties, geometry:geomc };
 					nutsRGCentroids.push(nrc);
-					//nr.geometry = geomc;
-					//console.log(nrc);
+					nr.geometry = geomc; //TODO
 				}
 
+				//TODO use nutsRGCentroids instead of nutsRG
 				//draw proportional symbols
 				d3.select("#g_ps").selectAll(".symbol")
-				.data(nutsRGCentroids.sort(function(a, b) { return b.properties.val - a.properties.val; }))
+				.data(nutsRG.sort(function(a, b) { return b.properties.val - a.properties.val; }))
 				.enter()
 				.append("path").attr("class", "symbol")
 				.attr("d", path.pointRadius(function(d) { return radius(d.properties.val); }))
