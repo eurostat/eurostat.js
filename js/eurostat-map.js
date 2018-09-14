@@ -9,6 +9,7 @@
 
 	//add classification method as parameter
 	//add legend
+	//loading message (?)
 	//support data flags
 	//check how no-data is handled
 	//insets (with nuts2json)
@@ -53,11 +54,11 @@
 		//for choropleth maps, color interpolation function. see https://github.com/d3/d3-scale-chromatic/   -   ex: interpolateGnBu
 		var colorFun = d3.interpolateYlOrRd;
 		//fill color for no data regions
-		var noDataColor = "gray";
+		var noDataFillStyle = "gray";
 		//for choropleth maps, the function returning the fill style depending on the class number and the number of classes
 		var classToFillStyle = EstLib.getColorLegend(colorFun);
 		//the function defining some fill patterns to be reused for the choropleth map
-		var filtersDefinitionFun = function(svg) {};
+		var filtersDefinitionFun = function() {};
 
 		//the output object
 		var out = {};
@@ -135,8 +136,8 @@
 				svg.append("filter").attr("id", "coastal_blur").attr("x","-100%").attr("y", "-100%").attr("width","400%")
 					.attr("height", "400%").append("feGaussianBlur").attr("in", "SourceGraphic").attr("stdDeviation", "4");
 
-			//add additional filters
-			filtersDefinitionFun(svg);
+			//add additional filters for fill patterns for example
+			filtersDefinitionFun(svg, clnb);
 
 			//draw background rectangle
 			svg.append("rect").attr("id", "sea").attr("x", 0).attr("y", 0)
@@ -348,6 +349,8 @@
 		out.coastalMarginColor = function(v) { if (!arguments.length) return coastalMarginColor; coastalMarginColor=v; return out; };
 		out.showTooltip = function(v) { if (!arguments.length) return showTooltip; showTooltip=v; return out; };
 		out.unitText = function(v) { if (!arguments.length) return unitText; unitText=v; return out; };
+		out.colorFun = function(v) { if (!arguments.length) return colorFun; colorFun=v; classToFillStyle = EstLib.getColorLegend(colorFun); return out; };
+		out.noDataFillStyle = function(v) { if (!arguments.length) return noDataFillStyle; noDataFillStyle=v; return out; };
 		out.classToFillStyle = function(v) { if (!arguments.length) return classToFillStyle; classToFillStyle=v; return out; };
 		out.filtersDefinitionFun = function(v) { if (!arguments.length) return filtersDefinitionFun; filtersDefinitionFun=v; return out; };
 
@@ -371,13 +374,13 @@
 	}
 
 	//make function which build fill patterns style
-	EstLib.getFillPatternDefinitionFun = function(clnb, opts) {
+	EstLib.getFillPatternDefinitionFun = function(opts) {
 		opts = opts || {};
 		opts.shape = opts.shape || "circle";
 		var s = opts.patternSize || 10;
 		opts.bckColor = opts.bckColor || "white";
 		opts.symbColor = opts.symbColor || "black";
-		return function(svg) {
+		return function(svg, clnb) {
 			for(var i=0; i<clnb; i++) {
 				var si = 1+(s-1)*i/(clnb-1);
 				var patt = svg.append("pattern").attr("id","pattern_"+i).attr("x","0").attr("y","0").attr("width",s).attr("height",s).attr("patternUnits","userSpaceOnUse");

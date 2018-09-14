@@ -1,8 +1,3 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-<meta charset="utf-8">
 <title>European population map</title>
 <link rel="stylesheet" type="text/css" href="style.css">
 
@@ -18,28 +13,29 @@
 <script src="../js/eurostat-lib.js"></script>
 <script src="../js/eurostat-map.js"></script>
 
-</head>
+<svg id="map"></svg>
+<div id="tooltip"></div>
 
-<body>
-	<svg id="map"></svg>
-	<div id="tooltip"></div>
+<script>
 
-	<script>
+	//load parameters from URL
+	var opts = EstLib.loadURLParameters();
+	opts.time = opts.time || 2016;
+	
 
-		EstLib.map()
-		.set( EstLib.loadURLParameters() )
-		//.scale("60M")
-		//.nutsLvl(3)
-		.ebcode("demo_r_d3dens").dimensions({ time : 2016 })
-		//.ebcode("demo_r_pjangrp3").dimensions({ age:"TOTAL",sex:"T",unit:"NR", time : 2016 })
-		.unitText("unit")
-		//.clnb(10)
-		//.drawCoastalMargin(true)
-		//.filtersDefinitionFun(EstLib.getFillPatternDefinitionFun(10, { patternSize: 5, shape: "circle", bckColor: "white", symbColor: "red" } ))
-		//.classToFillStyle(EstLib.getFillPatternLegend())
-		//.type("ps")
-		.build();
+	EstLib.map()
+	.set(opts)
+	//.scale("60M")
+	//.nutsLvl(3)
+	.ebcode("demo_r_d3dens").dimensions({ time : opts.time })
+	//.ebcode("demo_r_pjangrp3").dimensions({ age:"TOTAL",sex:"T",unit:"NR", time : 2016 })
+	.unitText("unit")
+	//.colorFun(d3.interpolateGnBu)
+	.clnb(12)
+	//.drawCoastalMargin(true)
+	//.filtersDefinitionFun(EstLib.getFillPatternDefinitionFun({ patternSize: 5, shape: "circle", bckColor: "white", symbColor: "red" } ))
+	//.classToFillStyle(EstLib.getFillPatternLegend())
+	//.type("ps")
+	.build();
 
-		</script>
-
-</body>
+</script>
