@@ -262,7 +262,7 @@
 
 		out.updateWithGeoStatDataQuery = function() {};
 		out.updateWithStatDataQuery = function() {};
-		out.buildEmptyMap()
+		out.buildEmptyMap = function() {};
 		out.updateStyle = function() {};
 
 
