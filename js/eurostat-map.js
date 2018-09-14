@@ -7,11 +7,11 @@
  */
 (function(d3, EstLib) {
 
+	//choice
 	//fix how no-data is handled: apply fill pattern + tooltip text
-	//prepare comm
-	//fix yougo
-	//add classification method as parameter
-	//add legend
+	//test and fix clnb()
+	//add legend element
+	//add classification method as parameter ?
 	//loading message (?)
 	//support data flags
 	//insets (with nuts2json)
@@ -62,6 +62,8 @@
 		var classToFillStyle = EstLib.getColorLegend(colorFun);
 		//the function defining some fill patterns to be reused for the choropleth map
 		var filtersDefinitionFun = function() {};
+		//the maximum size for the proportional circles
+		var psMaxSize = 30;
 
 		//the output object
 		var out = {};
@@ -295,8 +297,7 @@
 			if(type == "ps") {
 				//proportionnal symbol map
 				//see https://bl.ocks.org/mbostock/4342045
-				var maxSize = 20;
-				var radius = d3.scaleSqrt().domain([0, Math.max(...values)]).range([0, maxSize]);
+				var radius = d3.scaleSqrt().domain([0, Math.max(...values)]).range([0, psMaxSize*0.5]);
 
 				nutsRGCentroids = [];
 				//compute list of centroids of nutsRG
@@ -356,6 +357,7 @@
 		out.noDataFillStyle = function(v) { if (!arguments.length) return noDataFillStyle; noDataFillStyle=v; return out; };
 		out.classToFillStyle = function(v) { if (!arguments.length) return classToFillStyle; classToFillStyle=v; return out; };
 		out.filtersDefinitionFun = function(v) { if (!arguments.length) return filtersDefinitionFun; filtersDefinitionFun=v; return out; };
+		out.psMaxSize = function(v) { if (!arguments.length) return psMaxSize; psMaxSize=v; return out; };
 
 		return out;
 	};
