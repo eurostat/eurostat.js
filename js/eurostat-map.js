@@ -140,7 +140,7 @@
 
 			if(drawCoastalMargin) {
 				//draw coastal margin
-				g.append("g").selectAll("path").data(topojson.feature(nuts, nutsData.objects.cntbn).features)
+				g.append("g").selectAll("path").data(topojson.feature(nutsData, nutsData.objects.cntbn).features)
 					.enter().append("path").attr("d", path)
 					.style("fill", "none")
 					.style("stroke-width", "8px")
@@ -150,7 +150,7 @@
 					.style("stroke", function(bn) {
 							if (bn.properties.co === "T") return coastalMarginColor; return "none";
 					});
-				g.append("g").selectAll("path").data(topojson.feature(nuts, nutsData.objects.nutsbn).features)
+				g.append("g").selectAll("path").data(topojson.feature(nutsData, nutsData.objects.nutsbn).features)
 					.enter().append("path").attr("d", path)
 					.style("fill", "none")
 					.style("stroke-width", "8px")
