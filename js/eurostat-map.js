@@ -62,208 +62,234 @@
 		var filtersDefinitionFun = function(svg) {};
 		//a function executed after the data has returned
 		var preFun = function() {};
-		//a function executed at the end of the map building
-		var postFun = function() {};
 
 		//the output object
 		var out = {};
 
+		var statData, values, nutsData, nutsRG;
+		var height, svg, path;
+		var tooltip;
+
+		//out.updateWithGeoStatDataQuery = function() {};
+		//out.updateWithStatDataQuery = function() {};
+
 		out.build = function() {
 
-		d3.queue()
-		.defer(d3.json, "https://raw.githubusercontent.com/eurostat/Nuts2json/gh-pages/" + NUTSyear + "/" + proj + "/" + scale + "/" + nutsLvl + ".json")
-		.defer(d3.json, EstLib.getEstatDataURL(ebcode, dimensions))
-		.await(
-				function(error, nuts, data) {
+			//tooltip element
+			tooltip = showTooltip? EstLib.tooltip() : null;
+
+			d3.queue()
+			.defer(d3.json, "https://raw.githubusercontent.com/eurostat/Nuts2json/gh-pages/" + NUTSyear + "/" + proj + "/" + scale + "/" + nutsLvl + ".json")
+			.defer(d3.json, EstLib.getEstatDataURL(ebcode, dimensions))
+			.await(
+				function(error, nuts___, data___) {
 					//execute prefunction
 					preFun();
 
-					//tooltip element
-					var tooltip = showTooltip? EstLib.tooltip() : null;
+					//get data
+					statData = JSONstat(data___).Dataset(0); data___ = null;
+					nutsData = nuts___;
+					//decode nuts regions
+					nutsRG = topojson.feature(nutsData, nutsData.objects.nutsrg).features;
 
-					//decode statistical data
-					data = JSONstat(data).Dataset(0);
+					out.buildMapTemplate();
 
-					//prepare SVG element
-					var height = width * (nuts.bbox[3] - nuts.bbox[1]) / (nuts.bbox[2] - nuts.bbox[0]),
-						svg = d3.select("#"+svgId).attr("width", width).attr("height", height)
-						path = d3.geoPath().projection(d3.geoIdentity().reflectY(true).fitSize([ width, height ], topojson.feature(nuts, nuts.objects.gra)));
-
-					if(drawCoastalMargin)
-						//define filter for coastal margin
-						svg.append("filter").attr("id", "blur").attr("x","-100%").attr("y", "-100%").attr("width","400%")
-							.attr("height", "400%").append("feGaussianBlur").attr("in", "SourceGraphic").attr("stdDeviation", "4");
-					
-					//add additional filters
-					filtersDefinitionFun(svg);
-
-					//draw background rectangle
-					svg.append("rect").attr("id", "sea").attr("x", 0).attr("y", 0)
-							.attr("width", width).attr("height", height)
-							;
-
-					//prepare drawing group
-					var g = svg.append("g").attr("transform", "translate(0,0)");
-					if(scaleExtent) {
-						//add zoom function
-						svg.call(d3.zoom().scaleExtent(scaleExtent)
-							.on("zoom",
-								function() {
-									var k = d3.event.transform.k;
-									d3.selectAll(".gra").style("stroke-width", (1/k)+"px");
-									d3.selectAll(".bn_0").style("stroke-width", (1/k)+"px");
-									d3.selectAll(".bn_oth").style("stroke-width", (1/k)+"px");
-									d3.selectAll(".bn_co").style("stroke-width", (1/k)+"px");
-									d3.selectAll(".cntbn").style("stroke-width", (1/k)+"px");
-									g.attr("transform", d3.event.transform);
-								}));
-					}
-
-					if(drawCoastalMargin) {
-						//draw coastal margin
-						g.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.cntbn).features)
-							.enter().append("path").attr("d", path)
-							.style("fill", "none")
-							.style("stroke-width", "8px")
-							.style("filter", "url(#blur)")
-							.style("stroke-linejoin", "round")
-							.style("stroke-linecap", "round")
-							.style("stroke", function(bn) {
-									if (bn.properties.co === "T") return coastalMarginColor; return "none";
-							});
-						g.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.nutsbn).features)
-							.enter().append("path").attr("d", path)
-							.style("fill", "none")
-							.style("stroke-width", "8px")
-							.style("filter", "url(#blur)")
-							.style("stroke-linejoin", "round")
-							.style("stroke-linecap", "round")
-							.style("stroke", function(bn) {
-									if (bn.properties.co === "T") return coastalMarginColor; return "none";
-							});
-					}
-
-					if(drawGraticule) {
-						//draw graticule
-						g.append("g").selectAll("path").data(topojson.feature(nuts,nuts.objects.gra).features)
-							.enter().append("path").attr("d", path)
-							.style("fill", "none")
-							.attr("class", "gra");
-					}
-
-					//draw country regions
-					g.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.cntrg).features)
-						.enter().append("path").attr("d", path)
-						.attr("class", "cntrg")
-						.on("mouseover",function(rg) {
-							if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b>");
-						}).on("mousemove", function() {
-							if(showTooltip) tooltip.mousemove();
-						}).on("mouseout", function() {
-							if(showTooltip) tooltip.mouseout();
-						})
-
-					//prepare NUTS regions data
-					var nutsRG = topojson.feature(nuts, nuts.objects.nutsrg).features;
-
-					//link values to NUTS regions and build list of values to make classification
-					var values = [];
-					for (var i=0; i<nutsRG.length; i++) {
-						var rg = nutsRG[i];
-						var value = data.Data({ geo : rg.properties.id });
-						if (!value || !value.value) continue;
-						rg.properties.val = value.value;
-						values.push(+value.value);
-					}
-
-					//build list of classes and classification based on quantiles
-					var classif = d3.scaleQuantile().domain(values).range( [...Array(clnb).keys()] );
-					classif.quantiles();
-
-					//draw NUTS regions regions
-					g.append("g").selectAll("path").data(nutsRG)
-						.enter().append("path").attr("d", path)
-						.attr("class", "nutsrg")
-						.attr("ecl", function(rg) {
-							if (!rg.properties.val) return "nd";
-							return +classif(+rg.properties.val);
-						}).on("mouseover", function(rg) {
-							if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (unitText?" "+unitText:""));
-						}).on("mousemove", function() {
-							if(showTooltip) tooltip.mousemove();
-						}).on("mouseout", function() {
-							if(showTooltip) tooltip.mouseout();
-						});
-
-					//draw country boundaries
-					g.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.cntbn).features)
-						.enter().append("path").attr("d", path)
-						.style("fill", "none").style("stroke-linecap", "round").style("stroke-linejoin", "round")
-						.attr("class", function(bn) {
-							if (bn.properties.co === "T")return "bn_co"; return "cntbn";
-						});
-
-					//draw NUTS boundaries
-					var bn = topojson.feature(nuts, nuts.objects.nutsbn).features;
-					bn.sort(function(bn1, bn2) { return bn2.properties.lvl - bn1.properties.lvl; });
-					g.append("g").selectAll("path").data(bn).enter()
-						.append("path").attr("d", path)
-						.style("fill", "none").style("stroke-linecap", "round").style("stroke-linejoin", "round")
-						.attr("class", function(bn) {
-							bn = bn.properties;
-							if (bn.co === "T") return "bn_co";
-							var cl = [ "bn_" + bn.lvl ];
-							if (bn.oth === "T") cl.push("bn_oth");
-							return cl.join(" ");
-						});
-
-
-					if(type == "ps") {
-						//proportionnal symbol map
-						//see https://bl.ocks.org/mbostock/4342045
-						var maxSize = 20;
-						var radius = d3.scaleSqrt().domain([0, Math.max(...values)]).range([0, maxSize]);
-
-						//compute list of centroides of nutsRG
-						for(var i=0; i<nutsRG.length; i++) {
-							var nr = nutsRG[i];
-							nr.geometry = {"type": "Point", "coordinates": d3.geoPath().centroid(nr)};
-						}
-
-						g.selectAll(".symbol")
-						.data(nutsRG.sort(function(a, b) { return b.properties.val - a.properties.val; }))
-						.enter().append("path").attr("class", "symbol")
-						.attr("d", path.pointRadius(function(d) { return radius(d.properties.val); }))
-						.on("mouseover", function(rg) {
-							if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (unitText?" "+unitText:""));
-						}).on("mousemove", function() {
-							if(showTooltip) tooltip.mousemove();
-						}).on("mouseout", function() {
-							if(showTooltip) tooltip.mouseout();
-						});
-
-					} else {
-						//choropleth map
-						//apply style to nuts regions depending on class
-						g.selectAll("path.nutsrg")
-						.attr("fill", function() {
-							return classToFillStyle[ d3.select(this).attr("ecl") ];
-						});
-					}
-
-
-					//execute postfunction
-					postFun();
+					//update classification and style
+					out.updateStatValues();
 
 				});
 		return out;
 		};
 
 
-		out.updateWithGeoStatDataQuery = function() {};
-		out.updateWithStatDataQuery = function() {};
-		out.buildEmptyMap = function() {};
-		out.updateStyle = function() {};
+		out.buildMapTemplate = function() {
+			//TODO empty svg
+
+			//prepare SVG element
+			height = width * (nutsData.bbox[3] - nutsData.bbox[1]) / (nutsData.bbox[2] - nutsData.bbox[0]),
+			svg = d3.select("#"+svgId).attr("width", width).attr("height", height)
+			path = d3.geoPath().projection(d3.geoIdentity().reflectY(true).fitSize([ width, height ], topojson.feature(nutsData, nutsData.objects.gra)));
+
+			if(drawCoastalMargin)
+				//define filter for coastal margin
+				svg.append("filter").attr("id", "blur").attr("x","-100%").attr("y", "-100%").attr("width","400%")
+					.attr("height", "400%").append("feGaussianBlur").attr("in", "SourceGraphic").attr("stdDeviation", "4");
+			
+			//add additional filters
+			filtersDefinitionFun(svg);
+
+			//draw background rectangle
+			svg.append("rect").attr("id", "sea").attr("x", 0).attr("y", 0)
+					.attr("width", width).attr("height", height);
+
+			//prepare drawing group
+			var g = svg.append("g").attr("transform", "translate(0,0)");
+			if(scaleExtent) {
+				//add zoom function
+				svg.call(d3.zoom().scaleExtent(scaleExtent)
+					.on("zoom", function() {
+							var k = d3.event.transform.k;
+							d3.selectAll(".gra").style("stroke-width", (1/k)+"px");
+							d3.selectAll(".bn_0").style("stroke-width", (1/k)+"px");
+							d3.selectAll(".bn_oth").style("stroke-width", (1/k)+"px");
+							d3.selectAll(".bn_co").style("stroke-width", (1/k)+"px");
+							d3.selectAll(".cntbn").style("stroke-width", (1/k)+"px");
+							g.attr("transform", d3.event.transform);
+						}));
+			}
+
+			if(drawCoastalMargin) {
+				//draw coastal margin
+				g.append("g").selectAll("path").data(topojson.feature(nuts, nutsData.objects.cntbn).features)
+					.enter().append("path").attr("d", path)
+					.style("fill", "none")
+					.style("stroke-width", "8px")
+					.style("filter", "url(#blur)")
+					.style("stroke-linejoin", "round")
+					.style("stroke-linecap", "round")
+					.style("stroke", function(bn) {
+							if (bn.properties.co === "T") return coastalMarginColor; return "none";
+					});
+				g.append("g").selectAll("path").data(topojson.feature(nuts, nutsData.objects.nutsbn).features)
+					.enter().append("path").attr("d", path)
+					.style("fill", "none")
+					.style("stroke-width", "8px")
+					.style("filter", "url(#blur)")
+					.style("stroke-linejoin", "round")
+					.style("stroke-linecap", "round")
+					.style("stroke", function(bn) {
+							if (bn.properties.co === "T") return coastalMarginColor; return "none";
+					});
+			}
+
+			if(drawGraticule) {
+				//draw graticule
+				g.append("g").selectAll("path").data(topojson.feature(nutsData, nutsData.objects.gra).features)
+					.enter().append("path").attr("d", path)
+					.style("fill", "none")
+					.attr("class", "gra");
+			}
+
+			//draw country regions
+			g.append("g").selectAll("path").data(topojson.feature(nutsData, nutsData.objects.cntrg).features)
+				.enter().append("path").attr("d", path)
+				.attr("class", "cntrg")
+				.on("mouseover",function(rg) {
+					if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b>");
+				}).on("mousemove", function() {
+					if(showTooltip) tooltip.mousemove();
+				}).on("mouseout", function() {
+					if(showTooltip) tooltip.mouseout();
+				})
+
+			//draw NUTS regions regions
+			g.append("g").selectAll("path").data(nutsRG)
+				.enter().append("path").attr("d", path)
+				.attr("class", "nutsrg")
+				.on("mouseover", function(rg) {
+					if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (unitText?" "+unitText:""));
+				}).on("mousemove", function() {
+					if(showTooltip) tooltip.mousemove();
+				}).on("mouseout", function() {
+					if(showTooltip) tooltip.mouseout();
+				});
+
+			//draw country boundaries
+			g.append("g").selectAll("path").data(topojson.feature(nutsData, nutsData.objects.cntbn).features)
+				.enter().append("path").attr("d", path)
+				.style("fill", "none").style("stroke-linecap", "round").style("stroke-linejoin", "round")
+				.attr("class", function(bn) {
+					if (bn.properties.co === "T")return "bn_co"; return "cntbn";
+				});
+
+			//draw NUTS boundaries
+			var bn = topojson.feature(nutsData, nutsData.objects.nutsbn).features;
+			bn.sort(function(bn1, bn2) { return bn2.properties.lvl - bn1.properties.lvl; });
+			g.append("g").selectAll("path").data(bn).enter()
+				.append("path").attr("d", path)
+				.style("fill", "none").style("stroke-linecap", "round").style("stroke-linejoin", "round")
+				.attr("class", function(bn) {
+					bn = bn.properties;
+					if (bn.co === "T") return "bn_co";
+					var cl = [ "bn_" + bn.lvl ];
+					if (bn.oth === "T") cl.push("bn_oth");
+					return cl.join(" ");
+				});
+		};
+
+		out.updateStatValues = function() {
+			//link values to NUTS regions and build list of values to make classification
+			values = [];
+			for (var i=0; i<nutsRG.length; i++) {
+				var rg = nutsRG[i];
+				var value = statData.Data({ geo : rg.properties.id });
+				if (!value || !value.value) continue;
+				rg.properties.val = value.value;
+				values.push(+value.value);
+			}
+
+			//update classification and styles
+			out.updateClassificationAndStyle();
+		}
+
+		out.updateClassificationAndStyle = function() {
+			//NB: no classification is required for proportional symbols map
+
+			if(type == "ch") {
+				//build list of classes and classification based on quantiles
+				var classif = d3.scaleQuantile().domain(values).range( [...Array(clnb).keys()] );
+				classif.quantiles();
+
+				//apply classification based on value
+				svg.selectAll("path.nutsrg")
+				.attr("ecl", function(rg) {
+					if (!rg.properties.val) return "nd";
+					return +classif(+rg.properties.val);
+				})
+			}
+			
+			//update style
+			out.updateStyle();
+
+			return out;
+		}
+
+		out.updateStyle = function() {
+
+			if(type == "ps") {
+				//TODO correct that
+				//proportionnal symbol map
+				//see https://bl.ocks.org/mbostock/4342045
+				var maxSize = 20;
+				var radius = d3.scaleSqrt().domain([0, Math.max(...values)]).range([0, maxSize]);
+
+				//compute list of centroides of nutsRG
+				for(var i=0; i<nutsRG.length; i++) {
+					var nr = nutsRG[i];
+					nr.geometry = {"type": "Point", "coordinates": d3.geoPath().centroid(nr)};
+				}
+
+				g.selectAll(".symbol")
+				.data(nutsRG.sort(function(a, b) { return b.properties.val - a.properties.val; }))
+				.enter().append("path").attr("class", "symbol")
+				.attr("d", path.pointRadius(function(d) { return radius(d.properties.val); }))
+				.on("mouseover", function(rg) {
+					if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (unitText?" "+unitText:""));
+				}).on("mousemove", function() {
+					if(showTooltip) tooltip.mousemove();
+				}).on("mouseout", function() {
+					if(showTooltip) tooltip.mouseout();
+				});
+
+			} else {
+				//choropleth map
+				//apply style to nuts regions depending on class
+				svg.selectAll("path.nutsrg")
+				.attr("fill", function() {
+					return classToFillStyle[ d3.select(this).attr("ecl") ];
+				});
+			}
+		};
 
 
 		out.svgId = function(v) { if (!arguments.length) return svgId; svgId=v; return out; };
@@ -286,7 +312,6 @@
 		out.classToFillStyle = function(v) { if (!arguments.length) return classToFillStyle; classToFillStyle=v; return out; };
 		out.filtersDefinitionFun = function(v) { if (!arguments.length) return filtersDefinitionFun; filtersDefinitionFun=v; return out; };
 		out.preFun = function(v) { if (!arguments.length) return preFun; preFun=v; return out; };
-		out.postFun = function(v) { if (!arguments.length) return postFun; postFun=v; return out; };
 
 		return out;
 	};
