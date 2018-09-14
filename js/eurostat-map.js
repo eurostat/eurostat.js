@@ -7,10 +7,10 @@
  */
 (function(d3, EstLib) {
 
-	//js dependancies
+	//js dependencies
+	//typologies
 	//decompose
 	//cdn
-	//test and fix clnb()
 	//choice
 	//add legend element
 	//add classification method as parameter ?
@@ -76,15 +76,15 @@
 
 		//ease the loading of URL parameters. Use with function EstLib.loadURLParameters()
 		out.set = function(opts) {
-			if(opts.w) width = opts.w;
-			if(opts.s) scale = opts.s;
-			if(opts.lvl) nutsLvl = opts.lvl;
+			if(opts.w) out.width(opts.w);
+			if(opts.s) out.scale(opts.s);
+			if(opts.lvl) out.nutsLvl(opts.lvl);
 			//if(opts.time)  = opts.time;
-			if(opts.proj) proj = opts.proj;
-			if(opts.y) NUTSyear = opts.y;
-			if(opts.clnb) clnb = opts.clnb;
-			if(opts.lg) lg = opts.lg;
-			if(opts.type) type = opts.type;
+			if(opts.proj) out.proj(opts.proj);
+			if(opts.y) out.NUTSyear(opts.y);
+			if(opts.clnb) out.clnb(+opts.clnb);
+			if(opts.lg) out.lg(opts.lg);
+			if(opts.type) out.type(opts.type);
 			return out;
 		};
 
