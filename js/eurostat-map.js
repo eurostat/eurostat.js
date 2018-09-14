@@ -7,7 +7,6 @@
  */
 (function(d3, EstLib) {
 
-	//adopt new shema: decompose built
 	//ps: make symbols truly proportionnal
 	//add classification method as parameter
 	//add legend
@@ -60,46 +59,47 @@
 		var classToFillStyle = EstLib.getColorLegend(colorFun);
 		//the function defining some fill patterns to be reused for the choropleth map
 		var filtersDefinitionFun = function(svg) {};
-		//a function executed after the data has returned
-		var preFun = function() {};
 
 		//the output object
 		var out = {};
 
 		var statData, values, nutsData, nutsRG;
 		var height, svg, path;
-		var tooltip;
+		var tooltip = showTooltip? EstLib.tooltip() : null;
 
-		//out.updateWithGeoStatDataQuery = function() {};
-		//out.updateWithStatDataQuery = function() {};
 
 		out.build = function() {
+			out.updategeoData();
+			out.updateStatData();
+			return out;
+		};
 
-			//tooltip element
-			tooltip = showTooltip? EstLib.tooltip() : null;
-
+		//get nuts geometries
+		out.updategeoData = function() {
+			nutsData = null;
 			d3.queue()
 			.defer(d3.json, "https://raw.githubusercontent.com/eurostat/Nuts2json/gh-pages/" + NUTSyear + "/" + proj + "/" + scale + "/" + nutsLvl + ".json")
-			.defer(d3.json, EstLib.getEstatDataURL(ebcode, dimensions))
-			.await(
-				function(error, nuts___, data___) {
-					//execute prefunction
-					preFun();
-
-					//get data
-					statData = JSONstat(data___).Dataset(0); data___ = null;
+			.await( function(error, nuts___) {
 					nutsData = nuts___;
-					//decode nuts regions
 					nutsRG = topojson.feature(nutsData, nutsData.objects.nutsrg).features;
-
 					out.buildMapTemplate();
-
-					//update classification and style
+					if(!statData) return;
 					out.updateStatValues();
-
 				});
-		return out;
-		};
+			return out;
+		}
+
+		//get stat data
+		out.updateStatData = function() {
+			statData = null;
+			d3.queue().defer(d3.json, EstLib.getEstatDataURL(ebcode, dimensions)).await(
+				function(error, data___) {
+					statData = JSONstat(data___).Dataset(0);
+					if(!nutsData) return;
+					out.updateStatValues();
+				});
+			return out;
+		}
 
 
 		out.buildMapTemplate = function() {
@@ -182,10 +182,11 @@
 					if(showTooltip) tooltip.mouseout();
 				})
 
-			//draw NUTS regions regions
+			//draw NUTS regions
 			g.append("g").selectAll("path").data(nutsRG)
 				.enter().append("path").attr("d", path)
 				.attr("class", "nutsrg")
+				.attr("fill", "white")
 				.on("mouseover", function(rg) {
 					if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (unitText?" "+unitText:""));
 				}).on("mousemove", function() {
@@ -319,7 +320,6 @@
 		out.unitText = function(v) { if (!arguments.length) return unitText; unitText=v; return out; };
 		out.classToFillStyle = function(v) { if (!arguments.length) return classToFillStyle; classToFillStyle=v; return out; };
 		out.filtersDefinitionFun = function(v) { if (!arguments.length) return filtersDefinitionFun; filtersDefinitionFun=v; return out; };
-		out.preFun = function(v) { if (!arguments.length) return preFun; preFun=v; return out; };
 
 		return out;
 	};
@@ -333,7 +333,7 @@
 	}
 
 
-	//fill pattern map
+	//fill pattern style
 
 	//build a fill pattern legend object { nd:"white", 0:"url(#pattern_0)", 1:"url(#pattern_1)", ... }
 	EstLib.getFillPatternLegend = function() {
