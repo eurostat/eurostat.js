@@ -7,6 +7,8 @@
  */
 (function(d3, EstLib) {
 
+	//decompose
+	//cdn
 	//test and fix clnb()
 	//choice
 	//add legend element
