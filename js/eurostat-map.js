@@ -329,9 +329,7 @@
 	//build a color legend object
 	EstLib.getColorLegend = function(colorFun) {
 		colorFun = colorFun || d3.interpolateYlOrRd;
-		return function(ecl, clnb) {
-			return colorFun( ecl/(clnb-1) );
-		}
+		return function(ecl, clnb) { return colorFun( ecl/(clnb-1) ); }
 	}
 
 
@@ -339,10 +337,9 @@
 
 	//build a fill pattern legend object { nd:"white", 0:"url(#pattern_0)", 1:"url(#pattern_1)", ... }
 	EstLib.getFillPatternLegend = function() {
-		return function(ecl) {
-			return "url(#pattern_"+ecl+")";
-		}
+		return function(ecl) { return "url(#pattern_"+ecl+")"; }
 	}
+
 	//make function which build fill patterns style
 	EstLib.getFillPatternDefinitionFun = function(clnb, opts) {
 		opts = opts || {};
