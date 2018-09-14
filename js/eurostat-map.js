@@ -7,14 +7,17 @@
  */
 (function(d3, EstLib) {
 
+	//fix how no-data is handled: apply fill pattern + tooltip text
+	//prepare comm
+	//fix yougo
 	//add classification method as parameter
 	//add legend
 	//loading message (?)
 	//support data flags
-	//check how no-data is handled
 	//insets (with nuts2json)
-	//transform nice nuts map using eurostat-map.js?
 	//adopt data cache
+	//transform nice nuts map using eurostat-map.js?
+	//doc
 
 	EstLib.map = function() {
 		//the id of the svg element to draw into
