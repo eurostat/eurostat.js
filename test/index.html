@@ -27,15 +27,15 @@
 	.set(opts)
 	//.scale("60M")
 	//.nutsLvl(3)
-	//.ebcode("demo_r_d3dens").dimensions({ time : opts.time })
-	.ebcode("demo_r_pjangrp3").dimensions({ age:"TOTAL",sex:"T",unit:"NR", time : 2016 })
+	.ebcode("demo_r_d3dens").dimensions({ time : opts.time })
+	//.ebcode("demo_r_pjangrp3").dimensions({ age:"TOTAL",sex:"T",unit:"NR", time : 2016 })
 	.unitText("unit")
 	//.colorFun(d3.interpolateGnBu)
 	//.clnb(12)
 	//.drawCoastalMargin(true)
-	//.filtersDefinitionFun(EstLib.getFillPatternDefinitionFun({ patternSize: 5, shape: "circle", bckColor: "white", symbColor: "red" } ))
-	//.classToFillStyle(EstLib.getFillPatternLegend())
-	.type("ps")
+	.filtersDefinitionFun(EstLib.getFillPatternDefinitionFun({ patternSize: 5, shape: "circle", bckColor: "white", symbColor: "red" } ))
+	.classToFillStyle(EstLib.getFillPatternLegend())
+	//.type("ps")
 	.build();
 
 </script>

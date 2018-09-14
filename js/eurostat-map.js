@@ -7,9 +7,8 @@
  */
 (function(d3, EstLib) {
 
-	//choice
-	//fix how no-data is handled: apply fill pattern + tooltip text
 	//test and fix clnb()
+	//choice
 	//add legend element
 	//add classification method as parameter ?
 	//loading message (?)
@@ -57,7 +56,7 @@
 		//for choropleth maps, color interpolation function. see https://github.com/d3/d3-scale-chromatic/   -   ex: interpolateGnBu
 		var colorFun = d3.interpolateYlOrRd;
 		//fill color for no data regions
-		var noDataFillStyle = "gray";
+		var noDataFillStyle = "lightgray";
 		//for choropleth maps, the function returning the fill style depending on the class number and the number of classes
 		var classToFillStyle = EstLib.getColorLegend(colorFun);
 		//the function defining some fill patterns to be reused for the choropleth map
@@ -330,7 +329,9 @@
 				//apply style to nuts regions depending on class
 				svg.selectAll("path.nutsrg")
 				.attr("fill", function() {
-					return classToFillStyle( d3.select(this).attr("ecl"), clnb );
+					var ecl = d3.select(this).attr("ecl");
+					if(!ecl||ecl==="nd") return noDataFillStyle || "gray";
+					return classToFillStyle( ecl, clnb );
 				});
 			}
 			return out;
