@@ -66,6 +66,19 @@
 		var height, svg, path;
 		var tooltip = showTooltip? EstLib.tooltip() : null;
 
+		//ease the loading of URL parameters. Use with function EstLib.loadURLParameters()
+		out.set = function(opts) {
+			if(opts.w) width = opts.w;
+			if(opts.s) scale = opts.s;
+			if(opts.lvl) nutsLvl = opts.lvl;
+			//if(opts.time)  = opts.time;
+			if(opts.proj) proj = opts.proj;
+			if(opts.y) NUTSyear = opts.y;
+			if(opts.clnb) clnb = opts.clnb;
+			if(opts.lg) lg = opts.lg;
+			if(opts.type) type = opts.type;
+			return out;
+		};
 
 		out.build = function() {
 			out.updategeoData();
@@ -100,6 +113,7 @@
 		}
 
 
+		//buid a map template, based on the geometries only
 		out.buildMapTemplate = function() {
 			//empty svg
 			if(svg) svg.selectAll("*").remove();
@@ -140,7 +154,7 @@
 							d3.selectAll(".bn_oth").style("stroke-width", (1/k)+"px");
 							d3.selectAll(".bn_co").style("stroke-width", (1/k)+"px");
 							d3.selectAll(".cntbn").style("stroke-width", (1/k)+"px");
-							g.attr("transform", d3.event.transform);
+							zg.attr("transform", d3.event.transform);
 						}));
 			}
 
@@ -221,6 +235,8 @@
 			
 			//prepare group for proportional symbols
 			zg.append("g").attr("id","g_ps");
+
+			return out;
 		};
 
 
@@ -240,6 +256,8 @@
 
 			//update classification and styles
 			out.updateClassificationAndStyle();
+
+			return out;
 		}
 
 
@@ -292,7 +310,7 @@
 				.data(nutsRG.sort(function(a, b) { return b.properties.val - a.properties.val; }))
 				.enter()
 				.append("path").attr("class", "symbol")
-				.attr("d", path.pointRadius(function(d) { return radius(d.properties.val); }))
+				.attr("d", path.pointRadius(function(d) { return d.properties.val? radius(d.properties.val) : 0; }))
 				.on("mouseover", function(rg) {
 					if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (unitText?" "+unitText:""));
 				}).on("mousemove", function() {
@@ -309,6 +327,7 @@
 					return classToFillStyle( d3.select(this).attr("ecl"), clnb );
 				});
 			}
+			return out;
 		};
 
 

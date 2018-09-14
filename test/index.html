@@ -26,20 +26,18 @@
 
 	<script>
 
-		//load parameters from URL
-		//var opts = EstLib.loadURLParameters();
-
 		EstLib.map()
-		.scale("60M")
-		.nutsLvl(3)
-		//.ebcode("demo_r_d3dens").dimensions({ time : 2016 })
-		.ebcode("demo_r_pjangrp3").dimensions({ age:"TOTAL",sex:"T",unit:"NR", time : 2016 })
+		.set( EstLib.loadURLParameters() )
+		//.scale("60M")
+		//.nutsLvl(3)
+		.ebcode("demo_r_d3dens").dimensions({ time : 2016 })
+		//.ebcode("demo_r_pjangrp3").dimensions({ age:"TOTAL",sex:"T",unit:"NR", time : 2016 })
 		.unitText("unit")
-		.clnb(10)
-		.drawCoastalMargin(true)
+		//.clnb(10)
+		//.drawCoastalMargin(true)
 		//.filtersDefinitionFun(EstLib.getFillPatternDefinitionFun(10, { patternSize: 5, shape: "circle", bckColor: "white", symbColor: "red" } ))
 		//.classToFillStyle(EstLib.getFillPatternLegend())
-		.type("ps")
+		//.type("ps")
 		.build();
 
 		</script>
