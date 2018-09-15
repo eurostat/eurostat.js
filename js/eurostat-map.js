@@ -7,11 +7,16 @@
  */
 (function(d3, EstLib) {
 
+	//svg export + incscape
+
+	//add legend element
+	//https://github.com/susielu/d3-legend
+	//http://d3-legend.susielu.com/
+
 	//js dependencies
 	//typologies
 	//decompose
 	//choice
-	//add legend element
 	//add classification method as parameter ?
 	//loading message (?)
 	//support data flags
