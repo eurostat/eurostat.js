@@ -7,12 +7,6 @@
  */
 (function(d3, EstLib) {
 
-	//cdn nuts2json - https://cdn.jsdelivr.net/gh/eurostat/nuts2json@0.9/2016/3035/20M/2.json
-	//kill (all) git.user
-	//https://raw.githubusercontent.com/eurostat/eurostat.js/master/img/flags/1/
-	//to https://cdn.jsdelivr.net/gh/eurostat/eurostat.js@0.1/img/flags/1/
-	//https://raw.githubusercontent.com/eurostat/eurostat.js/master/img/favicon.png
-	//to https://cdn.jsdelivr.net/gh/eurostat/eurostat.js@0.1/img/favicon.png
 	//tooltip: better handle how it works
 	//loading image: make more generic
 	//svg export: with rounded coordinates. test + edit in inkscape + fix. Function/button "export as svg"
