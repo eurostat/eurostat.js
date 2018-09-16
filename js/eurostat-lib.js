@@ -5,7 +5,7 @@
  * @author julien Gaffuri
  *
  */
-(function($, EstLib) {
+(function(EstLib) {
 
 	//official colors for Eurostat logo and statistical domains
 	EstLib.color = {
@@ -14,7 +14,7 @@
 	}
 
 
-	//load url parameters
+	//load generic url parameters
 	EstLib.loadURLParameters = function() {
 		var opts = {};
 		var p = ["w","s","lvl","time","proj","y","clnb","lg","type"];
@@ -92,55 +92,79 @@
 	//comparison function to use to sort countries based on official order
 	EstLib.geoComparisonEstatPublications = function(g1, g2) { return EstLib.geoOrderedList.indexOf(g1) - EstLib.geoOrderedList.indexOf(g2); };
 
-	//build dropdown list for geographic codes
-	EstLib.buildGeoList = function(geoList, geos, geoToNameFun, geoValue, changeFun, width, height){
-		geoToNameFun = geoToNameFun || function(a){return a;};
-
-		//sort by name
-		geos.sort(EstLib.geoComparison(geoToNameFun));
-
-		//sort aggregates and countries
-		var geosA = [], geosC = [];
-		for(var i=0; i<geos.length; i++)
-			if(EstLib.isGeoAggregate(geos[i]))
-				geosA.push(geos[i]);
-			else
-				geosC.push(geos[i]);
-
-		//build option group for aggregates
-		var optgroupA = $("<optgroup>").attr("label", "European aggregates").appendTo(geoList);
-		for(i=0; i<geosA.length; i++)
-			$("<option>").attr("value",geosA[i]).text( geoToNameFun(geosA[i]) ).appendTo(optgroupA);
-
-		//build option group for countries
-		var optgroupC = $("<optgroup>").attr("label", "Countries").appendTo(geoList);
-		for(i=0; i<geosC.length; i++)
-			$("<option>").attr("value",geosC[i]).text( geoToNameFun(geosC[i]) ).appendTo(optgroupC);
-
-		$('#geoList option[value='+geoValue+']').attr('selected', 'selected');
-		geoList
-			.selectmenu({change:changeFun,width:width||"auto"})
-			.selectmenu("menuWidget").css("height",(height||200)+"px");
-	};
 
 	//conversion from country codes 3 to 2
 	EstLib.countryCodes3To2 = {AUT:"AT",BEL:"BE",CHE:"CH",CYP:"CY",CZE:"CZ",DEU:"DE",EST:"EE",GRC:"EL",HRV:"HR",FRA:"FR",HUN:"HU",IRL:"IE",ISL:"IS",LTU:"LT",LUX:"LU",LVA:"LV",MKD:"MK",MLT:"MT",NLD:"NL",NOR:"NO",SVN:"SI",BGR:"BG",DNK:"DK",ESP:"ES",POL:"PL",ITA:"IT",PRT:"PT",ROU:"RO",ROM:"RO",SVK:"SK",FIN:"FI",SWE:"SE",GBR:"UK",TUR:"TR",MNE:"ME",SRB:"RS",USA:"US"};
 
-	//build a time slider element
-	EstLib.buildTimeSlider = function(sli, times, timeValue, labelInterval, changeFun){
-		sli.slider({
-			min: +times[0],
-			max: +times[times.length-1],
-			step: 1,
-			value: timeValue,
-			change: changeFun
-			//slide: function() { timeSel= ""+sli.slider("value"); update(); }
-		}).each(function() {
-			var opt = $(this).data().uiSlider.options;
-			var www = opt.max - opt.min;
-			for (var i = opt.min; i <= opt.max; i+=labelInterval)
-				sli.append( $('<label>' + i + '</label>').css('left', ((i-opt.min)/www*100) + '%') );
-		});
+	
+
+
+	/**
+	 * @template T
+	 * @param {Array.<T>} arr
+	 * @param {string} indexAtt
+	 * @returns {Object.<string, T>}
+	 */
+	EstLib.index = function(arr, indexAtt){
+		var out={};
+		for(var i=0, nb=arr.length; i<nb; i++){
+			var obj = arr[i];
+			out[obj[indexAtt]]=obj;
+		}
+		return out;
 	};
 
-}(jQuery, window.EstLib = window.EstLib || {} ));
+	/**
+	 * @template T
+	 * @param {Array.<T>} js
+	 * @param {string} indexColumn
+	 * @returns {Object.<string, Array.<T>>}
+	 */
+	EstLib.indexMultiple = function(js, indexColumn){
+		var out={};
+		for(var i=0, nb=js.length; i<nb; i++){
+			var obj = js[i];
+			var list = out[obj[indexColumn]];
+			if(!list)
+				out[obj[indexColumn]]=[obj];
+			else
+				list.push(obj);
+		}
+		return out;
+	};
+
+	/**
+	 * [{id:"fsdf",val:"tralala"},{id:"154",val:"foo"}] to {fsdf:"tralala",154:"foo"}
+	 * @param {Array} array
+	 * @param {string} id
+	 * @param {string} val
+	 * @returns {Object}
+	 */
+	EstLib.index1 = function(array, id, val){
+		var out={};
+		for(var i=0, nb=array.length; i<nb; i++){
+			var o = array[i];
+			out[o[id]] = o[val];
+		}
+		return out;
+	};
+
+	/**
+	 * {"1":"FULL","2":"EMPTY","3":"AVAILABLE","4":"NA"}
+	 * to
+	 * [{id:"1",label="FULL"},{id:"2",label="EMPTY"},{id:"3",label="AVAILABLE"},{id:"4",label="NA"}]
+	 * @param {Object.<string, string>} index
+	 * @returns {Array.<{id:string,label:string}>}
+	 */
+	EstLib.index1ToIdLabel = function(index){
+		var out = [];
+		var keys = Object.keys(index);
+		for(var i=0, nb=keys.length; i<nb; i++){
+			var id = keys[i];
+			out.push({id:id,label:index[id]});
+		}
+		return out;
+	};
+
+
+}(window.EstLib = window.EstLib || {} ));

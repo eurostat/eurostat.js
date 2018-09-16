@@ -7,8 +7,6 @@
  */
 (function(d3, EstLib) {
 
-	//tooltip: better handle how it works
-	//loading image: make more generic
 	//add legend element
 	//https://github.com/susielu/d3-legend
 	//http://d3-legend.susielu.com/
