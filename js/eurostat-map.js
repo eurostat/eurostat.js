@@ -10,7 +10,7 @@
 	//add legend element
 	//https://github.com/susielu/d3-legend
 	//http://d3-legend.susielu.com/
-	//svg export: with rounded coordinates. test + edit in inkscape + fix. Function/button "export as svg"
+	//svg export: with rounded coordinates - d3.round. test + edit in inkscape + fix. Function/button "export as svg"
 	//js dependencies
 	//typologies
 	//diverging colors
