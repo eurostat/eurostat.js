@@ -9,14 +9,13 @@
 
 	//tooltip: better handle how it works
 	//loading image: make more generic
-	//svg export: with rounded coordinates. test + edit in inkscape + fix. Function/button "export as svg"
-
 	//add legend element
 	//https://github.com/susielu/d3-legend
 	//http://d3-legend.susielu.com/
-
+	//svg export: with rounded coordinates. test + edit in inkscape + fix. Function/button "export as svg"
 	//js dependencies
 	//typologies
+	//diverging colors
 	//decompose
 	//choice
 	//add classification method as parameter ?
