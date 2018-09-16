@@ -68,5 +68,142 @@
 		return ldiv;
 	};
 
+
+
+	//get all file names in a folder and execute a function once found
+	EstLib.getFileNames = function(folder, callBack){
+		$.when( $.ajax({ url: folder })
+		).then(function(data) { callBack(EstLib.getFileNamesFromData(data)); });
+	};
+	EstLib.getFileNamesFromData = function(data){
+		var fileNames = [];
+		var chunks = data.split("<script>addRow(\"");
+		for(var j=2; j<chunks.length; j++)
+			fileNames.push( chunks[j].split("\",\"")[0] );
+		return fileNames;
+	};
+
+
+	/**
+	 * Try to fill page elements with dictionnary terms
+	 * @param{object} dict
+	 */
+	EstLib.writeText = function(dict){
+		for (var p in dict) {
+			var elt = $("#"+p);
+			if(elt) elt.html(dict[p]);
+		}
+	};
 	
+
+
+	EstLib.loadAutoComplete = function(id, data, minLength){
+		$( "#"+id )
+		// don't navigate away from the field on tab when selecting an item
+		.bind( "keydown", function( event ) {
+			if ( event.keyCode === $.ui.keyCode.TAB &&
+					$( this ).autocomplete( "instance" ).menu.active ) {
+				event.preventDefault();
+			}
+		})
+		.autocomplete({
+			minLength: minLength,
+			source: function( request, response ) {
+				// delegate back to autocomplete, but extract the last term
+				response( $.ui.autocomplete.filter(
+						data, EstLib.extractLast( request.term ) ) );
+			},
+			focus: function() { return false; },
+			select: function( event, ui ) {
+				var terms = EstLib.split( this.value );
+				// remove the current input
+				terms.pop();
+				// add the selected item
+				terms.push( ui.item.value );
+				// add placeholder to get the comma-and-space at the end
+				terms.push( "" );
+				this.value = terms.join( ", " );
+
+				//ensures new input is checked
+				$(this).trigger("input");
+
+				return false;
+			}
+		})
+		.autocomplete( "instance" )._renderItem = function( ul, item ) {
+			return $("<li>")
+			.append( "<a>" + item.label + "</a>" )
+			.appendTo(ul);
+		};
+	};
+
+
+	EstLib.loadAutoCompleteRemote = function(id, data, minLength, cacheLoadFunction){
+		$( "#"+id )
+		// don't navigate away from the field on tab when selecting an item
+		.bind( "keydown", function( event ) {
+			if ( event.keyCode === $.ui.keyCode.TAB &&
+					$( this ).autocomplete( "instance" ).menu.active ) {
+				event.preventDefault();
+			}
+		})
+		.autocomplete({
+			minLength: minLength,
+			source: function(request, response) {
+				var term = EstLib.extractLast(request.term);
+				if(!term || term.length<minLength) return;
+				$.when(
+						EstLib.ajax({data:data+term + "%25"} )
+				).then(function(data) {
+					//for(var i=0; i<data.length; i++) data[i].VALUE = EstLib.replaceAll(data[i].VALUE, ",", " -");
+					response( EstLib.arrayKeysToLowerCase(data) );
+				}, function(XMLHttpRequest, textStatus) { console.warn(textStatus); }
+				);
+			},
+			focus: function() { return false; },
+			select: function( event, ui ) {
+				var terms = EstLib.split( this.value );
+				// remove the current input
+				terms.pop();
+				// add the selected item
+				terms.push( ui.item.value );
+				// add placeholder to get the comma-and-space at the end
+				terms.push( "" );
+				this.value = terms.join( ", " );
+
+				//load into cache
+				if(cacheLoadFunction) cacheLoadFunction(ui.item.id, true);
+
+				//ensures new input is checked
+				$(this).trigger("input");
+
+				return false;
+			}
+		});
+	};
+
+
+
+	/**
+	 * @param{string} fillColor
+	 * @param{string} text
+	 * @param{string} ttp
+	 * @return{string}
+	 */
+	EstLib.getLegendItem = function(fillColor, text, ttp){
+		var d = $("<div>");
+
+		/*var svg = $("<svg>").attr("width",130).attr("height",15).attr("title",ttp);
+		 $("<rect>").attr("width",20).attr("height",15).attr("style","fill:"+fillColor+";stroke-width:1px;stroke:#aaa").appendTo(svg);
+		 $("<text>").attr("x",25).attr("y",13).attr("fill","black").html(text).appendTo(svg);
+		 d.append(svg);*/
+		d.append(
+				"<svg width=130 height=15 title='"+ttp+"'>" +
+				"<rect width=20 height=15 style='fill:"+fillColor+";stroke-width:1px;stroke:#aaa' />" +
+				"<text x=25 y=13 fill=black>"+text+"</text>" +
+				"</svg>"
+		);
+		return d;
+	};
+
 }(jQuery, window.EstLib = window.EstLib || {} ));
