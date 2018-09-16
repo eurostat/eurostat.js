@@ -6,7 +6,22 @@
  *
  */
 (function(d3, EstLib) {
+	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
+	/*
+	https://bost.ocks.org/mike/bubble-map/
+	
+Now to place bubbles at each county centroid:
+
+svg.append("g")
+    .attr("class", "bubble")
+  .selectAll("circle")
+    .data(topojson.feature(us, us.objects.counties).features)
+  .enter().append("circle")
+    .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+    .attr("r", 1.5);
+	*/
+	
 	//add legend element
 	//https://github.com/susielu/d3-legend
 	//http://d3-legend.susielu.com/
@@ -24,6 +39,7 @@
 	//transform nice nuts map using eurostat-map.js?
 	//doc
 	//d3.v5.js ?
+	//https://github.com/d3/d3-shape#symbols
 
 	EstLib.map = function() {
 		//the id of the svg element to draw into
@@ -60,18 +76,21 @@
 		var showTooltip = true;
 		//the text to use in the tooltip for the unit of the values
 		var unitText = "";
-		//for choropleth maps, color interpolation function. see https://github.com/d3/d3-scale-chromatic/   -   ex: interpolateGnBu
-		var colorFun = d3.interpolateYlOrRd;
+
 		//fill color for no data regions
 		var noDataFillStyle = "lightgray";
+		//text to show for no data case
+		var noDataText = "No data";
+
+		//for choropleth maps, color interpolation function. see https://github.com/d3/d3-scale-chromatic/   -   ex: interpolateGnBu
+		var colorFun = d3.interpolateYlOrRd;
 		//for choropleth maps, the function returning the fill style depending on the class number and the number of classes
 		var classToFillStyle = EstLib.getColorLegend(colorFun);
 		//the function defining some fill patterns to be reused for the choropleth map
 		var filtersDefinitionFun = function() {};
+
 		//the maximum size for the proportional circles
 		var psMaxSize = 30;
-		//text to show for no data case
-		var noDataText = "No data";
 
 		//the output object
 		var out = {};
