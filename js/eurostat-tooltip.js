@@ -17,7 +17,7 @@
 		config.border = config.border || "0px";
 		config["border-radius"] = config["border-radius"] || "5px";
 		config["box-shadow"] = config["box-shadow"] || "5px 5px 5px grey";
-		config["font-family"] = config["font-family"] || "'Myriad Pro', Myriad, MyriadPro-Regular,'Myriad Pro Regular', MyriadPro, 'Myriad Pro', 'Liberation Sans','Nimbus Sans L', 'Helvetica Neue', vegur, Vegur, Helvetica, Arial,sans-serif";
+		config["font-family"] = config["font-family"] || EstLib.fontFamilyDefault;
 
 		config.transitionDuration = config.transitionDuration || 200;
 		config.xOffset = config.xOffset || 30;

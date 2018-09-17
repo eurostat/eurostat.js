@@ -80,6 +80,8 @@
 		var psMaxSize = 30;
 
 		var showLegend = true;
+		var legendTitle = "Legend";
+		var legendAscending = true;
 
 
 		//the output object
@@ -262,7 +264,7 @@
 			zg.append("g").attr("id","g_ps");
 
 			//prepare group for legend
-			svg.append("g").attr("id","legendg").attr("transform", "translate(10,10)");
+			svg.append("g").attr("id","legendg").attr("transform", "translate(10,20)");
 
 			return out;
 		};
@@ -307,17 +309,39 @@
 				
 				//draw legend
 				if(showLegend) {
+					var lgg = d3.select("#legendg");
+
 					//remove previous content
-					d3.select("#legendg").selectAll("*").remove();
+					lgg.selectAll("*").remove();
 
 					//define legend
+					//see http://d3-legend.susielu.com/#color
 					var colorLegend = d3.legendColor()
-					.labelFormat(d3.format(".2f"))
+					.title(legendTitle)
 					.useClass(true)
-					.scale(classif);
+					.scale(classif)
+					.ascending(legendAscending)
+					.labelFormat(d3.format(".2f"))
+					//.orient("vertical")
+					//.shape("rect")
+					;
 
 					//make legend
-					d3.select("#legendg").call(colorLegend);
+					lgg.call(colorLegend);
+
+					//apply fill style to legend elements
+					svg.selectAll(".swatch")
+					.attr("fill", function() {
+						var ecl = d3.select(this).attr("class").replace("swatch ","");
+						if(!ecl||ecl==="nd") return noDataFillStyle || "gray";
+						return classToFillStyle( ecl, clnb );
+					})
+					.attr("stroke", "black")
+					.attr("stroke-width", 0.5)
+					;
+
+					//apply font
+					lgg.style("font-family", EstLib.fontFamilyDefault);
 				}
 			}
 
