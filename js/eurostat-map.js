@@ -79,6 +79,9 @@
 		//the maximum size for the proportional circles
 		var psMaxSize = 30;
 
+		var showLegend = true;
+
+
 		//the output object
 		var out = {};
 
@@ -258,6 +261,9 @@
 			//prepare group for proportional symbols
 			zg.append("g").attr("id","g_ps");
 
+			//prepare group for legend
+			svg.append("g").attr("id","legendg").attr("transform", "translate(10,10)");
+
 			return out;
 		};
 
@@ -298,8 +304,22 @@
 					if (!rg.properties.val) return "nd";
 					return +classif(+rg.properties.val);
 				})
+				
+				//draw legend
+				if(showLegend) {
+					var lgg = d3.select("#legendg");
+					lgg.selectAll("*").remove();
+
+				var colorLegend = d3.legendColor()
+				.labelFormat(d3.format(".2f"))
+				.useClass(true)
+				.scale(classif);
+				lgg.call(colorLegend);
+
+				}
 			}
-			
+
+
 			//update style
 			out.updateStyle();
 
@@ -362,10 +382,11 @@
 		out.unitText = function(v) { if (!arguments.length) return unitText; unitText=v; return out; };
 		out.colorFun = function(v) { if (!arguments.length) return colorFun; colorFun=v; classToFillStyle = EstLib.getColorLegend(colorFun); return out; };
 		out.noDataFillStyle = function(v) { if (!arguments.length) return noDataFillStyle; noDataFillStyle=v; return out; };
+		out.noDataText = function(v) { if (!arguments.length) return noDataText; noDataText=v; return out; };
 		out.classToFillStyle = function(v) { if (!arguments.length) return classToFillStyle; classToFillStyle=v; return out; };
 		out.filtersDefinitionFun = function(v) { if (!arguments.length) return filtersDefinitionFun; filtersDefinitionFun=v; return out; };
 		out.psMaxSize = function(v) { if (!arguments.length) return psMaxSize; psMaxSize=v; return out; };
-		out.noDataText = function(v) { if (!arguments.length) return noDataText; noDataText=v; return out; };
+		out.showLegend = function(v) { if (!arguments.length) return showLegend; showLegend=v; return out; };
 
 		return out;
 	};
