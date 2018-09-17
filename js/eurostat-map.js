@@ -413,19 +413,20 @@ svg.append("g")
 	EstLib.getFillPatternDefinitionFun = function(opts) {
 		opts = opts || {};
 		opts.shape = opts.shape || "circle";
-		var ps = opts.patternSize || 10;
+		var ps = opts.patternSize || 5;
+		var smin = opts.minSize || 1;
+		var smax = opts.maxSize || 5.5;
 		opts.bckColor = opts.bckColor || "white";
 		opts.symbColor = opts.symbColor || "black";
-		var smin = opts.minSize || 1;
 		return function(svg, clnb) {
 			for(var i=0; i<clnb; i++) {
-				var si = smin+(ps-smin)*i/(clnb-1);
+				var si = smin+(smax-smin)*i/(clnb-1);
 				var patt = svg.append("pattern").attr("id","pattern_"+i).attr("x","0").attr("y","0").attr("width",ps).attr("height",ps).attr("patternUnits","userSpaceOnUse");
 				patt.append("rect").attr("x",0).attr("y",0).attr("width",ps).attr("height",ps).style("stroke","none").style("fill",opts.bckColor)
 				if(opts.shape=="square")
 					patt.append("rect").attr("x",0).attr("y",0).attr("width",si).attr("height",si).style("stroke","none").style("fill",opts.symbColor)
 				else
-					patt.append("circle").attr("cx",ps*0.5).attr("cy",ps*0.5).attr("r",si*0.6).style("stroke","none").style("fill",opts.symbColor)
+					patt.append("circle").attr("cx",ps*0.5).attr("cy",ps*0.5).attr("r",si*0.5).style("stroke","none").style("fill",opts.symbColor)
 			}
 		};
 	};
