@@ -8,7 +8,6 @@
  */
 (function(d3, EstLib) {
 
-
 	/**
 	 * @param{number} x
 	 * @param{number} y
