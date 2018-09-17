@@ -307,15 +307,17 @@
 				
 				//draw legend
 				if(showLegend) {
-					var lgg = d3.select("#legendg");
-					lgg.selectAll("*").remove();
+					//remove previous content
+					d3.select("#legendg").selectAll("*").remove();
 
-				var colorLegend = d3.legendColor()
-				.labelFormat(d3.format(".2f"))
-				.useClass(true)
-				.scale(classif);
-				lgg.call(colorLegend);
+					//define legend
+					var colorLegend = d3.legendColor()
+					.labelFormat(d3.format(".2f"))
+					.useClass(true)
+					.scale(classif);
 
+					//make legend
+					d3.select("#legendg").call(colorLegend);
 				}
 			}
 
