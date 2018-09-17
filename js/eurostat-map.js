@@ -8,20 +8,6 @@
 (function(d3, EstLib) {
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
-	/*
-	https://bost.ocks.org/mike/bubble-map/
-	
-Now to place bubbles at each county centroid:
-
-svg.append("g")
-    .attr("class", "bubble")
-  .selectAll("circle")
-    .data(topojson.feature(us, us.objects.counties).features)
-  .enter().append("circle")
-    .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
-    .attr("r", 1.5);
-	*/
-	
 	//add legend element
 	//https://github.com/susielu/d3-legend
 	//http://d3-legend.susielu.com/
@@ -95,7 +81,7 @@ svg.append("g")
 		//the output object
 		var out = {};
 
-		var statData, values, nutsData, nutsRG, nutsRGCentroids;
+		var statData, values, nutsData, nutsRG;
 		var height, svg, path;
 		var tooltip = showTooltip? EstLib.tooltip() : null;
 
@@ -324,33 +310,22 @@ svg.append("g")
 
 			if(type == "ps") {
 				//proportionnal symbol map
-				//see https://bl.ocks.org/mbostock/4342045
+				//see https://bl.ocks.org/mbostock/4342045 and https://bost.ocks.org/mike/bubble-map/
 				var radius = d3.scaleSqrt().domain([0, Math.max(...values)]).range([0, psMaxSize*0.5]);
 
-				nutsRGCentroids = [];
-				//compute list of centroids of nutsRG
-				for(var i=0; i<nutsRG.length; i++) {
-					var nr = nutsRG[i];
-					var geomc = {"type": "Point", "coordinates": d3.geoPath().centroid(nr)}
-					var nrc = {type:"feature", properties:nr.properties, geometry:geomc };
-					nutsRGCentroids.push(nrc);
-					nr.geometry = geomc; //TODO
-				}
-
-				//TODO use nutsRGCentroids instead of nutsRG
-				//draw proportional symbols
-				d3.select("#g_ps").selectAll(".symbol")
+				d3.select("#g_ps").selectAll("circle")
 				.data(nutsRG.sort(function(a, b) { return b.properties.val - a.properties.val; }))
-				.enter()
-				.append("path").attr("class", "symbol")
-				.attr("d", path.pointRadius(function(d) { return d.properties.val? radius(d.properties.val) : 0; }))
-				.on("mouseover", function(rg) {
-					if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (unitText?" "+unitText:""));
-				}).on("mousemove", function() {
-					if(showTooltip) tooltip.mousemove();
-				}).on("mouseout", function() {
-					if(showTooltip) tooltip.mouseout();
-				});
+				.enter().append("circle")
+			    .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+			    .attr("r", function(d) { return d.properties.val? radius(d.properties.val) : 0; })
+			    .attr("class","symbol")
+			    .on("mouseover", function(rg) {
+			    	if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (unitText?" "+unitText:""));
+			    }).on("mousemove", function() {
+			    	if(showTooltip) tooltip.mousemove();
+			    }).on("mouseout", function() {
+			    	if(showTooltip) tooltip.mouseout();
+			    });
 
 			} else {
 				//choropleth map
