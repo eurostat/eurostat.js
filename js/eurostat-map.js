@@ -84,6 +84,7 @@
 
 		var statData, values, nutsData, nutsRG;
 		var height, svg, path;
+
 		var tooltip = showTooltip? EstLib.tooltip() : null;
 
 		//ease the loading of URL parameters. Use with function EstLib.loadURLParameters()
