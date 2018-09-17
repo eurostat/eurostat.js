@@ -7,6 +7,9 @@
  */
 (function(EstLib) {
 
+	
+	//colors
+
 	//official colors for Eurostat logo and statistical domains
 	EstLib.color = {
 			logo:{gray:"#787878",blue:"#004494",yellow:"#FFF100"},
@@ -14,25 +17,10 @@
 	}
 
 
-	//load generic url parameters
-	EstLib.loadURLParameters = function() {
-		var opts = {};
-		var p = ["w","s","lvl","time","proj","y","clnb","lg","type"];
-		for(var i=0; i<p.length; i++)
-			opts[p[i]] = EstLib.getParameterByName(p[i]);
-		return opts;
-	};
 
-	/**
-	 * @param {string} name
-	 * @returns {string}
-	 */
-	EstLib.getParameterByName = function(name) {
-		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-		results = regex.exec(location.search);
-		return !results? null : decodeURIComponent(results[1].replace(/\+/g, " "));
-	};
+	
+
+	//REST API
 
 	EstLib.getEstatRestDataURLBase = "https://ec.europa.eu/eurostat/wdds/rest/data/";
 
@@ -58,72 +46,42 @@
 						url.push("&",param,"=",o[i]);
 				else url.push("&",param,"=",o);
 			}
-		url = url.join("");
-		//console.log(url);
-		return url;
+		return url.join("");
 	};
 
 
 	
+
+	//get generic url parameters
+	EstLib.getURLParameters = function() {
+		var ps = {};
+		var p = ["w","s","lvl","time","proj","y","clnb","lg","type"];
+		for(var i=0; i<p.length; i++)
+			ps[p[i]] = EstLib.getParameterByName(p[i]);
+		return ps;
+	};
 
 	/**
-	 * @param cache
-	 * @param key
-	 * @param{{url:string,type:string,data:string=,wtok:boolean=}} quArgs
-	 * @param matrix
-	 * @return {*}
+	 * @param {string} name
+	 * @returns {string}
 	 */
-	EstLib.getFromCache = function(cache, key, quArgs, matrix){
-		var obj = cache[key];
-		if(!obj){
-			if(!quArgs){
-				console.warn("Could not retrieve object from cache with id "+key);
-				//console.warn(cache);
-				cache[key]={};
-				return cache[key];
-			}
-			var objs = JSON.parse(EstLib.syncRequest(quArgs));
-			if(matrix)
-				if(objs.length === 0){
-					console.warn("Could not retrieve object from:");
-					console.warn(quArgs);
-					obj={};
-				}
-				else obj=objs[0];
-			else
-				obj=objs;
-			cache[key]=obj;
-		}
-		return obj;
-	};
-
-	EstLib.loadIntoCache = function(data, cache, keyField){
-		for(var i=0; i<data.length; i++){
-			var obj = data[i];
-			cache[obj[keyField]]=obj;
-		}
+	EstLib.getParameterByName = function(name) {
+		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+		results = regex.exec(location.search);
+		return !results? null : decodeURIComponent(results[1].replace(/\+/g, " "));
 	};
 
 	
 	
 	
 	
-	
-	
-	EstLib.getMonthTXT = function(monthInt){
-		return monthInt<=9?"0"+monthInt:""+monthInt;
-	};
+	//geo
 
-	//override country names, to shorter ones
-	EstLib.overrideCountryNames = function(dict, lg){
-		lg = lg || "en";
-		var data;
-		if(dict.EA) dict.EA = {en:"Euro area",fr:"Zone euro",de:"Euroraum"}[lg];
-		if(dict.EU) dict.EU = {en:"European Union", fr:"Union européenne", de:"Europäische Union"}[lg];
-		if(dict.EEA) dict.EEA = {en:"European Economic Area", fr:"Espace économique européen", de:"Europäischer Wirtschaftsraum"}[lg];
-		if(dict.DE) dict.DE = {en:"Germany", fr:"Allemagne", de:"Deutschland"}[lg];
-		if(dict.MK) dict.MK = {en:"Macedonia (FYRM)", fr:"Macédoine", de:"Mazedonien"}[lg];//"Macedonia (FYRM)";
-	};
+	//Official country order to be used in Eurostat dissemination
+	EstLib.geoOrderedList = ["EU","EU28","EU27","EU15","EA","EA19","EA18","NMS12","EA17","EA12","BE","BG","CZ","DK","DE","EE","IE","EL","ES","FR","HR","IT","CY","LV","LT","LU","HU","MT","NL","AT","PL","PT","RO","SI","SK","FI","SE","UK","IS","LI","NO","CH","ME","MK","AL","RS","TR","US","JP","MX"];
+	//comparison function to use to sort countries based on official order
+	EstLib.geoComparisonEstatPublications = function(g1, g2) { return EstLib.geoOrderedList.indexOf(g1) - EstLib.geoOrderedList.indexOf(g2); };
 
 	//check if a country code is a geographic aggregate
 	EstLib.isGeoAggregate = function(geo){
@@ -142,18 +100,32 @@
 		}
 	};
 
-	//Official country order to be used in Eurostat dissemination
-	EstLib.geoOrderedList = ["EU","EU28","EU27","EU15","EA","EA19","EA18","NMS12","EA17","EA12","BE","BG","CZ","DK","DE","EE","IE","EL","ES","FR","HR","IT","CY","LV","LT","LU","HU","MT","NL","AT","PL","PT","RO","SI","SK","FI","SE","UK","IS","LI","NO","CH","ME","MK","AL","RS","TR","US","JP","MX"];
-	//comparison function to use to sort countries based on official order
-	EstLib.geoComparisonEstatPublications = function(g1, g2) { return EstLib.geoOrderedList.indexOf(g1) - EstLib.geoOrderedList.indexOf(g2); };
-
-
 	//conversion from country codes 3 to 2
 	EstLib.countryCodes3To2 = {AUT:"AT",BEL:"BE",CHE:"CH",CYP:"CY",CZE:"CZ",DEU:"DE",EST:"EE",GRC:"EL",HRV:"HR",FRA:"FR",HUN:"HU",IRL:"IE",ISL:"IS",LTU:"LT",LUX:"LU",LVA:"LV",MKD:"MK",MLT:"MT",NLD:"NL",NOR:"NO",SVN:"SI",BGR:"BG",DNK:"DK",ESP:"ES",POL:"PL",ITA:"IT",PRT:"PT",ROU:"RO",ROM:"RO",SVK:"SK",FIN:"FI",SWE:"SE",GBR:"UK",TUR:"TR",MNE:"ME",SRB:"RS",USA:"US"};
 
+	//override country names, to shorter ones
+	EstLib.overrideCountryNames = function(dict, lg){
+		lg = lg || "en";
+		var data;
+		if(dict.EA) dict.EA = {en:"Euro area",fr:"Zone euro",de:"Euroraum"}[lg];
+		if(dict.EU) dict.EU = {en:"European Union", fr:"Union européenne", de:"Europäische Union"}[lg];
+		if(dict.EEA) dict.EEA = {en:"European Economic Area", fr:"Espace économique européen", de:"Europäischer Wirtschaftsraum"}[lg];
+		if(dict.DE) dict.DE = {en:"Germany", fr:"Allemagne", de:"Deutschland"}[lg];
+		if(dict.MK) dict.MK = {en:"Macedonia (FYRM)", fr:"Macédoine", de:"Mazedonien"}[lg];//"Macedonia (FYRM)";
+	};
+
+
+	
 	
 
+	
+	EstLib.getMonthTXT = function(monthInt){
+		return monthInt<=9?"0"+monthInt:""+monthInt;
+	};
 
+
+
+	
 	/**
 	 * @template T
 	 * @param {Array.<T>} arr
