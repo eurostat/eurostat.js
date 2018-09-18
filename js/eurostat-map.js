@@ -8,8 +8,6 @@
 (function(d3, EstLib) {
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
-	//kill style sheet
-
 	//add legend element for proportional circle
 	//https://github.com/susielu/d3-legend
 	//http://d3-legend.susielu.com/
@@ -112,9 +110,18 @@
 
 		var nutsrgFillStyle = "#eee"; //used for ps map
 		var nutsrgSelectionFillStyle = "purple";
+		var nutsbnStroke = {0:"#777",1:"#777",2:"#777",3:"#777",oth:"#444",co:"#1f78b4"};
+		var nutsbnStrokeWidth = {0:1,1:0.2,2:0.2,3:0.2,oth:1,co:1};
 		var cntrgFillStyle = "lightgray";
 		var cntrgSelectionFillStyle = "darkgray";
+		var cntbnStroke = "#777";
+		var cntbnStrokeWidth = 1;
 
+
+		var psFill = "#B45F04";
+		var psFillOpacity = 0.6;
+		var psStroke = "#fff";
+		var psStrokeWidth = 0.6;
 
 		//the output object
 		var out = {};
@@ -291,7 +298,9 @@
 				.enter().append("path").attr("d", path)
 				.attr("class", function(bn) {
 					if (bn.properties.co === "T")return "bn_co"; return "cntbn";
-				});
+				})
+				.style("stroke", cntbnStroke)
+				.style("stroke-width", cntbnStrokeWidth);
 
 			//draw NUTS boundaries
 			nutsbn.sort(function(bn1, bn2) { return bn2.properties.lvl - bn1.properties.lvl; });
@@ -302,11 +311,23 @@
 				.attr("class", function(bn) {
 					bn = bn.properties;
 					if (bn.co === "T") return "bn_co";
-					var cl = [ "bn_" + bn.lvl ];
+					var cl = ["bn_" + bn.lvl ];
 					if (bn.oth === "T") cl.push("bn_oth");
 					return cl.join(" ");
+				})
+				.style("stroke", function(bn) {
+					bn = bn.properties;
+					if (bn.co === "T") return nutsbnStroke.co || "#1f78b4";
+					if (bn.oth === "T") return nutsbnStroke.oth || "#444";
+					return nutsbnStroke[bn.lvl] || "#777";
+				})
+				.style("stroke-width", function(bn) {
+					bn = bn.properties;
+					if (bn.co === "T") return nutsbnStrokeWidth.co || 1;
+					if (bn.oth === "T") return nutsbnStrokeWidth.oth || 1;
+					return nutsbnStrokeWidth[bn.lvl] || 0.2;
 				});
-			
+
 			//prepare group for proportional symbols
 			zg.append("g").attr("id","g_ps");
 
@@ -461,7 +482,17 @@
 		//run when the map style/legend has changed
 		out.updateStyle = function() {
 
-			if(type == "ps") {
+			if(type == "ch") {
+				//choropleth map
+				//apply style to nuts regions depending on class
+				svg.selectAll("path.nutsrg")
+				.attr("fill", function() {
+					var ecl = d3.select(this).attr("ecl");
+					if(!ecl||ecl==="nd") return noDataFillStyle || "gray";
+					return classToFillStyle( ecl, clnb );
+				});
+
+			} else if (type == "ps") {
 				//proportionnal symbol map
 				//see https://bl.ocks.org/mbostock/4342045 and https://bost.ocks.org/mike/bubble-map/
 				var radius = d3.scaleSqrt().domain([0, Math.max(...values)]).range([0, psMaxSize*0.5]);
@@ -478,17 +509,14 @@
 			    	if(showTooltip) tooltip.mousemove();
 			    }).on("mouseout", function() {
 			    	if(showTooltip) tooltip.mouseout();
-			    });
+			    })
+			    .style("fill",psFill)
+			    .style("fill-opacity",psFillOpacity)
+			    .style("stroke",psStroke)
+			    .style("stroke-width",psStrokeWidth);
 
 			} else {
-				//choropleth map
-				//apply style to nuts regions depending on class
-				svg.selectAll("path.nutsrg")
-				.attr("fill", function() {
-					var ecl = d3.select(this).attr("ecl");
-					if(!ecl||ecl==="nd") return noDataFillStyle || "gray";
-					return classToFillStyle( ecl, clnb );
-				});
+				console.log("Unexpected map type: "+type);
 			}
 			return out;
 		};
@@ -560,11 +588,6 @@
 			}
 		};
 	};
-
-
-
-
-
 
 
 
