@@ -12,12 +12,12 @@
 	//https://github.com/susielu/d3-legend
 	//http://d3-legend.susielu.com/
 
+	//domains as parameter
 	//deverging ramp -> define central value
 	//svg export: with rounded coordinates - d3.round. test + edit in inkscape + fix. Function/button "export as svg"
 	//js dependencies
-	//typologies
-	//diverging colors
-	//decompose
+	//typologies: use ordinal scale: var ordinal = d3.scaleOrdinal().domain(["a", "b", "c", "d", "e"]).range([ ... ]);
+
 	//choice
 	//add classification method as parameter ?
 	//loading message (?)
@@ -82,7 +82,21 @@
 
 		var showLegend = true;
 		var legendTitle = "Legend";
+		var legendTitleFontSize = 20;
 		var legendAscending = true;
+		var legendBackGroundFill = "white";
+		var legendTitleWidth = 300;
+		var lgdLabelWrap = 150;
+		var lgdLabelOffset = 5;
+		var lgdShapeWidth = 20;
+		var lgdShapeHeight = 16;
+		var lgdShapePadding = 2;
+		var legendBoxMargin = 10;
+		var legendBoxPadding = 5;
+		var legendBoxX0 = width-legendBoxMargin;
+		var legendBoxY0 = legendTitleFontSize+legendBoxMargin-6;
+		var legendLabelFontSize = 15;
+		var legendFontFamily = EstLib.fontFamilyDefault;
 
 
 		//the output object
@@ -265,7 +279,7 @@
 			zg.append("g").attr("id","g_ps");
 
 			//prepare group for legend
-			svg.append("g").attr("id","legendg").attr("transform", "translate(10,20)");
+			svg.append("g").attr("id","legendg").attr("transform", "translate("+legendBoxX0+","+legendBoxY0+")");
 
 			return out;
 		};
@@ -315,16 +329,52 @@
 					//remove previous content
 					lgg.selectAll("*").remove();
 
+					//background rectangle
+					var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", 0).attr("y", -legendTitleFontSize+6)
+					.attr("width", 200).attr("height", 200)
+					.style("fill", "white").style("opacity", 0.5);
+
+					
 					//define legend
 					//see http://d3-legend.susielu.com/#color
 					var colorLegend = d3.legendColor()
 					.title(legendTitle)
+					.titleWidth(legendTitleWidth)
 					.useClass(true)
 					.scale(classif)
 					.ascending(legendAscending)
+					.shapeWidth(lgdShapeWidth)
+					.shapeHeight(lgdShapeHeight)
+					.shapePadding(lgdShapePadding)
 					.labelFormat(d3.format(".2f"))
+					//.labels(d3.legendHelpers.thresholdLabels)
+					.labels(function({i,genLength,generatedLabels,labelDelimiter}) {
+						if (i === 0) {
+							const values = generatedLabels[i].split(` ${labelDelimiter} `)
+							return `< ${values[1]}`
+						} else if (i === genLength - 1) {
+							const values = generatedLabels[i].split(` ${labelDelimiter} `)
+							return `>= ${values[0]} `
+						}
+						return generatedLabels[i]
+					})
+					/*.labels(function(d){
+						//TODO
+						return d.generatedLabels[d.i];
+					})*/
+					.labelDelimiter(" - ")
+					.labelOffset(lgdLabelOffset)
+					.labelWrap(lgdLabelWrap)
+					//.labelAlign("end") //?
+					//.classPrefix("from ")
 					//.orient("vertical")
 					//.shape("rect")
+					.on("cellover", function(d){
+						console.log("over "+d)
+					})
+					.on("cellout", function(d){
+						console.log("out "+d)
+					})
 					;
 
 					//make legend
@@ -337,12 +387,14 @@
 						if(!ecl||ecl==="nd") return noDataFillStyle || "gray";
 						return classToFillStyle( ecl, clnb );
 					})
-					.attr("stroke", "black")
-					.attr("stroke-width", 0.5)
+					//.attr("stroke", "black")
+					//.attr("stroke-width", 0.5)
 					;
 
-					//apply font
-					lgg.style("font-family", EstLib.fontFamilyDefault);
+					//apply style to legend elements
+					lgg.select(".legendTitle").style("font-size", legendTitleFontSize);
+					lgg.selectAll("text.label").style("font-size", legendLabelFontSize);
+					lgg.style("font-family", legendFontFamily);
 				}
 			}
 
