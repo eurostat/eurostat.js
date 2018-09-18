@@ -8,8 +8,6 @@
 (function(d3, EstLib) {
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
-	//sel style
-
 	//add legend element
 	//https://github.com/susielu/d3-legend
 	//http://d3-legend.susielu.com/
@@ -265,10 +263,15 @@
 				.attr("class", "nutsrg")
 				.attr("fill", "white")
 				.on("mouseover", function(rg) {
+					var sel = d3.select(this);
+					sel.attr("fill___", sel.attr("fill"));
+					sel.attr("fill", selectionFillStyle);
 					if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val? rg.properties.val + (unitText?" "+unitText:"") : noDataText));
 				}).on("mousemove", function() {
 					if(showTooltip) tooltip.mousemove();
 				}).on("mouseout", function() {
+					var sel = d3.select(this);
+					sel.attr("fill", sel.attr("fill___"));
 					if(showTooltip) tooltip.mouseout();
 				});
 
