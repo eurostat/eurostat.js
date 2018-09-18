@@ -357,79 +357,90 @@
 			if(showLegend) {
 				var lgg = d3.select("#legendg");
 
-				//locate
-				var lggBRw = legendBoxPadding*2 + Math.max(legendTitleWidth, lgdShapeWidth + lgdLabelOffset + lgdLabelWrap);
-				var lggBRh = legendBoxPadding*2 + legendTitleFontSize + lgdShapeHeight + (1+lgdShapeHeight+lgdShapePadding)*(out.clnb()-1) +12;
-				lgg.attr("transform", "translate("+(width-lggBRw-legendBoxMargin+legendBoxPadding)+","+(legendTitleFontSize+legendBoxMargin+legendBoxPadding-6)+")");
+				if(type == "ch") {
+					//locate
+					var lggBRw = legendBoxPadding*2 + Math.max(legendTitleWidth, lgdShapeWidth + lgdLabelOffset + lgdLabelWrap);
+					var lggBRh = legendBoxPadding*2 + legendTitleFontSize + lgdShapeHeight + (1+lgdShapeHeight+lgdShapePadding)*(out.clnb()-1) +12;
+					lgg.attr("transform", "translate("+(width-lggBRw-legendBoxMargin+legendBoxPadding)+","+(legendTitleFontSize+legendBoxMargin+legendBoxPadding-6)+")");
 
-				//remove previous content
-				lgg.selectAll("*").remove();
+					//remove previous content
+					lgg.selectAll("*").remove();
 
-				//background rectangle
-				var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", -legendBoxPadding).attr("y", -legendTitleFontSize-legendBoxPadding+6)
-				.attr("rx", legendBoxCornerRadius).attr("ry", legendBoxCornerRadius)
-				.attr("width", lggBRw).attr("height", lggBRh)
-				.style("fill", legendBoxFill).style("opacity", legendBoxOpacity);
+					//background rectangle
+					var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", -legendBoxPadding).attr("y", -legendTitleFontSize-legendBoxPadding+6)
+					.attr("rx", legendBoxCornerRadius).attr("ry", legendBoxCornerRadius)
+					.attr("width", lggBRw).attr("height", lggBRh)
+					.style("fill", legendBoxFill).style("opacity", legendBoxOpacity);
 
-				//define legend
-				//see http://d3-legend.susielu.com/#color
-				var colorLegend = d3.legendColor()
-				.title(legendTitle)
-				.titleWidth(legendTitleWidth)
-				.useClass(true)
-				.scale(classif)
-				.ascending(legendAscending)
-				.shapeWidth(lgdShapeWidth)
-				.shapeHeight(lgdShapeHeight)
-				.shapePadding(lgdShapePadding)
-				.labelFormat(d3.format(".2f"))
-				//.labels(d3.legendHelpers.thresholdLabels)
-				.labels(function({i,genLength,generatedLabels,labelDelimiter}) {
-					if (i === 0) {
-						const values = generatedLabels[i].split(` ${labelDelimiter} `)
-						return `< ${values[1]}`
-					} else if (i === genLength - 1) {
-						const values = generatedLabels[i].split(` ${labelDelimiter} `)
-						return `>= ${values[0]} `
-					}
-					return generatedLabels[i]
-				})
-				.labelDelimiter(" - ")
-				.labelOffset(lgdLabelOffset)
-				.labelWrap(lgdLabelWrap)
-				//.labelAlign("end") //?
-				//.classPrefix("from ")
-				//.orient("vertical")
-				//.shape("rect")
-				.on("cellover", function(ecl){
-					var sel = d3.select("#g_nutsrg").selectAll("[ecl='"+ecl+"']");
-					sel.style("fill", selectionFillStyle);
-					sel.attr("fill___", function(d) { d3.select(this).attr("fill"); });
-				})
-				.on("cellout", function(ecl){
-					var sel = d3.select("#g_nutsrg").selectAll("[ecl='"+ecl+"']");
-					sel.style("fill", function(d) { d3.select(this).attr("fill___"); });
-				})
-				;
+					//define legend
+					//see http://d3-legend.susielu.com/#color
+					var colorLegend = d3.legendColor()
+					.title(legendTitle)
+					.titleWidth(legendTitleWidth)
+					.useClass(true)
+					.scale(classif)
+					.ascending(legendAscending)
+					.shapeWidth(lgdShapeWidth)
+					.shapeHeight(lgdShapeHeight)
+					.shapePadding(lgdShapePadding)
+					.labelFormat(d3.format(".2f"))
+					//.labels(d3.legendHelpers.thresholdLabels)
+					.labels(function({i,genLength,generatedLabels,labelDelimiter}) {
+						if (i === 0) {
+							const values = generatedLabels[i].split(` ${labelDelimiter} `)
+							return `< ${values[1]}`
+						} else if (i === genLength - 1) {
+							const values = generatedLabels[i].split(` ${labelDelimiter} `)
+							return `>= ${values[0]} `
+						}
+						return generatedLabels[i]
+					})
+					.labelDelimiter(" - ")
+					.labelOffset(lgdLabelOffset)
+					.labelWrap(lgdLabelWrap)
+					//.labelAlign("end") //?
+					//.classPrefix("from ")
+					//.orient("vertical")
+					//.shape("rect")
+					.on("cellover", function(ecl){
+						var sel = d3/*.select("#g_nutsrg")*/.selectAll("[ecl='"+ecl+"']");
+						sel.style("fill", selectionFillStyle);
+						sel.attr("fill___", function(d) { d3.select(this).attr("fill"); });
+					})
+					.on("cellout", function(ecl){
+						var sel = d3/*.select("#g_nutsrg")*/.selectAll("[ecl='"+ecl+"']");
+						sel.style("fill", function(d) { d3.select(this).attr("fill___"); });
+					});
 
-				//make legend
-				lgg.call(colorLegend);
+					//make legend
+					lgg.call(colorLegend);
 
-				//apply fill style to legend elements
-				svg.selectAll(".swatch")
-				.attr("fill", function() {
-					var ecl = d3.select(this).attr("class").replace("swatch ","");
-					if(!ecl||ecl==="nd") return noDataFillStyle || "gray";
-					return classToFillStyle( ecl, clnb );
-				})
-				//.attr("stroke", "black")
-				//.attr("stroke-width", 0.5)
-				;
+					//apply fill style to legend elements
+					svg.selectAll(".swatch")
+					.attr("ecl", function() {
+						var ecl = d3.select(this).attr("class").replace("swatch ","");
+						if(!ecl||ecl==="nd") return "nd";
+						return ecl;
+					})
+					.attr("fill", function() {
+						var ecl = d3.select(this).attr("class").replace("swatch ","");
+						if(!ecl||ecl==="nd") return noDataFillStyle || "gray";
+						return classToFillStyle( ecl, clnb );
+					})
+					//.attr("stroke", "black")
+					//.attr("stroke-width", 0.5)
+					;
 
-				//apply style to legend elements
-				lgg.select(".legendTitle").style("font-size", legendTitleFontSize);
-				lgg.selectAll("text.label").style("font-size", legendLabelFontSize);
-				lgg.style("font-family", legendFontFamily);
+					//apply style to legend elements
+					lgg.select(".legendTitle").style("font-size", legendTitleFontSize);
+					lgg.selectAll("text.label").style("font-size", legendLabelFontSize);
+					lgg.style("font-family", legendFontFamily);
+
+				} else if(type == "ps") {
+					//TODO
+				} else {
+					console.log("Unknown map type: "+type)
+				}
 			}
 			return out;
 		};
