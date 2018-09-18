@@ -117,6 +117,7 @@
 
 		var statData, values, nutsData, nutsRG;
 		var height, svg, path;
+		var classif;
 
 		var tooltip = showTooltip? EstLib.tooltip() : null;
 
@@ -324,14 +325,13 @@
 			return out;
 		}
 
-
 		//run when the classification has changed
 		out.updateClassificationAndStyle = function() {
 			//NB: no classification is required for proportional symbols map
 
 			if(type == "ch") {
 				//build list of classes and classification based on quantiles
-				var classif = d3.scaleQuantile().domain(values).range( [...Array(clnb).keys()] );
+				classif = d3.scaleQuantile().domain(values).range( [...Array(clnb).keys()] );
 				classif.quantiles();
 
 				//apply classification based on value
@@ -340,94 +340,100 @@
 					if (!rg.properties.val) return "nd";
 					return +classif(+rg.properties.val);
 				})
-				
-				//draw legend
-				if(showLegend) {
-					var lgg = d3.select("#legendg");
-
-					//locate
-					var lggBRw = legendBoxPadding*2 + Math.max(legendTitleWidth, lgdShapeWidth + lgdLabelOffset + lgdLabelWrap);
-					var lggBRh = legendBoxPadding*2 + legendTitleFontSize + lgdShapeHeight + (1+lgdShapeHeight+lgdShapePadding)*(out.clnb()-1) +12;
-					lgg.attr("transform", "translate("+(width-lggBRw-legendBoxMargin+legendBoxPadding)+","+(legendTitleFontSize+legendBoxMargin+legendBoxPadding-6)+")");
-
-					//remove previous content
-					lgg.selectAll("*").remove();
-
-					//background rectangle
-					var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", -legendBoxPadding).attr("y", -legendTitleFontSize-legendBoxPadding+6)
-					.attr("rx", legendBoxCornerRadius).attr("ry", legendBoxCornerRadius)
-					.attr("width", lggBRw).attr("height", lggBRh)
-					.style("fill", legendBoxFill).style("opacity", legendBoxOpacity);
-
-					//define legend
-					//see http://d3-legend.susielu.com/#color
-					var colorLegend = d3.legendColor()
-					.title(legendTitle)
-					.titleWidth(legendTitleWidth)
-					.useClass(true)
-					.scale(classif)
-					.ascending(legendAscending)
-					.shapeWidth(lgdShapeWidth)
-					.shapeHeight(lgdShapeHeight)
-					.shapePadding(lgdShapePadding)
-					.labelFormat(d3.format(".2f"))
-					//.labels(d3.legendHelpers.thresholdLabels)
-					.labels(function({i,genLength,generatedLabels,labelDelimiter}) {
-						if (i === 0) {
-							const values = generatedLabels[i].split(` ${labelDelimiter} `)
-							return `< ${values[1]}`
-						} else if (i === genLength - 1) {
-							const values = generatedLabels[i].split(` ${labelDelimiter} `)
-							return `>= ${values[0]} `
-						}
-						return generatedLabels[i]
-					})
-					.labelDelimiter(" - ")
-					.labelOffset(lgdLabelOffset)
-					.labelWrap(lgdLabelWrap)
-					//.labelAlign("end") //?
-					//.classPrefix("from ")
-					//.orient("vertical")
-					//.shape("rect")
-					.on("cellover", function(ecl){
-						var sel = d3.select("#g_nutsrg").selectAll("[ecl='"+ecl+"']");
-						sel.style("fill", selectionFillStyle);
-						sel.attr("fill___", function(d) { d3.select(this).attr("fill"); });
-					})
-					.on("cellout", function(ecl){
-						var sel = d3.select("#g_nutsrg").selectAll("[ecl='"+ecl+"']");
-						sel.style("fill", function(d) { d3.select(this).attr("fill___"); });
-					})
-					;
-
-					//make legend
-					lgg.call(colorLegend);
-
-					//apply fill style to legend elements
-					svg.selectAll(".swatch")
-					.attr("fill", function() {
-						var ecl = d3.select(this).attr("class").replace("swatch ","");
-						if(!ecl||ecl==="nd") return noDataFillStyle || "gray";
-						return classToFillStyle( ecl, clnb );
-					})
-					//.attr("stroke", "black")
-					//.attr("stroke-width", 0.5)
-					;
-
-					//apply style to legend elements
-					lgg.select(".legendTitle").style("font-size", legendTitleFontSize);
-					lgg.selectAll("text.label").style("font-size", legendLabelFontSize);
-					lgg.style("font-family", legendFontFamily);
-				}
 			}
 
+			//update legend
+			out.updateLegend(classif);
 
 			//update style
 			out.updateStyle();
 
 			return out;
-		}
+		};
 
+		
+		out.updateLegend = function() {
+			//draw legend
+			if(showLegend) {
+				var lgg = d3.select("#legendg");
+
+				//locate
+				var lggBRw = legendBoxPadding*2 + Math.max(legendTitleWidth, lgdShapeWidth + lgdLabelOffset + lgdLabelWrap);
+				var lggBRh = legendBoxPadding*2 + legendTitleFontSize + lgdShapeHeight + (1+lgdShapeHeight+lgdShapePadding)*(out.clnb()-1) +12;
+				lgg.attr("transform", "translate("+(width-lggBRw-legendBoxMargin+legendBoxPadding)+","+(legendTitleFontSize+legendBoxMargin+legendBoxPadding-6)+")");
+
+				//remove previous content
+				lgg.selectAll("*").remove();
+
+				//background rectangle
+				var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", -legendBoxPadding).attr("y", -legendTitleFontSize-legendBoxPadding+6)
+				.attr("rx", legendBoxCornerRadius).attr("ry", legendBoxCornerRadius)
+				.attr("width", lggBRw).attr("height", lggBRh)
+				.style("fill", legendBoxFill).style("opacity", legendBoxOpacity);
+
+				//define legend
+				//see http://d3-legend.susielu.com/#color
+				var colorLegend = d3.legendColor()
+				.title(legendTitle)
+				.titleWidth(legendTitleWidth)
+				.useClass(true)
+				.scale(classif)
+				.ascending(legendAscending)
+				.shapeWidth(lgdShapeWidth)
+				.shapeHeight(lgdShapeHeight)
+				.shapePadding(lgdShapePadding)
+				.labelFormat(d3.format(".2f"))
+				//.labels(d3.legendHelpers.thresholdLabels)
+				.labels(function({i,genLength,generatedLabels,labelDelimiter}) {
+					if (i === 0) {
+						const values = generatedLabels[i].split(` ${labelDelimiter} `)
+						return `< ${values[1]}`
+					} else if (i === genLength - 1) {
+						const values = generatedLabels[i].split(` ${labelDelimiter} `)
+						return `>= ${values[0]} `
+					}
+					return generatedLabels[i]
+				})
+				.labelDelimiter(" - ")
+				.labelOffset(lgdLabelOffset)
+				.labelWrap(lgdLabelWrap)
+				//.labelAlign("end") //?
+				//.classPrefix("from ")
+				//.orient("vertical")
+				//.shape("rect")
+				.on("cellover", function(ecl){
+					var sel = d3.select("#g_nutsrg").selectAll("[ecl='"+ecl+"']");
+					sel.style("fill", selectionFillStyle);
+					sel.attr("fill___", function(d) { d3.select(this).attr("fill"); });
+				})
+				.on("cellout", function(ecl){
+					var sel = d3.select("#g_nutsrg").selectAll("[ecl='"+ecl+"']");
+					sel.style("fill", function(d) { d3.select(this).attr("fill___"); });
+				})
+				;
+
+				//make legend
+				lgg.call(colorLegend);
+
+				//apply fill style to legend elements
+				svg.selectAll(".swatch")
+				.attr("fill", function() {
+					var ecl = d3.select(this).attr("class").replace("swatch ","");
+					if(!ecl||ecl==="nd") return noDataFillStyle || "gray";
+					return classToFillStyle( ecl, clnb );
+				})
+				//.attr("stroke", "black")
+				//.attr("stroke-width", 0.5)
+				;
+
+				//apply style to legend elements
+				lgg.select(".legendTitle").style("font-size", legendTitleFontSize);
+				lgg.selectAll("text.label").style("font-size", legendLabelFontSize);
+				lgg.style("font-family", legendFontFamily);
+			}
+			return out;
+		};
+		
 
 		//run when the map style/legend has changed
 		out.updateStyle = function() {
