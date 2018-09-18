@@ -12,7 +12,7 @@
 	//https://github.com/susielu/d3-legend
 	//http://d3-legend.susielu.com/
 
-	//deverging ramp
+	//deverging ramp -> define central value
 	//svg export: with rounded coordinates - d3.round. test + edit in inkscape + fix. Function/button "export as svg"
 	//js dependencies
 	//typologies
