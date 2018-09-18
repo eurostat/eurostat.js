@@ -8,6 +8,8 @@
 (function(d3, EstLib) {
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
+	//kill style sheet
+	
 	//add legend element
 	//https://github.com/susielu/d3-legend
 	//http://d3-legend.susielu.com/
