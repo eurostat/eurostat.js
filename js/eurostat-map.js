@@ -504,16 +504,18 @@
 			    .attr("r", function(d) { return d.properties.val? radius(d.properties.val) : 0; })
 			    .attr("class","symbol")
 			    .on("mouseover", function(rg) {
+			    	d3.select(this).style("fill", nutsrgSelectionFillStyle)
 			    	if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (unitText?" "+unitText:""));
 			    }).on("mousemove", function() {
 			    	if(showTooltip) tooltip.mousemove();
 			    }).on("mouseout", function() {
+			    	d3.select(this).style("fill", psFill)
 			    	if(showTooltip) tooltip.mouseout();
 			    })
-			    .style("fill",psFill)
-			    .style("fill-opacity",psFillOpacity)
-			    .style("stroke",psStroke)
-			    .style("stroke-width",psStrokeWidth);
+			    .style("fill", psFill)
+			    .style("fill-opacity", psFillOpacity)
+			    .style("stroke", psStroke)
+			    .style("stroke-width", psStrokeWidth);
 
 			} else {
 				console.log("Unexpected map type: "+type);
