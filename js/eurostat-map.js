@@ -101,6 +101,9 @@
 		var legendBoxOpacity = 0.5;
 		var legendBoxFill = "white";
 
+		var selectionFillStyle = "purple";
+
+		
 		//the output object
 		var out = {};
 
@@ -365,10 +368,6 @@
 						}
 						return generatedLabels[i]
 					})
-					/*.labels(function(d){
-						//TODO
-						return d.generatedLabels[d.i];
-					})*/
 					.labelDelimiter(" - ")
 					.labelOffset(lgdLabelOffset)
 					.labelWrap(lgdLabelWrap)
@@ -376,12 +375,14 @@
 					//.classPrefix("from ")
 					//.orient("vertical")
 					//.shape("rect")
-					.on("cellover", function(d){
-						//d3.selectAll(".nutsrg").dispatch("mouseover");
-						//console.log("over "+d)
+					.on("cellover", function(ecl){
+						var sel = d3.select("#g_nutsrg").selectAll("[ecl='"+ecl+"']");
+						sel.style("fill", selectionFillStyle);
+						sel.attr("fill___", function(d) { d3.select(this).attr("fill"); });
 					})
-					.on("cellout", function(d){
-						//console.log("out "+d)
+					.on("cellout", function(ecl){
+						var sel = d3.select("#g_nutsrg").selectAll("[ecl='"+ecl+"']");
+						sel.style("fill", function(d) { d3.select(this).attr("fill___"); });
 					})
 					;
 
