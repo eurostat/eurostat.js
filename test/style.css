@@ -33,15 +33,6 @@
 	stroke-width: 1px;
 }
 
-/*.nutsrg { fill: #eee; }*/
-
-.cntrg {
-	fill: lightgray;
-}
-
-.cntrg:hover {
-	fill: darkgray;
-}
 
 .symbol {
 	fill: #f11;

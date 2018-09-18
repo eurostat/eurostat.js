@@ -110,9 +110,12 @@
 		var legendBoxOpacity = 0.5;
 		var legendBoxFill = "white";
 
-		var selectionFillStyle = "purple";
+		var nutsrgFillStyle = "#eee"; //used for ps map
+		var nutsrgSelectionFillStyle = "purple";
+		var cntrgFillStyle = "lightgray";
+		var cntrgSelectionFillStyle = "darkgray";
 
-		
+
 		//the output object
 		var out = {};
 
@@ -252,11 +255,14 @@
 			zg.append("g").attr("id","g_cntrg").selectAll("path").data(cntrg)
 				.enter().append("path").attr("d", path)
 				.attr("class", "cntrg")
+				.style("fill", cntrgFillStyle)
 				.on("mouseover",function(rg) {
+					d3.select(this).style("fill", cntrgSelectionFillStyle)
 					if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b>");
 				}).on("mousemove", function() {
 					if(showTooltip) tooltip.mousemove();
 				}).on("mouseout", function() {
+					d3.select(this).style("fill", cntrgFillStyle)
 					if(showTooltip) tooltip.mouseout();
 				});
 
@@ -264,11 +270,11 @@
 			zg.append("g").attr("id","g_nutsrg").selectAll("path").data(nutsRG)
 				.enter().append("path").attr("d", path)
 				.attr("class", "nutsrg")
-				.attr("fill", "white")
+				.attr("fill", nutsrgFillStyle)
 				.on("mouseover", function(rg) {
 					var sel = d3.select(this);
 					sel.attr("fill___", sel.attr("fill"));
-					sel.attr("fill", selectionFillStyle);
+					sel.attr("fill", nutsrgSelectionFillStyle);
 					if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val? rg.properties.val + (unitText?" "+unitText:"") : noDataText));
 				}).on("mousemove", function() {
 					if(showTooltip) tooltip.mousemove();
@@ -410,7 +416,7 @@
 					//.shape("rect")
 					.on("cellover", function(ecl){
 						var sel = d3/*.select("#g_nutsrg")*/.selectAll("[ecl='"+ecl+"']");
-						sel.style("fill", selectionFillStyle);
+						sel.style("fill", nutsrgSelectionFillStyle);
 						sel.attr("fill___", function(d) { d3.select(this).attr("fill"); });
 					})
 					.on("cellout", function(ecl){
