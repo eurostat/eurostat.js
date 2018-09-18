@@ -331,7 +331,7 @@
 
 					//background rectangle
 					var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", 0).attr("y", -legendTitleFontSize+6)
-					.attr("width", 200).attr("height", 200)
+					.attr("width", 400).attr("height", 400)
 					.style("fill", "white").style("opacity", 0.5);
 
 					
@@ -370,10 +370,11 @@
 					//.orient("vertical")
 					//.shape("rect")
 					.on("cellover", function(d){
-						console.log("over "+d)
+						//d3.selectAll(".nutsrg").dispatch("mouseover");
+						//console.log("over "+d)
 					})
 					.on("cellout", function(d){
-						console.log("out "+d)
+						//console.log("out "+d)
 					})
 					;
 
