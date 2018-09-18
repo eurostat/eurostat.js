@@ -9,10 +9,11 @@
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
 	//kill style sheet
-	
-	//add legend element
+
+	//add legend element for proportional circle
 	//https://github.com/susielu/d3-legend
 	//http://d3-legend.susielu.com/
+
 	//add "no data" in legend
 
 	//domains as parameter
