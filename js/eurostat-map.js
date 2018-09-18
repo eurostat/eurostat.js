@@ -80,24 +80,23 @@
 		//the maximum size for the proportional circles
 		var psMaxSize = 30;
 
+		//legend
 		var showLegend = true;
+		var legendFontFamily = EstLib.fontFamilyDefault;
 		var legendTitle = "Legend";
 		var legendTitleFontSize = 20;
 		var legendAscending = true;
 		var legendBackGroundFill = "white";
-		var legendTitleWidth = 300;
-		var lgdLabelWrap = 150;
+		var legendTitleWidth = 140;
+		var lgdLabelWrap = 140;
 		var lgdLabelOffset = 5;
+		var legendLabelFontSize = 15;
 		var lgdShapeWidth = 20;
 		var lgdShapeHeight = 16;
 		var lgdShapePadding = 2;
 		var legendBoxMargin = 10;
-		var legendBoxPadding = 5;
-		var legendBoxX0 = width-legendBoxMargin;
-		var legendBoxY0 = legendTitleFontSize+legendBoxMargin-6;
-		var legendLabelFontSize = 15;
-		var legendFontFamily = EstLib.fontFamilyDefault;
-
+		var legendBoxPadding = 10;
+		var legendBoxCornerRadius = legendBoxPadding;
 
 		//the output object
 		var out = {};
@@ -279,7 +278,7 @@
 			zg.append("g").attr("id","g_ps");
 
 			//prepare group for legend
-			svg.append("g").attr("id","legendg").attr("transform", "translate("+legendBoxX0+","+legendBoxY0+")");
+			svg.append("g").attr("id","legendg");
 
 			return out;
 		};
@@ -326,15 +325,20 @@
 				if(showLegend) {
 					var lgg = d3.select("#legendg");
 
+					//locate
+					var lggBRw = legendBoxPadding*2 + Math.max(legendTitleWidth, lgdShapeWidth + lgdLabelOffset + lgdLabelWrap);
+					var lggBRh = legendBoxPadding*2 + legendTitleFontSize + lgdShapeHeight + (1+lgdShapeHeight+lgdShapePadding)*(out.clnb()-1) +12;
+					lgg.attr("transform", "translate("+(width-lggBRw-legendBoxMargin)+","+(legendTitleFontSize+legendBoxMargin-6)+")");
+
 					//remove previous content
 					lgg.selectAll("*").remove();
 
 					//background rectangle
 					var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", 0).attr("y", -legendTitleFontSize+6)
-					.attr("width", 400).attr("height", 400)
+					.attr("rx", legendBoxCornerRadius).attr("ry", legendBoxCornerRadius)
+					.attr("width", lggBRw).attr("height", lggBRh)
 					.style("fill", "white").style("opacity", 0.5);
 
-					
 					//define legend
 					//see http://d3-legend.susielu.com/#color
 					var colorLegend = d3.legendColor()
