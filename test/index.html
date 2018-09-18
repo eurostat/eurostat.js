@@ -21,15 +21,15 @@
 	.scale("60M")
 	.nutsLvl(3)
 	.width(1000)
-	//.ebcode("demo_r_d3dens").dimensions({ time : opts.time || 2016 })
-	.ebcode("demo_r_pjangrp3").dimensions({ age:"TOTAL",sex:"T",unit:"NR", time : 2016 })
+	.ebcode("demo_r_d3dens").dimensions({ time : opts.time || 2016 })
+	//.ebcode("demo_r_pjangrp3").dimensions({ age:"TOTAL",sex:"T",unit:"NR", time : 2016 })
 	.unitText("unit")
 	//.colorFun(d3.interpolateGnBu)
 	.clnb(10)
 	.drawCoastalMargin(false)
 	//.filtersDefinitionFun(EstLib.getFillPatternDefinitionFun({ patternSize: 5, minSize: 1, maxSize: 5.5, shape: "circle", bckColor: "white", symbColor: "black" } ))
 	//.classToFillStyle(EstLib.getFillPatternLegend())
-	.type("ps")
+	//.type("ps")
 	.set(opts)
 	.build();
 
