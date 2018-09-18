@@ -59,6 +59,8 @@
 		var scaleExtent = [1,6];
 		//draw the graticule
 		var drawGraticule = true;
+		//sea fill style
+		var seaFillStyle = "#b3cde3";
 		//draw the coastal margin
 		var drawCoastalMargin = true;
 		//the color of the coastal margin
@@ -189,7 +191,8 @@
 
 			//draw background rectangle
 			svg.append("rect").attr("id", "sea").attr("x", 0).attr("y", 0)
-				.attr("width", width).attr("height", height);
+				.attr("width", width).attr("height", height)
+				.style("fill", seaFillStyle);
 
 			//prepare drawing group
 			var zg = svg.append("g").attr("id","zoomgroup").attr("transform", "translate(0,0)");
@@ -466,6 +469,7 @@
 		out.lg = function(v) { if (!arguments.length) return lg; lg=v; return out; };
 		out.scaleExtent = function(v) { if (!arguments.length) return scaleExtent; scaleExtent=v; return out; };
 		out.drawGraticule = function(v) { if (!arguments.length) return drawGraticule; drawGraticule=v; return out; };
+		out.seaFillStyle = function(v) { if (!arguments.length) return seaFillStyle; seaFillStyle=v; return out; };
 		out.drawCoastalMargin = function(v) { if (!arguments.length) return drawCoastalMargin; drawCoastalMargin=v; return out; };
 		out.coastalMarginColor = function(v) { if (!arguments.length) return coastalMarginColor; coastalMarginColor=v; return out; };
 		out.showTooltip = function(v) { if (!arguments.length) return showTooltip; showTooltip=v; return out; };
