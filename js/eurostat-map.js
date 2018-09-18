@@ -11,6 +11,7 @@
 	//add legend element
 	//https://github.com/susielu/d3-legend
 	//http://d3-legend.susielu.com/
+	//add "no data" in legend
 
 	//domains as parameter
 	//deverging ramp -> define central value
@@ -97,6 +98,8 @@
 		var legendBoxMargin = 10;
 		var legendBoxPadding = 10;
 		var legendBoxCornerRadius = legendBoxPadding;
+		var legendBoxOpacity = 0.5;
+		var legendBoxFill = "white";
 
 		//the output object
 		var out = {};
@@ -328,16 +331,16 @@
 					//locate
 					var lggBRw = legendBoxPadding*2 + Math.max(legendTitleWidth, lgdShapeWidth + lgdLabelOffset + lgdLabelWrap);
 					var lggBRh = legendBoxPadding*2 + legendTitleFontSize + lgdShapeHeight + (1+lgdShapeHeight+lgdShapePadding)*(out.clnb()-1) +12;
-					lgg.attr("transform", "translate("+(width-lggBRw-legendBoxMargin)+","+(legendTitleFontSize+legendBoxMargin-6)+")");
+					lgg.attr("transform", "translate("+(width-lggBRw-legendBoxMargin+legendBoxPadding)+","+(legendTitleFontSize+legendBoxMargin+legendBoxPadding-6)+")");
 
 					//remove previous content
 					lgg.selectAll("*").remove();
 
 					//background rectangle
-					var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", 0).attr("y", -legendTitleFontSize+6)
+					var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", -legendBoxPadding).attr("y", -legendTitleFontSize-legendBoxPadding+6)
 					.attr("rx", legendBoxCornerRadius).attr("ry", legendBoxCornerRadius)
 					.attr("width", lggBRw).attr("height", lggBRh)
-					.style("fill", "white").style("opacity", 0.5);
+					.style("fill", legendBoxFill).style("opacity", legendBoxOpacity);
 
 					//define legend
 					//see http://d3-legend.susielu.com/#color
