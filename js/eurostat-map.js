@@ -59,6 +59,10 @@
 		var scaleExtent = [1,6];
 		//draw the graticule
 		var drawGraticule = true;
+		//graticule stroke style
+		var graticuleStroke = "gray";
+		//graticule stroke width
+		var graticuleStrokeWidth = "1";
 		//sea fill style
 		var seaFillStyle = "#b3cde3";
 		//draw the coastal margin
@@ -234,9 +238,12 @@
 
 			if(drawGraticule) {
 				//draw graticule
-				zg.append("g").attr("id","g_gra").selectAll("path").data(gra)
-					.enter().append("path").attr("d", path)
-					.style("fill", "none").attr("class", "gra");
+				zg.append("g").attr("id","g_gra")
+					.style("fill", "none")
+					.style("stroke", graticuleStroke)
+					.style("stroke-width", graticuleStrokeWidth)
+					.selectAll("path").data(gra)
+					.enter().append("path").attr("d", path).attr("class", "gra");
 			}
 
 			//draw country regions
@@ -249,7 +256,7 @@
 					if(showTooltip) tooltip.mousemove();
 				}).on("mouseout", function() {
 					if(showTooltip) tooltip.mouseout();
-				})
+				});
 
 			//draw NUTS regions
 			zg.append("g").attr("id","g_nutsrg").selectAll("path").data(nutsRG)
@@ -265,18 +272,20 @@
 				});
 
 			//draw country boundaries
-			zg.append("g").attr("id","g_cntbn").selectAll("path").data(cntbn)
-				.enter().append("path").attr("d", path)
+			zg.append("g").attr("id","g_cntbn")
 				.style("fill", "none").style("stroke-linecap", "round").style("stroke-linejoin", "round")
+				.selectAll("path").data(cntbn)
+				.enter().append("path").attr("d", path)
 				.attr("class", function(bn) {
 					if (bn.properties.co === "T")return "bn_co"; return "cntbn";
 				});
 
 			//draw NUTS boundaries
 			nutsbn.sort(function(bn1, bn2) { return bn2.properties.lvl - bn1.properties.lvl; });
-			zg.append("g").attr("id","g_nutsbn").selectAll("path").data(nutsbn).enter()
-				.append("path").attr("d", path)
+			zg.append("g").attr("id","g_nutsbn")
 				.style("fill", "none").style("stroke-linecap", "round").style("stroke-linejoin", "round")
+				.selectAll("path").data(nutsbn).enter()
+				.append("path").attr("d", path)
 				.attr("class", function(bn) {
 					bn = bn.properties;
 					if (bn.co === "T") return "bn_co";
