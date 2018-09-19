@@ -9,21 +9,20 @@
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
 	//add legend element for proportional circle - http://d3-legend.susielu.com/#size
-	//add "no data" in legend
 	//domains as parameter
+	//typologies: use ordinal scale: var ordinal = d3.scaleOrdinal().domain(["a", "b", "c", "d", "e"]).range([ ... ]);
+
+	//doc
+	//add "no data" in legend
 	//deverging ramp -> define central value (0, average, 100, etc.)
 	//svg export: with rounded coordinates - d3.round. test + edit in inkscape + fix. Function/button "export as svg"
 	//js dependencies
-	//typologies: use ordinal scale: var ordinal = d3.scaleOrdinal().domain(["a", "b", "c", "d", "e"]).range([ ... ]);
-
 	//choice
 	//add classification method as parameter ?
-	//loading message (?)
 	//support data flags
 	//insets (with nuts2json)
-	//adopt data cache
+	//adopt data cache ?
 	//transform nice nuts map using eurostat-map.js?
-	//doc
 	//d3.v5.js ?
 	//https://github.com/d3/d3-shape#symbols
 
@@ -31,6 +30,8 @@
 	//composition chroploth + prop circle
 	//composition choropleth map showing variation (diverging colors) + rectangle/bar showing quantities +/-
 	//composition choropleth map showing share of something + pie chart (as ring if large) showing total quantity and further info on composition
+	//maps with hash pattern. Test new patterns from https://riccardoscalco.it/textures/
+	//map with fill pattern (hashes?) indicating composition
 	//etc.
 
 	EstLib.map = function() {
