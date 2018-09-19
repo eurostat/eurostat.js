@@ -432,15 +432,15 @@
 					.shapePadding(out.legendShapePadding_)
 					.labelFormat(d3.format(".2f"))
 					//.labels(d3.legendHelpers.thresholdLabels)
-					.labels(function({i,genLength,generatedLabels,labelDelimiter}) {
-						if (i === 0) {
-							const values = generatedLabels[i].split(` ${labelDelimiter} `)
+					.labels(function(d) {
+						if (d.i === 0) {
+							const values = d.generatedLabels[d.i].split(` ${d.labelDelimiter} `)
 							return `< ${values[1]}`
-						} else if (i === genLength - 1) {
-							const values = generatedLabels[i].split(` ${labelDelimiter} `)
+						} else if (d.i === d.genLength - 1) {
+							const values = d.generatedLabels[d.i].split(` ${d.labelDelimiter} `)
 							return `>= ${values[0]} `
 						}
-						return generatedLabels[i]
+						return d.generatedLabels[d.i]
 					})
 					.labelDelimiter(out.legendLabelDelimiter_)
 					.labelOffset(out.legendLabelOffset_)
