@@ -128,7 +128,7 @@
 		out.legendBoxWidth_ = legendBoxPadding*2 + Math.max(legendTitleWidth, legendShapeWidth + legendLabelOffset + legendLabelWrap);
 		out.legendBoxHeight_ = legendBoxPadding*2 + legendTitleFontSize + legendShapeHeight + (1+legendShapeHeight+legendShapePadding)*(clnb-1) +12;
 
-		//generic way to handle accessors
+		//definition of generic accessors
 		for(var p in out) {
 			(function(){
 				var p_=p;
