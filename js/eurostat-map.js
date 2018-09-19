@@ -433,14 +433,12 @@
 					.labelFormat(d3.format(".2f"))
 					//.labels(d3.legendHelpers.thresholdLabels)
 					.labels(function(d) {
-						if (d.i === 0) {
-							const values = d.generatedLabels[d.i].split(` ${d.labelDelimiter} `)
-							return `< ${values[1]}`
-						} else if (d.i === d.genLength - 1) {
-							const values = d.generatedLabels[d.i].split(` ${d.labelDelimiter} `)
-							return `>= ${values[0]} `
-						}
-						return d.generatedLabels[d.i]
+						if (d.i === 0)
+							return "< " + d.generatedLabels[d.i].split(d.labelDelimiter)[1];
+						else if (d.i === d.genLength-1)
+							return ">=" + d.generatedLabels[d.i].split(d.labelDelimiter)[0];
+						else
+							return d.generatedLabels[d.i]
 					})
 					.labelDelimiter(out.legendLabelDelimiter_)
 					.labelOffset(out.legendLabelOffset_)
