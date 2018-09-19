@@ -64,46 +64,47 @@
 		out.showTooltip_ = true;
 
 		//the number of classes of the map
-		var clnb = 7;
+		out.clnb_ = 7;
 		//for choropleth maps, color interpolation function. see https://github.com/d3/d3-scale-chromatic/   -   ex: interpolateGnBu
-		var colorFun = d3.interpolateYlOrRd;
+		out.colorFun_ = d3.interpolateYlOrRd;
 		//for choropleth maps, the function returning the fill style depending on the class number and the number of classes
-		var classToFillStyle = EstLib.getColorLegend(colorFun);
+		out.classToFillStyle_ = EstLib.getColorLegend(out.colorFun_);
 		//the function defining some fill patterns to be reused for the choropleth map
-		var filtersDefinitionFun = function() {};
+		out.filtersDefinitionFun_ = function() {};
 		//fill color for no data regions
-		var noDataFillStyle = "lightgray";
+		out.noDataFillStyle_ = "lightgray";
 		//text to show for no data case
-		var noDataText = "No data";
+		out.noDataText_ = "No data";
 
+		//proportional circles
 		//the maximum size for the proportional circles
-		var psMaxSize = 30;
-		var psFill = "#B45F04";
-		var psFillOpacity = 0.6;
-		var psStroke = "#fff";
-		var psStrokeWidth = 0.6;
+		out.psMaxSize_ = 30;
+		out.psFill_ = "#B45F04";
+		out.psFillOpacity_ = 0.7;
+		out.psStroke_ = "#fff";
+		out.psStrokeWidth_ = 0.5;
 
-		var nutsrgFillStyle = "#eee"; //used for ps map
-		var nutsrgSelectionFillStyle = "purple";
-		var nutsbnStroke = {0:"#777",1:"#777",2:"#777",3:"#777",oth:"#444",co:"#1f78b4"};
-		var nutsbnStrokeWidth = {0:1,1:0.2,2:0.2,3:0.2,oth:1,co:1};
-		var cntrgFillStyle = "lightgray";
-		var cntrgSelectionFillStyle = "darkgray";
-		var cntbnStroke = "#777";
-		var cntbnStrokeWidth = 1;
+		//style
+		out.nutsrgFillStyle_ = "#eee"; //used for ps map
+		out.nutsrgSelectionFillStyle_ = "purple";
+		out.nutsbnStroke_ = {0:"#777",1:"#777",2:"#777",3:"#777",oth:"#444",co:"#1f78b4"};
+		out.nutsbnStrokeWidth_ = {0:1,1:0.2,2:0.2,3:0.2,oth:1,co:1};
+		out.cntrgFillStyle_ = "lightgray";
+		out.cntrgSelectionFillStyle_ = "darkgray";
+		out.cntbnStroke_ = "#777";
+		out.cntbnStrokeWidth_ = 1;
 		//draw the graticule
-		var drawGraticule = true;
+		out.drawGraticule_ = true;
 		//graticule stroke style
-		var graticuleStroke = "gray";
+		out.graticuleStroke_ = "gray";
 		//graticule stroke width
-		var graticuleStrokeWidth = "1";
+		out.graticuleStrokeWidth_ = 1;
 		//sea fill style
-		var seaFillStyle = "#b3cde3";
+		out.seaFillStyle_ = "#b3cde3";
 		//draw the coastal margin
-		var drawCoastalMargin = true;
+		out.drawCoastalMargin_ = true;
 		//the color of the coastal margin
-		var coastalMarginColor = "white";
-
+		out.coastalMarginColor_ = "white";
 
 		//legend
 		out.showLegend_ = true;
@@ -125,7 +126,7 @@
 		out.legendBoxOpacity_ = 0.5;
 		out.legendBoxFill_ = "white";
 		out.legendBoxWidth_ = out.legendBoxPadding_*2 + Math.max(out.legendTitleWidth_, out.legendShapeWidth_ + out.legendLabelOffset_ + out.legendLabelWrap_);
-		out.legendBoxHeight_ = out.legendBoxPadding*2 + out.legendTitleFontSize_ + out.legendShapeHeight_ + (1+out.legendShapeHeight_+out.legendShapePadding_)*(clnb-1) +12;
+		out.legendBoxHeight_ = out.legendBoxPadding*2 + out.legendTitleFontSize_ + out.legendShapeHeight_ + (1+out.legendShapeHeight_+out.legendShapePadding_)*(out.clnb_-1) +12;
 
 		//definition of generic accessors based on the name of each property name
 		for(var p in out)
@@ -134,7 +135,8 @@
 				out[ p_.substring(0,p_.length-1) ] = function(v) { if (!arguments.length) return out[p_]; out[p_]=v; return out; };
 			})();
 
-		out.colorFun = function(v) { if (!arguments.length) return colorFun; colorFun=v; classToFillStyle = EstLib.getColorLegend(colorFun); return out; };
+		//override of some accessors
+		out.colorFun = function(v) { if (!arguments.length) return out.colorFun_; out.colorFun_=v; out.classToFillStyle_ = EstLib.getColorLegend(out.colorFun_); return out; };
 
 
 		var statData, values, nutsData, nutsRG;
@@ -208,18 +210,18 @@
 			svg = d3.select("#"+out.svgId_).attr("width", out.width_).attr("height", height)
 			path = d3.geoPath().projection(d3.geoIdentity().reflectY(true).fitSize([ out.width_, height ], topojson.feature(nutsData, nutsData.objects.gra)));
 
-			if(drawCoastalMargin)
+			if(out.drawCoastalMargin_)
 				//define filter for coastal margin
 				svg.append("filter").attr("id", "coastal_blur").attr("x","-100%").attr("y", "-100%").attr("width","400%")
 					.attr("height", "400%").append("feGaussianBlur").attr("in", "SourceGraphic").attr("stdDeviation", "4");
 
 			//add additional filters for fill patterns for example
-			filtersDefinitionFun(svg, clnb);
+			out.filtersDefinitionFun_(svg, out.clnb_);
 
 			//draw background rectangle
 			svg.append("rect").attr("id", "sea").attr("x", 0).attr("y", 0)
 				.attr("width", out.width_).attr("height", height)
-				.style("fill", seaFillStyle);
+				.style("fill", out.seaFillStyle_);
 
 			//prepare drawing group
 			var zg = svg.append("g").attr("id","zoomgroup").attr("transform", "translate(0,0)");
@@ -237,7 +239,7 @@
 						}));
 			}
 
-			if(drawCoastalMargin) {
+			if(out.drawCoastalMargin_) {
 				//draw coastal margin
 				var cg = zg.append("g").attr("id","g_coast_margin")	
 					.style("fill", "none")
@@ -249,22 +251,22 @@
 				cg.append("g").attr("id","g_coast_margin_cnt")
 					.selectAll("path").data(cntbn).enter().append("path").attr("d", path)
 					.style("stroke", function(bn) {
-						if (bn.properties.co === "T") return coastalMarginColor; return "none";
+						if (bn.properties.co === "T") return out.coastalMarginColor_; return "none";
 					});
 				//nuts bn
 				cg.append("g").attr("id","g_coast_margin_nuts")
 					.selectAll("path").data(nutsbn).enter().append("path").attr("d", path)
 					.style("stroke", function(bn) {
-						if (bn.properties.co === "T") return coastalMarginColor; return "none";
+						if (bn.properties.co === "T") return out.coastalMarginColor_; return "none";
 					});
 			}
 
-			if(drawGraticule) {
+			if(out.drawGraticule_) {
 				//draw graticule
 				zg.append("g").attr("id","g_gra")
 					.style("fill", "none")
-					.style("stroke", graticuleStroke)
-					.style("stroke-width", graticuleStrokeWidth)
+					.style("stroke", out.graticuleStroke_)
+					.style("stroke-width", out.graticuleStrokeWidth_)
 					.selectAll("path").data(gra)
 					.enter().append("path").attr("d", path).attr("class", "gra");
 			}
@@ -273,14 +275,14 @@
 			zg.append("g").attr("id","g_cntrg").selectAll("path").data(cntrg)
 				.enter().append("path").attr("d", path)
 				.attr("class", "cntrg")
-				.style("fill", cntrgFillStyle)
+				.style("fill", out.cntrgFillStyle_)
 				.on("mouseover",function(rg) {
-					d3.select(this).style("fill", cntrgSelectionFillStyle)
+					d3.select(this).style("fill", out.cntrgSelectionFillStyle_)
 					if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b>");
 				}).on("mousemove", function() {
 					if(out.showTooltip_) tooltip.mousemove();
 				}).on("mouseout", function() {
-					d3.select(this).style("fill", cntrgFillStyle)
+					d3.select(this).style("fill", out.cntrgFillStyle_)
 					if(out.showTooltip_) tooltip.mouseout();
 				});
 
@@ -288,12 +290,12 @@
 			zg.append("g").attr("id","g_nutsrg").selectAll("path").data(nutsRG)
 				.enter().append("path").attr("d", path)
 				.attr("class", "nutsrg")
-				.attr("fill", nutsrgFillStyle)
+				.attr("fill", out.nutsrgFillStyle_)
 				.on("mouseover", function(rg) {
 					var sel = d3.select(this);
 					sel.attr("fill___", sel.attr("fill"));
-					sel.attr("fill", nutsrgSelectionFillStyle);
-					if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val? rg.properties.val + (out.unitText_?" "+out.unitText_:"") : noDataText));
+					sel.attr("fill", out.nutsrgSelectionFillStyle_);
+					if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val? rg.properties.val + (out.unitText_?" "+out.unitText_:"") : out.noDataText_));
 				}).on("mousemove", function() {
 					if(out.showTooltip_) tooltip.mousemove();
 				}).on("mouseout", function() {
@@ -310,8 +312,8 @@
 				.attr("class", function(bn) {
 					if (bn.properties.co === "T")return "bn_co"; return "cntbn";
 				})
-				.style("stroke", cntbnStroke)
-				.style("stroke-width", cntbnStrokeWidth);
+				.style("stroke", out.cntbnStroke_)
+				.style("stroke-width", out.cntbnStrokeWidth_);
 
 			//draw NUTS boundaries
 			nutsbn.sort(function(bn1, bn2) { return bn2.properties.lvl - bn1.properties.lvl; });
@@ -328,15 +330,15 @@
 				})
 				.style("stroke", function(bn) {
 					bn = bn.properties;
-					if (bn.co === "T") return nutsbnStroke.co || "#1f78b4";
-					if (bn.oth === "T") return nutsbnStroke.oth || "#444";
-					return nutsbnStroke[bn.lvl] || "#777";
+					if (bn.co === "T") return out.nutsbnStroke_.co || "#1f78b4";
+					if (bn.oth === "T") return out.nutsbnStroke_.oth || "#444";
+					return out.nutsbnStroke_[bn.lvl] || "#777";
 				})
 				.style("stroke-width", function(bn) {
 					bn = bn.properties;
-					if (bn.co === "T") return nutsbnStrokeWidth.co || 1;
-					if (bn.oth === "T") return nutsbnStrokeWidth.oth || 1;
-					return nutsbnStrokeWidth[bn.lvl] || 0.2;
+					if (bn.co === "T") return out.nutsbnStrokeWidth_.co || 1;
+					if (bn.oth === "T") return out.nutsbnStrokeWidth_.oth || 1;
+					return out.nutsbnStrokeWidth_[bn.lvl] || 0.2;
 				});
 
 			//prepare group for proportional symbols
@@ -375,7 +377,7 @@
 
 			if(out.type_ == "ch") {
 				//build list of classes and classification based on quantiles
-				classif = d3.scaleQuantile().domain(values).range( [...Array(clnb).keys()] );
+				classif = d3.scaleQuantile().domain(values).range( [...Array(out.clnb_).keys()] );
 				classif.quantiles();
 
 				//apply classification based on value
@@ -404,7 +406,7 @@
 				if(out.type_ == "ch") {
 					//locate
 					out.legendBoxWidth_ = out.legendBoxWidth_ || out.legendBoxPadding_*2 + Math.max(out.legendTitleWidth_, out.legendShapeWidth_ + out.legendLabelOffset_ + out.legendLabelWrap_);
-					out.legendBoxHeight_ = out.legendBoxHeight_ || out.legendBoxPadding_*2 + out.legendTitleFontSize_ + out.legendShapeHeight_ + (1+out.legendShapeHeight_+out.legendShapePadding_)*(out.clnb()-1) +12;
+					out.legendBoxHeight_ = out.legendBoxHeight_ || out.legendBoxPadding_*2 + out.legendTitleFontSize_ + out.legendShapeHeight_ + (1+out.legendShapeHeight_+out.legendShapePadding_)*(out.clnb_-1) +12;
 					lgg.attr("transform", "translate("+(out.width_-out.legendBoxWidth_-out.legendBoxMargin_+out.legendBoxPadding_)+","+(out.legendTitleFontSize_+out.legendBoxMargin_+out.legendBoxPadding_-6)+")");
 
 					//remove previous content
@@ -448,7 +450,7 @@
 					//.shape("rect")
 					.on("cellover", function(ecl){
 						var sel = d3/*.select("#g_nutsrg")*/.selectAll("[ecl='"+ecl+"']");
-						sel.style("fill", nutsrgSelectionFillStyle);
+						sel.style("fill", out.nutsrgSelectionFillStyle_);
 						sel.attr("fill___", function(d) { d3.select(this).attr("fill"); });
 					})
 					.on("cellout", function(ecl){
@@ -468,8 +470,8 @@
 					})
 					.attr("fill", function() {
 						var ecl = d3.select(this).attr("class").replace("swatch ","");
-						if(!ecl||ecl==="nd") return noDataFillStyle || "gray";
-						return classToFillStyle( ecl, clnb );
+						if(!ecl||ecl==="nd") return out.noDataFillStyle_ || "gray";
+						return out.classToFillStyle_( ecl, out.clnb_ );
 					})
 					//.attr("stroke", "black")
 					//.attr("stroke-width", 0.5)
@@ -499,14 +501,14 @@
 				svg.selectAll("path.nutsrg")
 				.attr("fill", function() {
 					var ecl = d3.select(this).attr("ecl");
-					if(!ecl||ecl==="nd") return noDataFillStyle || "gray";
-					return classToFillStyle( ecl, clnb );
+					if(!ecl||ecl==="nd") return out.noDataFillStyle_ || "gray";
+					return out.classToFillStyle_( ecl, out.clnb_ );
 				});
 
 			} else if (out.type_ == "ps") {
 				//proportionnal symbol map
 				//see https://bl.ocks.org/mbostock/4342045 and https://bost.ocks.org/mike/bubble-map/
-				var radius = d3.scaleSqrt().domain([0, Math.max(...values)]).range([0, psMaxSize*0.5]);
+				var radius = d3.scaleSqrt().domain([0, Math.max(...values)]).range([0, out.psMaxSize_*0.5]);
 
 				d3.select("#g_ps").selectAll("circle")
 				.data(nutsRG.sort(function(a, b) { return b.properties.val - a.properties.val; }))
@@ -515,52 +517,24 @@
 			    .attr("r", function(d) { return d.properties.val? radius(d.properties.val) : 0; })
 			    .attr("class","symbol")
 			    .on("mouseover", function(rg) {
-			    	d3.select(this).style("fill", nutsrgSelectionFillStyle)
+			    	d3.select(this).style("fill", out.nutsrgSelectionFillStyle_)
 			    	if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (out.unitText_?" "+out.unitText_:""));
 			    }).on("mousemove", function() {
 			    	if(out.showTooltip_) tooltip.mousemove();
 			    }).on("mouseout", function() {
-			    	d3.select(this).style("fill", psFill)
+			    	d3.select(this).style("fill", out.psFill_)
 			    	if(out.showTooltip_) tooltip.mouseout();
 			    })
-			    .style("fill", psFill)
-			    .style("fill-opacity", psFillOpacity)
-			    .style("stroke", psStroke)
-			    .style("stroke-width", psStrokeWidth);
+			    .style("fill", out.psFill_)
+			    .style("fill-opacity", out.psFillOpacity_)
+			    .style("stroke", out.psStroke_)
+			    .style("stroke-width", out.psStrokeWidth_);
 
 			} else {
 				console.log("Unexpected map type: "+out.type_);
 			}
 			return out;
 		};
-
-		out.clnb = function(v) { if (!arguments.length) return clnb; clnb=v; return out; };
-		out.colorFun = function(v) { if (!arguments.length) return colorFun; colorFun=v; classToFillStyle = EstLib.getColorLegend(colorFun); return out; };
-		out.classToFillStyle = function(v) { if (!arguments.length) return classToFillStyle; classToFillStyle=v; return out; };
-		out.filtersDefinitionFun = function(v) { if (!arguments.length) return filtersDefinitionFun; filtersDefinitionFun=v; return out; };
-		out.noDataFillStyle = function(v) { if (!arguments.length) return noDataFillStyle; noDataFillStyle=v; return out; };
-		out.noDataText = function(v) { if (!arguments.length) return noDataText; noDataText=v; return out; };
-
-		out.psMaxSize = function(v) { if (!arguments.length) return psMaxSize; psMaxSize=v; return out; };
-		out.psFill = function(v) { if (!arguments.length) return psFill; psFill=v; return out; };
-		out.psFillOpacity = function(v) { if (!arguments.length) return psFillOpacity; psFillOpacity=v; return out; };
-		out.psStroke = function(v) { if (!arguments.length) return psStroke; psStroke=v; return out; };
-		out.psStrokeWidth = function(v) { if (!arguments.length) return psStrokeWidth; psStrokeWidth=v; return out; };
-
-		out.nutsrgFillStyle = function(v) { if (!arguments.length) return nutsrgFillStyle; nutsrgFillStyle=v; return out; };
-		out.nutsrgSelectionFillStyle = function(v) { if (!arguments.length) return nutsrgSelectionFillStyle; nutsrgSelectionFillStyle=v; return out; };
-		out.nutsbnStroke = function(v) { if (!arguments.length) return nutsbnStroke; nutsbnStroke=v; return out; };
-		out.nutsbnStrokeWidth = function(v) { if (!arguments.length) return nutsbnStrokeWidth; nutsbnStrokeWidth=v; return out; };
-		out.cntrgFillStyle = function(v) { if (!arguments.length) return cntrgFillStyle; cntrgFillStyle=v; return out; };
-		out.cntrgSelectionFillStyle = function(v) { if (!arguments.length) return cntrgSelectionFillStyle; cntrgSelectionFillStyle=v; return out; };
-		out.cntbnStroke = function(v) { if (!arguments.length) return cntbnStroke; cntbnStroke=v; return out; };
-		out.cntbnStrokeWidth = function(v) { if (!arguments.length) return cntbnStrokeWidth; cntbnStrokeWidth=v; return out; };
-		out.drawGraticule = function(v) { if (!arguments.length) return drawGraticule; drawGraticule=v; return out; };
-		out.graticuleStroke = function(v) { if (!arguments.length) return graticuleStroke; graticuleStroke=v; return out; };
-		out.graticuleStrokeWidth = function(v) { if (!arguments.length) return graticuleStrokeWidth; graticuleStrokeWidth=v; return out; };
-		out.seaFillStyle = function(v) { if (!arguments.length) return seaFillStyle; seaFillStyle=v; return out; };
-		out.drawCoastalMargin = function(v) { if (!arguments.length) return drawCoastalMargin; drawCoastalMargin=v; return out; };
-		out.coastalMarginColor = function(v) { if (!arguments.length) return coastalMarginColor; coastalMarginColor=v; return out; };
 
 		return out;
 	};
