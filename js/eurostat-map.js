@@ -96,12 +96,13 @@
 		var legendAscending = true;
 		var legendBackGroundFill = "white";
 		var legendTitleWidth = 140;
-		var lgdLabelWrap = 140;
-		var lgdLabelOffset = 5;
+		var legendLabelWrap = 140;
+		var legendLabelOffset = 5;
 		var legendLabelFontSize = 15;
-		var lgdShapeWidth = 20;
-		var lgdShapeHeight = 16;
-		var lgdShapePadding = 2;
+		var legendLabelDelimiter = " - ";
+		var legendShapeWidth = 20;
+		var legendShapeHeight = 16;
+		var legendShapePadding = 2;
 		var legendBoxMargin = 10;
 		var legendBoxPadding = 10;
 		var legendBoxCornerRadius = legendBoxPadding;
@@ -392,8 +393,8 @@
 
 				if(type == "ch") {
 					//locate
-					var lggBRw = legendBoxPadding*2 + Math.max(legendTitleWidth, lgdShapeWidth + lgdLabelOffset + lgdLabelWrap);
-					var lggBRh = legendBoxPadding*2 + legendTitleFontSize + lgdShapeHeight + (1+lgdShapeHeight+lgdShapePadding)*(out.clnb()-1) +12;
+					var lggBRw = legendBoxPadding*2 + Math.max(legendTitleWidth, legendShapeWidth + legendLabelOffset + legendLabelWrap);
+					var lggBRh = legendBoxPadding*2 + legendTitleFontSize + legendShapeHeight + (1+legendShapeHeight+legendShapePadding)*(out.clnb()-1) +12;
 					lgg.attr("transform", "translate("+(width-lggBRw-legendBoxMargin+legendBoxPadding)+","+(legendTitleFontSize+legendBoxMargin+legendBoxPadding-6)+")");
 
 					//remove previous content
@@ -413,9 +414,9 @@
 					.useClass(true)
 					.scale(classif)
 					.ascending(legendAscending)
-					.shapeWidth(lgdShapeWidth)
-					.shapeHeight(lgdShapeHeight)
-					.shapePadding(lgdShapePadding)
+					.shapeWidth(legendShapeWidth)
+					.shapeHeight(legendShapeHeight)
+					.shapePadding(legendShapePadding)
 					.labelFormat(d3.format(".2f"))
 					//.labels(d3.legendHelpers.thresholdLabels)
 					.labels(function({i,genLength,generatedLabels,labelDelimiter}) {
@@ -428,9 +429,9 @@
 						}
 						return generatedLabels[i]
 					})
-					.labelDelimiter(" - ")
-					.labelOffset(lgdLabelOffset)
-					.labelWrap(lgdLabelWrap)
+					.labelDelimiter(legendLabelDelimiter)
+					.labelOffset(legendLabelOffset)
+					.labelWrap(legendLabelWrap)
 					//.labelAlign("end") //?
 					//.classPrefix("from ")
 					//.orient("vertical")
