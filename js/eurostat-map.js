@@ -34,28 +34,59 @@
 	EstLib.map = function() {
 		//the id of the svg element to draw into
 		var svgId = "map";
+		//the map type: "ch" for choropleth and "ps" for proportionnal circles
+		var type = "ch"; //or "ps"
 		//the width of the svg element, in px
 		var width = 800;
 		//the code of the eurobase database
 		var ebcode = "demo_r_d3dens";
 		//the dimension projector to extract the statistical data
 		var dimensions = { time : 2017 };
-		//the map type: "ch" for choropleth and "ps" for proportionnal circles
-		var type = "ch"; //or "ps"
+		//the text to use in the tooltip for the unit of the values
+		var unitText = "";
 		//the map lod, among 3M, 10M, 20M, 60M
 		var scale = "20M";
+		//if the map is zoomable, specify the scale extent
+		var scaleExtent = [1,4];
 		//the map projection (epsg code)
 		var proj = "3035";
 		//the map nuts level, from 0 to 3
 		var nutsLvl = "3";
 		//the NUTS version, among 2010, 2013, 2016
 		var NUTSyear = 2013;
-		//the number of classes of the map
-		var clnb = 7;
 		//the langage
 		var lg = "en";
-		//if the map is zoomable, specify the scale extent
-		var scaleExtent = [1,6];
+		//show tooltip text when passing over map regions
+		var showTooltip = true;
+
+		//the number of classes of the map
+		var clnb = 7;
+		//for choropleth maps, color interpolation function. see https://github.com/d3/d3-scale-chromatic/   -   ex: interpolateGnBu
+		var colorFun = d3.interpolateYlOrRd;
+		//for choropleth maps, the function returning the fill style depending on the class number and the number of classes
+		var classToFillStyle = EstLib.getColorLegend(colorFun);
+		//the function defining some fill patterns to be reused for the choropleth map
+		var filtersDefinitionFun = function() {};
+		//fill color for no data regions
+		var noDataFillStyle = "lightgray";
+		//text to show for no data case
+		var noDataText = "No data";
+
+		//the maximum size for the proportional circles
+		var psMaxSize = 30;
+		var psFill = "#B45F04";
+		var psFillOpacity = 0.6;
+		var psStroke = "#fff";
+		var psStrokeWidth = 0.6;
+
+		var nutsrgFillStyle = "#eee"; //used for ps map
+		var nutsrgSelectionFillStyle = "purple";
+		var nutsbnStroke = {0:"#777",1:"#777",2:"#777",3:"#777",oth:"#444",co:"#1f78b4"};
+		var nutsbnStrokeWidth = {0:1,1:0.2,2:0.2,3:0.2,oth:1,co:1};
+		var cntrgFillStyle = "lightgray";
+		var cntrgSelectionFillStyle = "darkgray";
+		var cntbnStroke = "#777";
+		var cntbnStrokeWidth = 1;
 		//draw the graticule
 		var drawGraticule = true;
 		//graticule stroke style
@@ -68,25 +99,7 @@
 		var drawCoastalMargin = true;
 		//the color of the coastal margin
 		var coastalMarginColor = "white";
-		//show tooltip text when passing over map regions
-		var showTooltip = true;
-		//the text to use in the tooltip for the unit of the values
-		var unitText = "";
 
-		//fill color for no data regions
-		var noDataFillStyle = "lightgray";
-		//text to show for no data case
-		var noDataText = "No data";
-
-		//for choropleth maps, color interpolation function. see https://github.com/d3/d3-scale-chromatic/   -   ex: interpolateGnBu
-		var colorFun = d3.interpolateYlOrRd;
-		//for choropleth maps, the function returning the fill style depending on the class number and the number of classes
-		var classToFillStyle = EstLib.getColorLegend(colorFun);
-		//the function defining some fill patterns to be reused for the choropleth map
-		var filtersDefinitionFun = function() {};
-
-		//the maximum size for the proportional circles
-		var psMaxSize = 30;
 
 		//legend
 		var showLegend = true;
@@ -109,22 +122,8 @@
 		var legendBoxOpacity = 0.5;
 		var legendBoxFill = "white";
 		var legendBoxWidth = legendBoxPadding*2 + Math.max(legendTitleWidth, legendShapeWidth + legendLabelOffset + legendLabelWrap);
-		var legendBoxHeight = legendBoxPadding*2 + legendTitleFontSize + legendShapeHeight + (1+legendShapeHeight+legendShapePadding)*(out.clnb()-1) +12;
+		var legendBoxHeight = legendBoxPadding*2 + legendTitleFontSize + legendShapeHeight + (1+legendShapeHeight+legendShapePadding)*(clnb-1) +12;
 
-		var nutsrgFillStyle = "#eee"; //used for ps map
-		var nutsrgSelectionFillStyle = "purple";
-		var nutsbnStroke = {0:"#777",1:"#777",2:"#777",3:"#777",oth:"#444",co:"#1f78b4"};
-		var nutsbnStrokeWidth = {0:1,1:0.2,2:0.2,3:0.2,oth:1,co:1};
-		var cntrgFillStyle = "lightgray";
-		var cntrgSelectionFillStyle = "darkgray";
-		var cntbnStroke = "#777";
-		var cntbnStrokeWidth = 1;
-
-
-		var psFill = "#B45F04";
-		var psFillOpacity = 0.6;
-		var psStroke = "#fff";
-		var psStrokeWidth = 0.6;
 
 		//the output object
 		var out = {};
