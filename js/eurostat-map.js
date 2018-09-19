@@ -11,7 +11,7 @@
 	//add legend element for proportional circle - http://d3-legend.susielu.com/#size
 	//add "no data" in legend
 	//domains as parameter
-	//deverging ramp -> define central value
+	//deverging ramp -> define central value (0, average, 100, etc.)
 	//svg export: with rounded coordinates - d3.round. test + edit in inkscape + fix. Function/button "export as svg"
 	//js dependencies
 	//typologies: use ordinal scale: var ordinal = d3.scaleOrdinal().domain(["a", "b", "c", "d", "e"]).range([ ... ]);
@@ -26,6 +26,12 @@
 	//doc
 	//d3.v5.js ?
 	//https://github.com/d3/d3-shape#symbols
+
+	//map with proportionnal rectangle (only height varies)/squares
+	//composition chroploth + prop circle
+	//composition choropleth map showing variation (diverging colors) + rectangle/bar showing quantities +/-
+	//composition choropleth map showing share of something + pie chart (as ring if large) showing total quantity and further info on composition
+	//etc.
 
 	EstLib.map = function() {
 		
@@ -226,11 +232,9 @@
 				svg.call(d3.zoom().scaleExtent(out.scaleExtent_)
 					.on("zoom", function() {
 							var k = d3.event.transform.k;
-							d3.selectAll(".gra").style("stroke-width", (1/k)+"px");
-							d3.selectAll(".bn_0").style("stroke-width", (1/k)+"px");
-							d3.selectAll(".bn_oth").style("stroke-width", (1/k)+"px");
-							d3.selectAll(".bn_co").style("stroke-width", (1/k)+"px");
-							d3.selectAll(".cntbn").style("stroke-width", (1/k)+"px");
+							var cs = ["gra","bn_0","bn_oth","bn_co","cntbn"];
+							for(var i=0; i<cs.length; i++)
+								d3.selectAll("."+cs[i]).style("stroke-width", (1/k)+"px");
 							zg.attr("transform", d3.event.transform);
 						}));
 			}
