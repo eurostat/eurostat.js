@@ -32,6 +32,10 @@
 	//https://github.com/d3/d3-shape#symbols
 
 	EstLib.map = function() {
+		
+		//the output object
+		var out = {};
+
 		//the id of the svg element to draw into
 		var svgId = "map";
 		//the map type: "ch" for choropleth and "ps" for proportionnal circles
@@ -121,13 +125,18 @@
 		var legendBoxCornerRadius = legendBoxPadding;
 		var legendBoxOpacity = 0.5;
 		var legendBoxFill = "white";
-		var legendBoxWidth = legendBoxPadding*2 + Math.max(legendTitleWidth, legendShapeWidth + legendLabelOffset + legendLabelWrap);
-		var legendBoxHeight = legendBoxPadding*2 + legendTitleFontSize + legendShapeHeight + (1+legendShapeHeight+legendShapePadding)*(clnb-1) +12;
+		out.legendBoxWidth_ = legendBoxPadding*2 + Math.max(legendTitleWidth, legendShapeWidth + legendLabelOffset + legendLabelWrap);
+		out.legendBoxHeight_ = legendBoxPadding*2 + legendTitleFontSize + legendShapeHeight + (1+legendShapeHeight+legendShapePadding)*(clnb-1) +12;
 
+		//generic way to handle accessors
+		for(var p in out) {
+			(function(){
+				var p_=p;
+				out[ p_.substring(0,p_.length-1) ] = function(v) { if (!arguments.length) return out[p_]; out[p_]=v; return out; };
+			})();
+		}
 
-		//the output object
-		var out = {};
-
+		
 		var statData, values, nutsData, nutsRG;
 		var height, svg, path;
 		var classif;
@@ -394,9 +403,9 @@
 
 				if(type == "ch") {
 					//locate
-					legendBoxWidth = legendBoxWidth || legendBoxPadding*2 + Math.max(legendTitleWidth, legendShapeWidth + legendLabelOffset + legendLabelWrap);
-					legendBoxHeight = legendBoxHeight || legendBoxPadding*2 + legendTitleFontSize + legendShapeHeight + (1+legendShapeHeight+legendShapePadding)*(out.clnb()-1) +12;
-					lgg.attr("transform", "translate("+(width-legendBoxWidth-legendBoxMargin+legendBoxPadding)+","+(legendTitleFontSize+legendBoxMargin+legendBoxPadding-6)+")");
+					out.legendBoxWidth_ = out.legendBoxWidth_ || legendBoxPadding*2 + Math.max(legendTitleWidth, legendShapeWidth + legendLabelOffset + legendLabelWrap);
+					out.legendBoxHeight_ = out.legendBoxHeight_ || legendBoxPadding*2 + legendTitleFontSize + legendShapeHeight + (1+legendShapeHeight+legendShapePadding)*(out.clnb()-1) +12;
+					lgg.attr("transform", "translate("+(width-out.legendBoxWidth_-legendBoxMargin+legendBoxPadding)+","+(legendTitleFontSize+legendBoxMargin+legendBoxPadding-6)+")");
 
 					//remove previous content
 					lgg.selectAll("*").remove();
@@ -404,7 +413,7 @@
 					//background rectangle
 					var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", -legendBoxPadding).attr("y", -legendTitleFontSize-legendBoxPadding+6)
 					.attr("rx", legendBoxCornerRadius).attr("ry", legendBoxCornerRadius)
-					.attr("width", legendBoxWidth).attr("height", legendBoxHeight)
+					.attr("width", out.legendBoxWidth_).attr("height", out.legendBoxHeight_)
 					.style("fill", legendBoxFill).style("opacity", legendBoxOpacity);
 
 					//define legend
@@ -527,30 +536,66 @@
 
 
 		out.svgId = function(v) { if (!arguments.length) return svgId; svgId=v; return out; };
+		out.type = function(v) { if (!arguments.length) return type; type=v; return out; };
 		out.width = function(v) { if (!arguments.length) return width; width=v; return out; };
 		out.ebcode = function(v) { if (!arguments.length) return ebcode; ebcode=v; return out; };
 		out.dimensions = function(v) { if (!arguments.length) return dimensions; dimensions=v; return out; };		
-		out.type = function(v) { if (!arguments.length) return type; type=v; return out; };
+		out.unitText = function(v) { if (!arguments.length) return unitText; unitText=v; return out; };
 		out.scale = function(v) { if (!arguments.length) return scale; scale=v; return out; };
+		out.scaleExtent = function(v) { if (!arguments.length) return scaleExtent; scaleExtent=v; return out; };
 		out.proj = function(v) { if (!arguments.length) return proj; proj=v; return out; };
 		out.nutsLvl = function(v) { if (!arguments.length) return nutsLvl; nutsLvl=v; return out; };
 		out.NUTSyear = function(v) { if (!arguments.length) return NUTSyear; NUTSyear=v; return out; };
-		out.clnb = function(v) { if (!arguments.length) return clnb; clnb=v; return out; };
 		out.lg = function(v) { if (!arguments.length) return lg; lg=v; return out; };
-		out.scaleExtent = function(v) { if (!arguments.length) return scaleExtent; scaleExtent=v; return out; };
+		out.showTooltip = function(v) { if (!arguments.length) return showTooltip; showTooltip=v; return out; };
+
+		out.clnb = function(v) { if (!arguments.length) return clnb; clnb=v; return out; };
+		out.colorFun = function(v) { if (!arguments.length) return colorFun; colorFun=v; classToFillStyle = EstLib.getColorLegend(colorFun); return out; };
+		out.classToFillStyle = function(v) { if (!arguments.length) return classToFillStyle; classToFillStyle=v; return out; };
+		out.filtersDefinitionFun = function(v) { if (!arguments.length) return filtersDefinitionFun; filtersDefinitionFun=v; return out; };
+		out.noDataFillStyle = function(v) { if (!arguments.length) return noDataFillStyle; noDataFillStyle=v; return out; };
+		out.noDataText = function(v) { if (!arguments.length) return noDataText; noDataText=v; return out; };
+
+		out.psMaxSize = function(v) { if (!arguments.length) return psMaxSize; psMaxSize=v; return out; };
+		out.psFill = function(v) { if (!arguments.length) return psFill; psFill=v; return out; };
+		out.psFillOpacity = function(v) { if (!arguments.length) return psFillOpacity; psFillOpacity=v; return out; };
+		out.psStroke = function(v) { if (!arguments.length) return psStroke; psStroke=v; return out; };
+		out.psStrokeWidth = function(v) { if (!arguments.length) return psStrokeWidth; psStrokeWidth=v; return out; };
+
+		out.nutsrgFillStyle = function(v) { if (!arguments.length) return nutsrgFillStyle; nutsrgFillStyle=v; return out; };
+		out.nutsrgSelectionFillStyle = function(v) { if (!arguments.length) return nutsrgSelectionFillStyle; nutsrgSelectionFillStyle=v; return out; };
+		out.nutsbnStroke = function(v) { if (!arguments.length) return nutsbnStroke; nutsbnStroke=v; return out; };
+		out.nutsbnStrokeWidth = function(v) { if (!arguments.length) return nutsbnStrokeWidth; nutsbnStrokeWidth=v; return out; };
+		out.cntrgFillStyle = function(v) { if (!arguments.length) return cntrgFillStyle; cntrgFillStyle=v; return out; };
+		out.cntrgSelectionFillStyle = function(v) { if (!arguments.length) return cntrgSelectionFillStyle; cntrgSelectionFillStyle=v; return out; };
+		out.cntbnStroke = function(v) { if (!arguments.length) return cntbnStroke; cntbnStroke=v; return out; };
+		out.cntbnStrokeWidth = function(v) { if (!arguments.length) return cntbnStrokeWidth; cntbnStrokeWidth=v; return out; };
 		out.drawGraticule = function(v) { if (!arguments.length) return drawGraticule; drawGraticule=v; return out; };
+		out.graticuleStroke = function(v) { if (!arguments.length) return graticuleStroke; graticuleStroke=v; return out; };
+		out.graticuleStrokeWidth = function(v) { if (!arguments.length) return graticuleStrokeWidth; graticuleStrokeWidth=v; return out; };
 		out.seaFillStyle = function(v) { if (!arguments.length) return seaFillStyle; seaFillStyle=v; return out; };
 		out.drawCoastalMargin = function(v) { if (!arguments.length) return drawCoastalMargin; drawCoastalMargin=v; return out; };
 		out.coastalMarginColor = function(v) { if (!arguments.length) return coastalMarginColor; coastalMarginColor=v; return out; };
-		out.showTooltip = function(v) { if (!arguments.length) return showTooltip; showTooltip=v; return out; };
-		out.unitText = function(v) { if (!arguments.length) return unitText; unitText=v; return out; };
-		out.colorFun = function(v) { if (!arguments.length) return colorFun; colorFun=v; classToFillStyle = EstLib.getColorLegend(colorFun); return out; };
-		out.noDataFillStyle = function(v) { if (!arguments.length) return noDataFillStyle; noDataFillStyle=v; return out; };
-		out.noDataText = function(v) { if (!arguments.length) return noDataText; noDataText=v; return out; };
-		out.classToFillStyle = function(v) { if (!arguments.length) return classToFillStyle; classToFillStyle=v; return out; };
-		out.filtersDefinitionFun = function(v) { if (!arguments.length) return filtersDefinitionFun; filtersDefinitionFun=v; return out; };
-		out.psMaxSize = function(v) { if (!arguments.length) return psMaxSize; psMaxSize=v; return out; };
+
 		out.showLegend = function(v) { if (!arguments.length) return showLegend; showLegend=v; return out; };
+		out.legendFontFamily = function(v) { if (!arguments.length) return legendFontFamily; legendFontFamily=v; return out; };
+		out.legendTitle = function(v) { if (!arguments.length) return legendTitle; legendTitle=v; return out; };
+		out.legendTitleFontSize = function(v) { if (!arguments.length) return legendTitleFontSize; legendTitleFontSize=v; return out; };
+		out.legendAscending = function(v) { if (!arguments.length) return legendAscending; legendAscending=v; return out; };
+		out.legendBackGroundFill = function(v) { if (!arguments.length) return legendBackGroundFill; legendBackGroundFill=v; return out; };
+		out.legendTitleWidth = function(v) { if (!arguments.length) return legendTitleWidth; legendTitleWidth=v; return out; };
+		out.legendLabelWrap = function(v) { if (!arguments.length) return legendLabelWrap; legendLabelWrap=v; return out; };
+		out.legendLabelOffset = function(v) { if (!arguments.length) return legendLabelOffset; legendLabelOffset=v; return out; };
+		out.legendLabelFontSize = function(v) { if (!arguments.length) return legendLabelFontSize; legendLabelFontSize=v; return out; };
+		out.legendLabelDelimiter = function(v) { if (!arguments.length) return legendLabelDelimiter; legendLabelDelimiter=v; return out; };
+		out.legendShapeWidth = function(v) { if (!arguments.length) return legendShapeWidth; legendShapeWidth=v; return out; };
+		out.legendShapeHeight = function(v) { if (!arguments.length) return legendShapeHeight; legendShapeHeight=v; return out; };
+		out.legendShapePadding = function(v) { if (!arguments.length) return legendShapePadding; legendShapePadding=v; return out; };
+		out.legendBoxMargin = function(v) { if (!arguments.length) return legendBoxMargin; legendBoxMargin=v; return out; };
+		out.legendBoxPadding = function(v) { if (!arguments.length) return legendBoxPadding; legendBoxPadding=v; return out; };
+		out.legendBoxCornerRadius = function(v) { if (!arguments.length) return legendBoxCornerRadius; legendBoxCornerRadius=v; return out; };
+		out.legendBoxOpacity = function(v) { if (!arguments.length) return legendBoxOpacity; legendBoxOpacity=v; return out; };
+		out.legendBoxFill = function(v) { if (!arguments.length) return legendBoxFill; legendBoxFill=v; return out; };
 
 		return out;
 	};
