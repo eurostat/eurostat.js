@@ -37,31 +37,31 @@
 		var out = {};
 
 		//the id of the svg element to draw into
-		var svgId = "map";
+		out.svgId_ = "map";
 		//the map type: "ch" for choropleth and "ps" for proportionnal circles
-		var type = "ch"; //or "ps"
+		out.type_ = "ch"; //or "ps"
 		//the width of the svg element, in px
-		var width = 800;
+		out.width_ = 800;
 		//the code of the eurobase database
-		var ebcode = "demo_r_d3dens";
+		out.ebcode_ = "demo_r_d3dens";
 		//the dimension projector to extract the statistical data
-		var dimensions = { time : 2017 };
+		out.dimensions_ = { time : 2017 };
 		//the text to use in the tooltip for the unit of the values
-		var unitText = "";
+		out.unitText_ = "";
 		//the map lod, among 3M, 10M, 20M, 60M
-		var scale = "20M";
+		out.scale_ = "20M";
 		//if the map is zoomable, specify the scale extent
-		var scaleExtent = [1,4];
+		out.scaleExtent_ = [1,4];
 		//the map projection (epsg code)
-		var proj = "3035";
+		out.proj_ = "3035";
 		//the map nuts level, from 0 to 3
-		var nutsLvl = "3";
+		out.nutsLvl_ = "3";
 		//the NUTS version, among 2010, 2013, 2016
-		var NUTSyear = 2013;
+		out.NUTSyear_ = 2013;
 		//the langage
-		var lg = "en";
+		out.lg_ = "en";
 		//show tooltip text when passing over map regions
-		var showTooltip = true;
+		out.showTooltip_ = true;
 
 		//the number of classes of the map
 		var clnb = 7;
@@ -106,42 +106,42 @@
 
 
 		//legend
-		var showLegend = true;
-		var legendFontFamily = EstLib.fontFamilyDefault;
-		var legendTitle = "Legend";
-		var legendTitleFontSize = 20;
-		var legendAscending = true;
-		var legendBackGroundFill = "white";
-		var legendTitleWidth = 140;
-		var legendLabelWrap = 140;
-		var legendLabelOffset = 5;
-		var legendLabelFontSize = 15;
-		var legendLabelDelimiter = " - ";
-		var legendShapeWidth = 20;
-		var legendShapeHeight = 16;
-		var legendShapePadding = 2;
-		var legendBoxMargin = 10;
-		var legendBoxPadding = 10;
-		var legendBoxCornerRadius = legendBoxPadding;
-		var legendBoxOpacity = 0.5;
-		var legendBoxFill = "white";
-		out.legendBoxWidth_ = legendBoxPadding*2 + Math.max(legendTitleWidth, legendShapeWidth + legendLabelOffset + legendLabelWrap);
-		out.legendBoxHeight_ = legendBoxPadding*2 + legendTitleFontSize + legendShapeHeight + (1+legendShapeHeight+legendShapePadding)*(clnb-1) +12;
+		out.showLegend_ = true;
+		out.legendFontFamily_ = EstLib.fontFamilyDefault;
+		out.legendTitleText_ = "Legend";
+		out.legendTitleFontSize_ = 20;
+		out.legendTitleWidth_ = 140;
+		out.legendAscending_ = true;
+		out.legendLabelWrap_ = 140;
+		out.legendLabelOffset_ = 5;
+		out.legendLabelFontSize_ = 15;
+		out.legendLabelDelimiter_ = " - ";
+		out.legendShapeWidth_ = 20;
+		out.legendShapeHeight_ = 16;
+		out.legendShapePadding_ = 2;
+		out.legendBoxMargin_ = 10;
+		out.legendBoxPadding_ = 10;
+		out.legendBoxCornerRadius_ = out.legendBoxPadding_;
+		out.legendBoxOpacity_ = 0.5;
+		out.legendBoxFill_ = "white";
+		out.legendBoxWidth_ = out.legendBoxPadding_*2 + Math.max(out.legendTitleWidth_, out.legendShapeWidth_ + out.legendLabelOffset_ + out.legendLabelWrap_);
+		out.legendBoxHeight_ = out.legendBoxPadding*2 + out.legendTitleFontSize_ + out.legendShapeHeight_ + (1+out.legendShapeHeight_+out.legendShapePadding_)*(clnb-1) +12;
 
-		//definition of generic accessors
-		for(var p in out) {
+		//definition of generic accessors based on the name of each property name
+		for(var p in out)
 			(function(){
 				var p_=p;
 				out[ p_.substring(0,p_.length-1) ] = function(v) { if (!arguments.length) return out[p_]; out[p_]=v; return out; };
 			})();
-		}
 
-		
+		out.colorFun = function(v) { if (!arguments.length) return colorFun; colorFun=v; classToFillStyle = EstLib.getColorLegend(colorFun); return out; };
+
+
 		var statData, values, nutsData, nutsRG;
 		var height, svg, path;
 		var classif;
 
-		var tooltip = showTooltip? EstLib.tooltip() : null;
+		var tooltip = out.showTooltip_? EstLib.tooltip() : null;
 
 		//ease the loading of URL parameters. Use with function EstLib.loadURLParameters()
 		out.set = function(opts) {
@@ -168,7 +168,7 @@
 		out.updategeoData = function() {
 			nutsData = null;
 			d3.queue()
-			.defer(d3.json, "https://raw.githubusercontent.com/eurostat/Nuts2json/gh-pages/" + NUTSyear + "/" + proj + "/" + scale + "/" + nutsLvl + ".json")
+			.defer(d3.json, "https://raw.githubusercontent.com/eurostat/Nuts2json/gh-pages/" + out.NUTSyear_ + "/" + out.proj_ + "/" + out.scale_ + "/" + out.nutsLvl_ + ".json")
 			.await( function(error, nuts___) {
 					nutsData = nuts___;
 					out.buildMapTemplate();
@@ -181,7 +181,7 @@
 		//get stat data
 		out.updateStatData = function() {
 			statData = null;
-			d3.queue().defer(d3.json, EstLib.getEstatDataURL(ebcode, dimensions)).await(
+			d3.queue().defer(d3.json, EstLib.getEstatDataURL(out.ebcode_, out.dimensions_)).await(
 				function(error, data___) {
 					statData = JSONstat(data___).Dataset(0);
 					if(!nutsData) return;
@@ -204,9 +204,9 @@
 			var cntbn = topojson.feature(nutsData, nutsData.objects.cntbn).features;
 
 			//prepare SVG element
-			height = width * (nutsData.bbox[3] - nutsData.bbox[1]) / (nutsData.bbox[2] - nutsData.bbox[0]),
-			svg = d3.select("#"+svgId).attr("width", width).attr("height", height)
-			path = d3.geoPath().projection(d3.geoIdentity().reflectY(true).fitSize([ width, height ], topojson.feature(nutsData, nutsData.objects.gra)));
+			height = out.width_ * (nutsData.bbox[3] - nutsData.bbox[1]) / (nutsData.bbox[2] - nutsData.bbox[0]),
+			svg = d3.select("#"+out.svgId_).attr("width", out.width_).attr("height", height)
+			path = d3.geoPath().projection(d3.geoIdentity().reflectY(true).fitSize([ out.width_, height ], topojson.feature(nutsData, nutsData.objects.gra)));
 
 			if(drawCoastalMargin)
 				//define filter for coastal margin
@@ -218,14 +218,14 @@
 
 			//draw background rectangle
 			svg.append("rect").attr("id", "sea").attr("x", 0).attr("y", 0)
-				.attr("width", width).attr("height", height)
+				.attr("width", out.width_).attr("height", height)
 				.style("fill", seaFillStyle);
 
 			//prepare drawing group
 			var zg = svg.append("g").attr("id","zoomgroup").attr("transform", "translate(0,0)");
-			if(scaleExtent) {
+			if(out.scaleExtent_) {
 				//add zoom function
-				svg.call(d3.zoom().scaleExtent(scaleExtent)
+				svg.call(d3.zoom().scaleExtent(out.scaleExtent_)
 					.on("zoom", function() {
 							var k = d3.event.transform.k;
 							d3.selectAll(".gra").style("stroke-width", (1/k)+"px");
@@ -276,12 +276,12 @@
 				.style("fill", cntrgFillStyle)
 				.on("mouseover",function(rg) {
 					d3.select(this).style("fill", cntrgSelectionFillStyle)
-					if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b>");
+					if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b>");
 				}).on("mousemove", function() {
-					if(showTooltip) tooltip.mousemove();
+					if(out.showTooltip_) tooltip.mousemove();
 				}).on("mouseout", function() {
 					d3.select(this).style("fill", cntrgFillStyle)
-					if(showTooltip) tooltip.mouseout();
+					if(out.showTooltip_) tooltip.mouseout();
 				});
 
 			//draw NUTS regions
@@ -293,13 +293,13 @@
 					var sel = d3.select(this);
 					sel.attr("fill___", sel.attr("fill"));
 					sel.attr("fill", nutsrgSelectionFillStyle);
-					if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val? rg.properties.val + (unitText?" "+unitText:"") : noDataText));
+					if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val? rg.properties.val + (out.unitText_?" "+out.unitText_:"") : noDataText));
 				}).on("mousemove", function() {
-					if(showTooltip) tooltip.mousemove();
+					if(out.showTooltip_) tooltip.mousemove();
 				}).on("mouseout", function() {
 					var sel = d3.select(this);
 					sel.attr("fill", sel.attr("fill___"));
-					if(showTooltip) tooltip.mouseout();
+					if(out.showTooltip_) tooltip.mouseout();
 				});
 
 			//draw country boundaries
@@ -373,7 +373,7 @@
 		out.updateClassificationAndStyle = function() {
 			//NB: no classification is required for proportional symbols map
 
-			if(type == "ch") {
+			if(out.type_ == "ch") {
 				//build list of classes and classification based on quantiles
 				classif = d3.scaleQuantile().domain(values).range( [...Array(clnb).keys()] );
 				classif.quantiles();
@@ -398,35 +398,35 @@
 		
 		out.updateLegend = function() {
 			//draw legend
-			if(showLegend) {
+			if(out.showLegend_) {
 				var lgg = d3.select("#legendg");
 
-				if(type == "ch") {
+				if(out.type_ == "ch") {
 					//locate
-					out.legendBoxWidth_ = out.legendBoxWidth_ || legendBoxPadding*2 + Math.max(legendTitleWidth, legendShapeWidth + legendLabelOffset + legendLabelWrap);
-					out.legendBoxHeight_ = out.legendBoxHeight_ || legendBoxPadding*2 + legendTitleFontSize + legendShapeHeight + (1+legendShapeHeight+legendShapePadding)*(out.clnb()-1) +12;
-					lgg.attr("transform", "translate("+(width-out.legendBoxWidth_-legendBoxMargin+legendBoxPadding)+","+(legendTitleFontSize+legendBoxMargin+legendBoxPadding-6)+")");
+					out.legendBoxWidth_ = out.legendBoxWidth_ || out.legendBoxPadding_*2 + Math.max(out.legendTitleWidth_, out.legendShapeWidth_ + out.legendLabelOffset_ + out.legendLabelWrap_);
+					out.legendBoxHeight_ = out.legendBoxHeight_ || out.legendBoxPadding_*2 + out.legendTitleFontSize_ + out.legendShapeHeight_ + (1+out.legendShapeHeight_+out.legendShapePadding_)*(out.clnb()-1) +12;
+					lgg.attr("transform", "translate("+(out.width_-out.legendBoxWidth_-out.legendBoxMargin_+out.legendBoxPadding_)+","+(out.legendTitleFontSize_+out.legendBoxMargin_+out.legendBoxPadding_-6)+")");
 
 					//remove previous content
 					lgg.selectAll("*").remove();
 
 					//background rectangle
-					var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", -legendBoxPadding).attr("y", -legendTitleFontSize-legendBoxPadding+6)
-					.attr("rx", legendBoxCornerRadius).attr("ry", legendBoxCornerRadius)
+					var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", -out.legendBoxPadding_).attr("y", -out.legendTitleFontSize_-out.legendBoxPadding_+6)
+					.attr("rx", out.legendBoxCornerRadius_).attr("ry", out.legendBoxCornerRadius_)
 					.attr("width", out.legendBoxWidth_).attr("height", out.legendBoxHeight_)
-					.style("fill", legendBoxFill).style("opacity", legendBoxOpacity);
+					.style("fill", out.legendBoxFill_).style("opacity", out.legendBoxOpacity_);
 
 					//define legend
 					//see http://d3-legend.susielu.com/#color
 					var colorLegend = d3.legendColor()
-					.title(legendTitle)
-					.titleWidth(legendTitleWidth)
+					.title(out.legendTitleText_)
+					.titleWidth(out.legendTitleWidth_)
 					.useClass(true)
 					.scale(classif)
-					.ascending(legendAscending)
-					.shapeWidth(legendShapeWidth)
-					.shapeHeight(legendShapeHeight)
-					.shapePadding(legendShapePadding)
+					.ascending(out.legendAscending_)
+					.shapeWidth(out.legendShapeWidth_)
+					.shapeHeight(out.legendShapeHeight_)
+					.shapePadding(out.legendShapePadding_)
 					.labelFormat(d3.format(".2f"))
 					//.labels(d3.legendHelpers.thresholdLabels)
 					.labels(function({i,genLength,generatedLabels,labelDelimiter}) {
@@ -439,9 +439,9 @@
 						}
 						return generatedLabels[i]
 					})
-					.labelDelimiter(legendLabelDelimiter)
-					.labelOffset(legendLabelOffset)
-					.labelWrap(legendLabelWrap)
+					.labelDelimiter(out.legendLabelDelimiter_)
+					.labelOffset(out.legendLabelOffset_)
+					.labelWrap(out.legendLabelWrap_)
 					//.labelAlign("end") //?
 					//.classPrefix("from ")
 					//.orient("vertical")
@@ -476,14 +476,14 @@
 					;
 
 					//apply style to legend elements
-					lgg.select(".legendTitle").style("font-size", legendTitleFontSize);
-					lgg.selectAll("text.label").style("font-size", legendLabelFontSize);
-					lgg.style("font-family", legendFontFamily);
+					lgg.select(".legendTitle").style("font-size", out.legendTitleFontSize_);
+					lgg.selectAll("text.label").style("font-size", out.legendLabelFontSize_);
+					lgg.style("font-family", out.legendFontFamily_);
 
-				} else if(type == "ps") {
+				} else if(out.type_ == "ps") {
 					//TODO
 				} else {
-					console.log("Unknown map type: "+type)
+					console.log("Unknown map type: "+out.type_)
 				}
 			}
 			return out;
@@ -493,7 +493,7 @@
 		//run when the map style/legend has changed
 		out.updateStyle = function() {
 
-			if(type == "ch") {
+			if(out.type_ == "ch") {
 				//choropleth map
 				//apply style to nuts regions depending on class
 				svg.selectAll("path.nutsrg")
@@ -503,7 +503,7 @@
 					return classToFillStyle( ecl, clnb );
 				});
 
-			} else if (type == "ps") {
+			} else if (out.type_ == "ps") {
 				//proportionnal symbol map
 				//see https://bl.ocks.org/mbostock/4342045 and https://bost.ocks.org/mike/bubble-map/
 				var radius = d3.scaleSqrt().domain([0, Math.max(...values)]).range([0, psMaxSize*0.5]);
@@ -516,12 +516,12 @@
 			    .attr("class","symbol")
 			    .on("mouseover", function(rg) {
 			    	d3.select(this).style("fill", nutsrgSelectionFillStyle)
-			    	if(showTooltip) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (unitText?" "+unitText:""));
+			    	if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (out.unitText_?" "+out.unitText_:""));
 			    }).on("mousemove", function() {
-			    	if(showTooltip) tooltip.mousemove();
+			    	if(out.showTooltip_) tooltip.mousemove();
 			    }).on("mouseout", function() {
 			    	d3.select(this).style("fill", psFill)
-			    	if(showTooltip) tooltip.mouseout();
+			    	if(out.showTooltip_) tooltip.mouseout();
 			    })
 			    .style("fill", psFill)
 			    .style("fill-opacity", psFillOpacity)
@@ -529,25 +529,10 @@
 			    .style("stroke-width", psStrokeWidth);
 
 			} else {
-				console.log("Unexpected map type: "+type);
+				console.log("Unexpected map type: "+out.type_);
 			}
 			return out;
 		};
-
-
-		out.svgId = function(v) { if (!arguments.length) return svgId; svgId=v; return out; };
-		out.type = function(v) { if (!arguments.length) return type; type=v; return out; };
-		out.width = function(v) { if (!arguments.length) return width; width=v; return out; };
-		out.ebcode = function(v) { if (!arguments.length) return ebcode; ebcode=v; return out; };
-		out.dimensions = function(v) { if (!arguments.length) return dimensions; dimensions=v; return out; };		
-		out.unitText = function(v) { if (!arguments.length) return unitText; unitText=v; return out; };
-		out.scale = function(v) { if (!arguments.length) return scale; scale=v; return out; };
-		out.scaleExtent = function(v) { if (!arguments.length) return scaleExtent; scaleExtent=v; return out; };
-		out.proj = function(v) { if (!arguments.length) return proj; proj=v; return out; };
-		out.nutsLvl = function(v) { if (!arguments.length) return nutsLvl; nutsLvl=v; return out; };
-		out.NUTSyear = function(v) { if (!arguments.length) return NUTSyear; NUTSyear=v; return out; };
-		out.lg = function(v) { if (!arguments.length) return lg; lg=v; return out; };
-		out.showTooltip = function(v) { if (!arguments.length) return showTooltip; showTooltip=v; return out; };
 
 		out.clnb = function(v) { if (!arguments.length) return clnb; clnb=v; return out; };
 		out.colorFun = function(v) { if (!arguments.length) return colorFun; colorFun=v; classToFillStyle = EstLib.getColorLegend(colorFun); return out; };
@@ -576,26 +561,6 @@
 		out.seaFillStyle = function(v) { if (!arguments.length) return seaFillStyle; seaFillStyle=v; return out; };
 		out.drawCoastalMargin = function(v) { if (!arguments.length) return drawCoastalMargin; drawCoastalMargin=v; return out; };
 		out.coastalMarginColor = function(v) { if (!arguments.length) return coastalMarginColor; coastalMarginColor=v; return out; };
-
-		out.showLegend = function(v) { if (!arguments.length) return showLegend; showLegend=v; return out; };
-		out.legendFontFamily = function(v) { if (!arguments.length) return legendFontFamily; legendFontFamily=v; return out; };
-		out.legendTitle = function(v) { if (!arguments.length) return legendTitle; legendTitle=v; return out; };
-		out.legendTitleFontSize = function(v) { if (!arguments.length) return legendTitleFontSize; legendTitleFontSize=v; return out; };
-		out.legendAscending = function(v) { if (!arguments.length) return legendAscending; legendAscending=v; return out; };
-		out.legendBackGroundFill = function(v) { if (!arguments.length) return legendBackGroundFill; legendBackGroundFill=v; return out; };
-		out.legendTitleWidth = function(v) { if (!arguments.length) return legendTitleWidth; legendTitleWidth=v; return out; };
-		out.legendLabelWrap = function(v) { if (!arguments.length) return legendLabelWrap; legendLabelWrap=v; return out; };
-		out.legendLabelOffset = function(v) { if (!arguments.length) return legendLabelOffset; legendLabelOffset=v; return out; };
-		out.legendLabelFontSize = function(v) { if (!arguments.length) return legendLabelFontSize; legendLabelFontSize=v; return out; };
-		out.legendLabelDelimiter = function(v) { if (!arguments.length) return legendLabelDelimiter; legendLabelDelimiter=v; return out; };
-		out.legendShapeWidth = function(v) { if (!arguments.length) return legendShapeWidth; legendShapeWidth=v; return out; };
-		out.legendShapeHeight = function(v) { if (!arguments.length) return legendShapeHeight; legendShapeHeight=v; return out; };
-		out.legendShapePadding = function(v) { if (!arguments.length) return legendShapePadding; legendShapePadding=v; return out; };
-		out.legendBoxMargin = function(v) { if (!arguments.length) return legendBoxMargin; legendBoxMargin=v; return out; };
-		out.legendBoxPadding = function(v) { if (!arguments.length) return legendBoxPadding; legendBoxPadding=v; return out; };
-		out.legendBoxCornerRadius = function(v) { if (!arguments.length) return legendBoxCornerRadius; legendBoxCornerRadius=v; return out; };
-		out.legendBoxOpacity = function(v) { if (!arguments.length) return legendBoxOpacity; legendBoxOpacity=v; return out; };
-		out.legendBoxFill = function(v) { if (!arguments.length) return legendBoxFill; legendBoxFill=v; return out; };
 
 		return out;
 	};
