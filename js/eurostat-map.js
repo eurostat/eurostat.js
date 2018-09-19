@@ -108,6 +108,8 @@
 		var legendBoxCornerRadius = legendBoxPadding;
 		var legendBoxOpacity = 0.5;
 		var legendBoxFill = "white";
+		var legendBoxWidth = legendBoxPadding*2 + Math.max(legendTitleWidth, legendShapeWidth + legendLabelOffset + legendLabelWrap);
+		var legendBoxHeight = legendBoxPadding*2 + legendTitleFontSize + legendShapeHeight + (1+legendShapeHeight+legendShapePadding)*(out.clnb()-1) +12;
 
 		var nutsrgFillStyle = "#eee"; //used for ps map
 		var nutsrgSelectionFillStyle = "purple";
@@ -393,9 +395,9 @@
 
 				if(type == "ch") {
 					//locate
-					var lggBRw = legendBoxPadding*2 + Math.max(legendTitleWidth, legendShapeWidth + legendLabelOffset + legendLabelWrap);
-					var lggBRh = legendBoxPadding*2 + legendTitleFontSize + legendShapeHeight + (1+legendShapeHeight+legendShapePadding)*(out.clnb()-1) +12;
-					lgg.attr("transform", "translate("+(width-lggBRw-legendBoxMargin+legendBoxPadding)+","+(legendTitleFontSize+legendBoxMargin+legendBoxPadding-6)+")");
+					legendBoxWidth = legendBoxWidth || legendBoxPadding*2 + Math.max(legendTitleWidth, legendShapeWidth + legendLabelOffset + legendLabelWrap);
+					legendBoxHeight = legendBoxHeight || legendBoxPadding*2 + legendTitleFontSize + legendShapeHeight + (1+legendShapeHeight+legendShapePadding)*(out.clnb()-1) +12;
+					lgg.attr("transform", "translate("+(width-legendBoxWidth-legendBoxMargin+legendBoxPadding)+","+(legendTitleFontSize+legendBoxMargin+legendBoxPadding-6)+")");
 
 					//remove previous content
 					lgg.selectAll("*").remove();
@@ -403,7 +405,7 @@
 					//background rectangle
 					var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", -legendBoxPadding).attr("y", -legendTitleFontSize-legendBoxPadding+6)
 					.attr("rx", legendBoxCornerRadius).attr("ry", legendBoxCornerRadius)
-					.attr("width", lggBRw).attr("height", lggBRh)
+					.attr("width", legendBoxWidth).attr("height", legendBoxHeight)
 					.style("fill", legendBoxFill).style("opacity", legendBoxOpacity);
 
 					//define legend
