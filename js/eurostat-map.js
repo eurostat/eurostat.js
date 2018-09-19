@@ -8,12 +8,8 @@
 (function(d3, EstLib) {
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
-	//add legend element for proportional circle
-	//https://github.com/susielu/d3-legend
-	//http://d3-legend.susielu.com/
-
+	//add legend element for proportional circle - http://d3-legend.susielu.com/#size
 	//add "no data" in legend
-
 	//domains as parameter
 	//deverging ramp -> define central value
 	//svg export: with rounded coordinates - d3.round. test + edit in inkscape + fix. Function/button "export as svg"
