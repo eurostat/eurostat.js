@@ -8,7 +8,7 @@
 (function(d3, EstLib) {
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
-	//add legend element for proportional circle - http://d3-legend.susielu.com/#size
+	//add legend element for proportional circle
 	//domains as parameter
 	//typologies: use ordinal scale: var ordinal = d3.scaleOrdinal().domain(["a", "b", "c", "d", "e"]).range([ ... ]);
 
@@ -116,6 +116,7 @@
 		out.legendTitleFontSize_ = 20;
 		out.legendTitleWidth_ = 140;
 		out.legendAscending_ = true;
+		out.legendCellNb_ = 4; // for ps only
 		out.legendLabelWrap_ = 140;
 		out.legendLabelOffset_ = 5;
 		out.legendLabelFontSize_ = 15;
@@ -128,8 +129,8 @@
 		out.legendBoxCornerRadius_ = out.legendBoxPadding_;
 		out.legendBoxOpacity_ = 0.5;
 		out.legendBoxFill_ = "white";
-		out.legendBoxWidth_ = out.legendBoxPadding_*2 + Math.max(out.legendTitleWidth_, out.legendShapeWidth_ + out.legendLabelOffset_ + out.legendLabelWrap_);
-		out.legendBoxHeight_ = out.legendBoxPadding*2 + out.legendTitleFontSize_ + out.legendShapeHeight_ + (1+out.legendShapeHeight_+out.legendShapePadding_)*(out.clnb_-1) +12;
+		out.legendBoxWidth_;
+		out.legendBoxHeight_;
 
 		//definition of generic accessors based on the name of each property name
 		for(var p in out)
@@ -374,7 +375,6 @@
 
 		//run when the classification has changed
 		out.updateClassificationAndStyle = function() {
-			//NB: no classification is required for proportional symbols map
 
 			if(out.type_ == "ch") {
 				//build list of classes and classification based on quantiles
@@ -387,10 +387,15 @@
 					if (!rg.properties.val) return "nd";
 					return +classif(+rg.properties.val);
 				})
+			} else if(out.type_ == "ps") {
+				classif = d3.scaleSqrt().domain([0, Math.max(...values)]).range([0, out.psMaxSize_*0.5]);
+			} else {
+				console.log("Unknown map type: "+out.type_)
+				return out;
 			}
 
 			//update legend
-			out.updateLegend(classif);
+			out.updateLegend();
 
 			//update style
 			out.updateStyle();
@@ -400,93 +405,139 @@
 
 		
 		out.updateLegend = function() {
+			var lgg = d3.select("#legendg");
+
 			//draw legend
-			if(out.showLegend_) {
-				var lgg = d3.select("#legendg");
+			if(!out.showLegend_) return out;
 
-				if(out.type_ == "ch") {
-					//locate
-					out.legendBoxWidth_ = out.legendBoxWidth_ || out.legendBoxPadding_*2 + Math.max(out.legendTitleWidth_, out.legendShapeWidth_ + out.legendLabelOffset_ + out.legendLabelWrap_);
-					out.legendBoxHeight_ = out.legendBoxHeight_ || out.legendBoxPadding_*2 + out.legendTitleFontSize_ + out.legendShapeHeight_ + (1+out.legendShapeHeight_+out.legendShapePadding_)*(out.clnb_-1) +12;
-					lgg.attr("transform", "translate("+(out.width_-out.legendBoxWidth_-out.legendBoxMargin_+out.legendBoxPadding_)+","+(out.legendTitleFontSize_+out.legendBoxMargin_+out.legendBoxPadding_-6)+")");
+			//remove previous content
+			lgg.selectAll("*").remove();
 
-					//remove previous content
-					lgg.selectAll("*").remove();
+			if(out.type_ == "ch") {
+				//locate
+				out.legendBoxWidth_ = out.legendBoxWidth_ || out.legendBoxPadding_*2 + Math.max(out.legendTitleWidth_, out.legendShapeWidth_ + out.legendLabelOffset_ + out.legendLabelWrap_);
+				out.legendBoxHeight_ = out.legendBoxHeight_ || out.legendBoxPadding_*2 + out.legendTitleFontSize_ + out.legendShapeHeight_ + (1+out.legendShapeHeight_+out.legendShapePadding_)*(out.clnb_-1) +12;
+				lgg.attr("transform", "translate("+(out.width_-out.legendBoxWidth_-out.legendBoxMargin_+out.legendBoxPadding_)+","+(out.legendTitleFontSize_+out.legendBoxMargin_+out.legendBoxPadding_-6)+")");
 
-					//background rectangle
-					var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", -out.legendBoxPadding_).attr("y", -out.legendTitleFontSize_-out.legendBoxPadding_+6)
-					.attr("rx", out.legendBoxCornerRadius_).attr("ry", out.legendBoxCornerRadius_)
-					.attr("width", out.legendBoxWidth_).attr("height", out.legendBoxHeight_)
-					.style("fill", out.legendBoxFill_).style("opacity", out.legendBoxOpacity_);
+				//background rectangle
+				var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", -out.legendBoxPadding_).attr("y", -out.legendTitleFontSize_-out.legendBoxPadding_+6)
+				.attr("rx", out.legendBoxCornerRadius_).attr("ry", out.legendBoxCornerRadius_)
+				.attr("width", out.legendBoxWidth_).attr("height", out.legendBoxHeight_)
+				.style("fill", out.legendBoxFill_).style("opacity", out.legendBoxOpacity_);
 
-					//define legend
-					//see http://d3-legend.susielu.com/#color
-					var colorLegend = d3.legendColor()
-					.title(out.legendTitleText_)
-					.titleWidth(out.legendTitleWidth_)
-					.useClass(true)
-					.scale(classif)
-					.ascending(out.legendAscending_)
-					.shapeWidth(out.legendShapeWidth_)
-					.shapeHeight(out.legendShapeHeight_)
-					.shapePadding(out.legendShapePadding_)
-					.labelFormat(d3.format(".2f"))
-					//.labels(d3.legendHelpers.thresholdLabels)
-					.labels(function(d) {
-						if (d.i === 0)
-							return "< " + d.generatedLabels[d.i].split(d.labelDelimiter)[1];
-						else if (d.i === d.genLength-1)
-							return ">=" + d.generatedLabels[d.i].split(d.labelDelimiter)[0];
-						else
-							return d.generatedLabels[d.i]
-					})
-					.labelDelimiter(out.legendLabelDelimiter_)
-					.labelOffset(out.legendLabelOffset_)
-					.labelWrap(out.legendLabelWrap_)
-					//.labelAlign("end") //?
-					//.classPrefix("from ")
-					//.orient("vertical")
-					//.shape("rect")
-					.on("cellover", function(ecl){
-						var sel = d3/*.select("#g_nutsrg")*/.selectAll("[ecl='"+ecl+"']");
-						sel.style("fill", out.nutsrgSelectionFillStyle_);
-						sel.attr("fill___", function(d) { d3.select(this).attr("fill"); });
-					})
-					.on("cellout", function(ecl){
-						var sel = d3/*.select("#g_nutsrg")*/.selectAll("[ecl='"+ecl+"']");
-						sel.style("fill", function(d) { d3.select(this).attr("fill___"); });
-					});
+				//define legend
+				//see http://d3-legend.susielu.com/#color
+				var d3Legend = d3.legendColor()
+				.title(out.legendTitleText_)
+				.titleWidth(out.legendTitleWidth_)
+				.useClass(true)
+				.scale(classif)
+				.ascending(out.legendAscending_)
+				.shapeWidth(out.legendShapeWidth_)
+				.shapeHeight(out.legendShapeHeight_)
+				.shapePadding(out.legendShapePadding_)
+				.labelFormat(d3.format(".2f"))
+				//.labels(d3.legendHelpers.thresholdLabels)
+				.labels(function(d) {
+					if (d.i === 0)
+						return "< " + d.generatedLabels[d.i].split(d.labelDelimiter)[1];
+					else if (d.i === d.genLength-1)
+						return ">=" + d.generatedLabels[d.i].split(d.labelDelimiter)[0];
+					else
+						return d.generatedLabels[d.i]
+				})
+				.labelDelimiter(out.legendLabelDelimiter_)
+				.labelOffset(out.legendLabelOffset_)
+				.labelWrap(out.legendLabelWrap_)
+				//.labelAlign("end") //?
+				//.classPrefix("from ")
+				//.orient("vertical")
+				//.shape("rect")
+				.on("cellover", function(ecl){
+					var sel = d3/*.select("#g_nutsrg")*/.selectAll("[ecl='"+ecl+"']");
+					sel.style("fill", out.nutsrgSelectionFillStyle_);
+					sel.attr("fill___", function(d) { d3.select(this).attr("fill"); });
+				})
+				.on("cellout", function(ecl){
+					var sel = d3/*.select("#g_nutsrg")*/.selectAll("[ecl='"+ecl+"']");
+					sel.style("fill", function(d) { d3.select(this).attr("fill___"); });
+				});
 
-					//make legend
-					lgg.call(colorLegend);
+				//make legend
+				lgg.call(d3Legend);
 
-					//apply fill style to legend elements
-					svg.selectAll(".swatch")
-					.attr("ecl", function() {
-						var ecl = d3.select(this).attr("class").replace("swatch ","");
-						if(!ecl||ecl==="nd") return "nd";
-						return ecl;
-					})
-					.attr("fill", function() {
-						var ecl = d3.select(this).attr("class").replace("swatch ","");
-						if(!ecl||ecl==="nd") return out.noDataFillStyle_ || "gray";
-						return out.classToFillStyle_( ecl, out.clnb_ );
-					})
-					//.attr("stroke", "black")
-					//.attr("stroke-width", 0.5)
-					;
+				//apply style to legend elements
+				svg.selectAll(".swatch")
+				.attr("ecl", function() {
+					var ecl = d3.select(this).attr("class").replace("swatch ","");
+					if(!ecl||ecl==="nd") return "nd";
+					return ecl;
+				})
+				.attr("fill", function() {
+					var ecl = d3.select(this).attr("class").replace("swatch ","");
+					if(!ecl||ecl==="nd") return out.noDataFillStyle_ || "gray";
+					return out.classToFillStyle_( ecl, out.clnb_ );
+				})
+				//.attr("stroke", "black")
+				//.attr("stroke-width", 0.5)
+				;
+				lgg.select(".legendTitle").style("font-size", out.legendTitleFontSize_);
+				lgg.selectAll("text.label").style("font-size", out.legendLabelFontSize_);
+				lgg.style("font-family", out.legendFontFamily_);
 
-					//apply style to legend elements
-					lgg.select(".legendTitle").style("font-size", out.legendTitleFontSize_);
-					lgg.selectAll("text.label").style("font-size", out.legendLabelFontSize_);
-					lgg.style("font-family", out.legendFontFamily_);
+			} else if(out.type_ == "ps") {
 
-				} else if(out.type_ == "ps") {
-					//TODO
-				} else {
-					console.log("Unknown map type: "+out.type_)
-				}
+				//locate
+				out.legendBoxWidth_ = out.legendBoxWidth_ || out.legendBoxPadding_*2 + Math.max(out.legendTitleWidth_, out.psMaxSize_ + out.legendLabelOffset_ + out.legendLabelWrap_);
+				out.legendBoxHeight_ = out.legendBoxHeight_ || out.legendBoxPadding_*2 + out.legendTitleFontSize_ + (out.psMaxSize_*0.7+out.legendShapePadding_)*(out.legendCellNb_)+35;
+				lgg.attr("transform", "translate("+(out.width_-out.legendBoxWidth_-out.legendBoxMargin_+out.legendBoxPadding_)+","+(out.legendTitleFontSize_+out.legendBoxMargin_+out.legendBoxPadding_-6)+")");
+
+				//background rectangle
+				var lggBR = lgg.append("rect").attr("id", "legendBR").attr("x", -out.legendBoxPadding_).attr("y", -out.legendTitleFontSize_-out.legendBoxPadding_+6)
+				.attr("rx", out.legendBoxCornerRadius_).attr("ry", out.legendBoxCornerRadius_)
+				.attr("width", out.legendBoxWidth_).attr("height", out.legendBoxHeight_)
+				.style("fill", out.legendBoxFill_).style("opacity", out.legendBoxOpacity_);
+
+				//define legend
+				//see http://d3-legend.susielu.com/#size
+				var d3Legend = d3.legendSize()
+				.title(out.legendTitleText_)
+				.titleWidth(out.legendTitleWidth_)
+				.scale(classif)
+				.cells(out.legendCellNb_+1)
+				.cellFilter(function(d){ if(!d.data) return false; return true; })
+				.orient("vertical")
+				.ascending(out.legendAscending_)
+				.shape("circle") //"rect", "circle", or "line"
+				.shapePadding(out.legendShapePadding_)
+				//.classPrefix("prefix")
+				.labels(function(d) {
+					return d.generatedLabels[d.i]
+				})
+				//.labelAlign("middle") //?
+				.labelFormat(d3.format(".0f"))
+				.labelOffset(out.legendLabelOffset_)
+				.labelWrap(out.legendLabelWrap_)
+				;
+
+				//make legend
+				lgg.call(d3Legend);
+
+				//apply style to legend elements
+				svg.selectAll(".swatch")
+			    .style("fill", out.psFill_)
+			    .style("fill-opacity", out.psFillOpacity_)
+			    .style("stroke", out.psStroke_)
+			    .style("stroke-width", out.psStrokeWidth_);
+
+			    lgg.select(".legendTitle").style("font-size", out.legendTitleFontSize_);
+				lgg.selectAll("text.label").style("font-size", out.legendLabelFontSize_);
+				lgg.style("font-family", out.legendFontFamily_);
+
+			} else {
+				console.log("Unknown map type: "+out.type_)
 			}
+
 			return out;
 		};
 		
@@ -507,13 +558,12 @@
 			} else if (out.type_ == "ps") {
 				//proportionnal symbol map
 				//see https://bl.ocks.org/mbostock/4342045 and https://bost.ocks.org/mike/bubble-map/
-				var radius = d3.scaleSqrt().domain([0, Math.max(...values)]).range([0, out.psMaxSize_*0.5]);
 
 				d3.select("#g_ps").selectAll("circle")
 				.data(nutsRG.sort(function(a, b) { return b.properties.val - a.properties.val; }))
 				.enter().append("circle")
 			    .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
-			    .attr("r", function(d) { return d.properties.val? radius(d.properties.val) : 0; })
+			    .attr("r", function(d) { return d.properties.val? classif(d.properties.val) : 0; })
 			    .attr("class","symbol")
 			    .on("mouseover", function(rg) {
 			    	d3.select(this).style("fill", out.nutsrgSelectionFillStyle_)
