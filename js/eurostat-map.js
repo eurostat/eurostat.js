@@ -540,7 +540,7 @@
 
 			return out;
 		};
-		
+
 
 		//run when the map style/legend has changed
 		out.updateStyle = function() {
