@@ -397,7 +397,7 @@
 					classif = d3.scaleThreshold().domain(out.threshold_).range( [...Array(out.clnb_).keys()] );
 				}
 
-				//apply classification based on value
+				//apply classification to nuts regions based on their value
 				svg.selectAll("path.nutsrg")
 				.attr("ecl", function(rg) {
 					if (!rg.properties.val) return "nd";
