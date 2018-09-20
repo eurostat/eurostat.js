@@ -20,7 +20,7 @@ TODO code start
 ## API
 
 | Method | Returns | Default value | Description |
-| --- | --- | --- |
+| --- | --- | --- | --- |
 | svgId | this or String |  |  |
 | type |  |  |  |
 | width |  |  |  |
@@ -51,6 +51,9 @@ TODO code start
 | psFillOpacity |  |  |  |
 | psStroke |  |  |  |
 | psStrokeWidth |  |  |  |
+
+
+
 | 
 | nutsrgFillStyle |  |  |  |
 | nutsrgSelectionFillStyle |  |  |  |
