@@ -14,7 +14,7 @@ Reusable library for web maps showing [Eurostat](https://ec.europa.eu/eurostat) 
 
 ## Quick start
 
-First, add the various required libraries and a SVG element where the map should appear:
+First, add the various required libraries:
 
 ```html
 <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -30,13 +30,17 @@ First, add the various required libraries and a SVG element where the map should
 <script src="https://cdn.jsdelivr.net/gh/eurostat/eurostat.js@X.Y.Z/js/eurostat-lib.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/eurostat/eurostat.js@X.Y.Z/js/eurostat-map.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/eurostat/eurostat.js@X.Y.Z/js/eurostat-tooltip.js"></script>
+```
 
-...
+Replace *X.Y.Z* by the version number of the last delivery (see [here](https://github.com/eurostat/eurostat.js/releases)).
 
+Then, add a SVG element where the map should appear:
+
+```html
 <svg id="map"></svg>
 ```
 
-Then, specify the content and style of your map in javascript with:
+And finally, specify the content and style of your map in javascript with for example:
 
 ```javascript
 EstLib.map()
@@ -50,7 +54,7 @@ EstLib.map()
 .build();
 ```
 
-This defines a choropleth map showing population density (Eurostat database *[demo_r_d3dens](http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_d3dens)*) in 2016. See [the result](https://bl.ocks.org/jgaffuri/raw/0d6e1b1c6f9e1297829f38b9c37737fe/) and [the code](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe)
+This code draws a map showing population density in 2016 (Eurostat database *[demo_r_d3dens](http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_d3dens)*). See [the result](https://bl.ocks.org/jgaffuri/raw/0d6e1b1c6f9e1297829f38b9c37737fe/) and [the code](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe)
 
 
 ## Documentation
