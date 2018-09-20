@@ -25,6 +25,7 @@
 	//transform nice nuts map using eurostat-map.js?
 	//d3.v5.js ?
 	//https://github.com/d3/d3-shape#symbols
+	//proportional circles: extend to squares + other symbols?
 
 	//map with proportionnal rectangle (only height varies)/squares
 	//composition chroploth + prop circle
@@ -129,8 +130,8 @@
 		out.legendBoxCornerRadius_ = out.legendBoxPadding_;
 		out.legendBoxOpacity_ = 0.5;
 		out.legendBoxFill_ = "white";
-		out.legendBoxWidth_;
-		out.legendBoxHeight_;
+		out.legendBoxWidth_ = 250;
+		out.legendBoxHeight_ = 350;
 
 		//definition of generic accessors based on the name of each property name
 		for(var p in out)
