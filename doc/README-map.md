@@ -19,7 +19,78 @@ TODO code start
 
 ## API
 
-TODO
+| Method | Returns | Default value | Description |
+| --- | --- | --- |
+| svgId | this or String |  |  |
+| type |  |  |  |
+| width |  |  |  |
+| ebcode |  |  |  |
+| dimensions |  |  |  |
+| unitText |  |  |  |
+| scale |  |  |  |
+| scaleExtent |  |  |  |
+| proj |  |  |  |
+| nutsLvl |  |  |  |
+| NUTSyear |  |  |  |
+| lg |  |  |  |
+| showTooltip |  |  |  |
+|  |  |  |  |
+| classifMethod |  |  |  |
+| threshold |  |  |  |
+| makeClassifNice |  |  |  |
+| clnb |  |  |  |
+| colorFun |  |  |  |
+| classToFillStyle |  |  |  |
+| filtersDefinitionFun |  |  |  |
+| noDataFillStyle |  |  |  |
+| noDataText |  |  |  |
+|  |  |  |  |
+| psMaxSize |  |  |  |
+| psMinSize |  |  |  |
+| psFill |  |  |  |
+| psFillOpacity |  |  |  |
+| psStroke |  |  |  |
+| psStrokeWidth |  |  |  |
+| 
+| nutsrgFillStyle |  |  |  |
+| nutsrgSelectionFillStyle |  |  |  |
+| nutsbnStroke |  |  |  |
+| nutsbnStrokeWidth |  |  |  |
+| cntrgFillStyle |  |  |  |
+| cntrgSelectionFillStyle |  |  |  |
+| cntbnStroke |  |  |  |
+| cntbnStrokeWidth |  |  |  |
+| drawGraticule |  |  |  |
+| graticuleStroke |  |  |  |
+| graticuleStrokeWidth |  |  |  |
+| seaFillStyle |  |  |  |
+| drawCoastalMargin |  |  |  |
+| coastalMarginColor |  |  |  |
+| 
+| showLegend |  |  |  |
+| legendFontFamily |  |  |  |
+| legendTitleText |  |  |  |
+| legendTitleFontSize |  |  |  |
+| legendTitleWidth |  |  |  |
+| legendAscending |  |  |  |
+| legendCellNb |  |  |  |
+| legendLabelWrap |  |  |  |
+| legendLabelDecNb |  |  |  |
+| legendLabelOffset |  |  |  |
+| legendLabelFontSize |  |  |  |
+| legendLabelDelimiter |  |  |  |
+| legendShapeWidth |  |  |  |
+| legendShapeHeight |  |  |  |
+| legendShapePadding |  |  |  |
+| legendBoxMargin |  |  |  |
+| legendBoxPadding |  |  |  |
+| legendBoxCornerRadius |  |  |  |
+| legendBoxOpacity |  |  |  |
+| legendBoxFill |  |  |  |
+| legendBoxWidth |  |  |  |
+| legendBoxHeight |  |  |  |
+
+
 
 ## Technical details
 
