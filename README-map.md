@@ -2,7 +2,7 @@
 
 Reusable library to publish web maps showing Eurostat data.
 
-(show image)
+TODO show image
 
 ## Examples
 
@@ -12,10 +12,17 @@ Reusable library to publish web maps showing Eurostat data.
 
 ## Usage
 
-Dependencies
-Code start
+TODO Dependencies
+TODO code start
 
 ## API
 
+TODO
 
+## Technical details
 
+Maps based on <a href="http://ec.europa.eu/eurostat/web/nuts/overview" target="_blank">NUTS regions</a> rely on [Nuts2json API](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md). Statistical data are accessed using [Eurostat REST webservice](http://ec.europa.eu/eurostat/web/json-and-unicode-web-services/getting-started/rest-request) for [JSON-stat](https://json-stat.org/) data. The data are decoded and queried using [JSON-stat library](https://json-stat.com/).
+
+## Support and contribution
+
+Feel free to [ask support](https://github.com/eurostat/eurostat.js/issues/new), fork the project or simply star it (it's always a pleasure).
