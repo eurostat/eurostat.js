@@ -51,10 +51,7 @@ TODO code start
 | psFillOpacity |  |  |  |
 | psStroke |  |  |  |
 | psStrokeWidth |  |  |  |
-
-
-
-| 
+|  |  |  |  |
 | nutsrgFillStyle |  |  |  |
 | nutsrgSelectionFillStyle |  |  |  |
 | nutsbnStroke |  |  |  |
@@ -69,7 +66,7 @@ TODO code start
 | seaFillStyle |  |  |  |
 | drawCoastalMargin |  |  |  |
 | coastalMarginColor |  |  |  |
-| 
+|  |  |  |  |
 | showLegend |  |  |  |
 | legendFontFamily |  |  |  |
 | legendTitleText |  |  |  |
@@ -92,7 +89,6 @@ TODO code start
 | legendBoxFill |  |  |  |
 | legendBoxWidth |  |  |  |
 | legendBoxHeight |  |  |  |
-
 
 
 ## Technical details
