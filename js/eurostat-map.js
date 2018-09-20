@@ -8,10 +8,13 @@
 (function(d3, EstLib) {
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
+	//complete doc
+	//decompose
+
 	//youg/kos
 	//diverging ramp -> define central value (0, average, 100, etc.)
-	//doc
 	//add "no data" in legend
+
 	//svg export: with rounded coordinates - d3.round. test + edit in inkscape + fix. Function/button "export as svg"
 	//js dependencies
 	//choice

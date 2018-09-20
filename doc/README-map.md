@@ -14,7 +14,7 @@ Reusable library for web maps showing [Eurostat](https://ec.europa.eu/eurostat) 
 
 ## Quick start
 
-First, add the various required libraries:
+First, add the various required libraries, replacing *X.Y.Z* with the version number of the last release (see [here](https://github.com/eurostat/eurostat.js/releases)):
 
 ```html
 <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -31,8 +31,6 @@ First, add the various required libraries:
 <script src="https://cdn.jsdelivr.net/gh/eurostat/eurostat.js@X.Y.Z/js/eurostat-map.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/eurostat/eurostat.js@X.Y.Z/js/eurostat-tooltip.js"></script>
 ```
-
-Replace *X.Y.Z* by the version number of the last delivery (see [here](https://github.com/eurostat/eurostat.js/releases)).
 
 Then, add a SVG element where the map should appear:
 
