@@ -386,7 +386,6 @@
 				if(out.classifMethod_ === "quantile") {
 					//https://github.com/d3/d3-scale#quantile-scales
 					classif = d3.scaleQuantile().domain(values).range( [...Array(out.clnb_).keys()] );
-					classif.quantiles();
 				} else if(out.classifMethod_ === "equinter") {
 					//https://github.com/d3/d3-scale#quantize-scales
 					classif = d3.scaleQuantize().domain([d3.min(values),d3.max(values)]).range( [...Array(out.clnb_).keys()] );
