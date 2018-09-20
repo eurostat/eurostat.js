@@ -11,6 +11,7 @@
 	//domains as parameter
 	//typologies: use ordinal scale: var ordinal = d3.scaleOrdinal().domain(["a", "b", "c", "d", "e"]).range([ ... ]);
 
+
 	//doc
 	//add "no data" in legend
 	//deverging ramp -> define central value (0, average, 100, etc.)
@@ -66,7 +67,9 @@
 		//show tooltip text when passing over map regions
 		out.showTooltip_ = true;
 
-		//the number of classes of the map
+		out.classMeth_ = "quantile"; // or: equinter  threshold
+		out.threshold_ = [0];
+		//the number of classes of the classification
 		out.clnb_ = 7;
 		//for choropleth maps, color interpolation function. see https://github.com/d3/d3-scale-chromatic/   -   ex: interpolateGnBu
 		out.colorFun_ = d3.interpolateYlOrRd;
@@ -119,6 +122,7 @@
 		out.legendAscending_ = true;
 		out.legendCellNb_ = 4; // for ps only
 		out.legendLabelWrap_ = 140;
+		out.legendLabelDecNb_ = 2;
 		out.legendLabelOffset_ = 5;
 		out.legendLabelFontSize_ = 15;
 		out.legendLabelDelimiter_ = " - ";
@@ -378,9 +382,17 @@
 		out.updateClassificationAndStyle = function() {
 
 			if(out.type_ == "ch") {
-				//build list of classes and classification based on quantiles
-				classif = d3.scaleQuantile().domain(values).range( [...Array(out.clnb_).keys()] );
-				classif.quantiles();
+				if(out.classMeth_ === "quantile") {
+					//build list of classes and classification based on quantiles
+					classif = d3.scaleQuantile().domain(values).range( [...Array(out.clnb_).keys()] );
+					classif.quantiles();
+				} else if(out.classMeth_ === "equinter") {
+					//TODO
+				} else if(out.classMeth_ === "threshold") {
+					//https://github.com/d3/d3-scale#threshold-scales
+					out.clnb_ = out.threshold_.length + 1;
+					classif = d3.scaleThreshold().domain(out.threshold_).range( [...Array(out.clnb_).keys()] );
+				}
 
 				//apply classification based on value
 				svg.selectAll("path.nutsrg")
@@ -437,7 +449,7 @@
 				.shapeWidth(out.legendShapeWidth_)
 				.shapeHeight(out.legendShapeHeight_)
 				.shapePadding(out.legendShapePadding_)
-				.labelFormat(d3.format(".2f"))
+				.labelFormat(d3.format(".0"+out.legendLabelDecNb_+"f"))
 				//.labels(d3.legendHelpers.thresholdLabels)
 				.labels(function(d) {
 					if (d.i === 0)
@@ -516,7 +528,7 @@
 					return d.generatedLabels[d.i]
 				})
 				//.labelAlign("middle") //?
-				.labelFormat(d3.format(".0f"))
+				.labelFormat(d3.format("."+out.legendLabelDecNb_+"f"))
 				.labelOffset(out.legendLabelOffset_)
 				.labelWrap(out.legendLabelWrap_)
 				;
