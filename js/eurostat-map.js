@@ -67,8 +67,9 @@
 		//show tooltip text when passing over map regions
 		out.showTooltip_ = true;
 
-		out.classMeth_ = "quantile"; // or: equinter  threshold
+		out.classifMethod_ = "quantile"; // or: equinter  threshold
 		out.threshold_ = [0];
+		out.makeClassifNice_ = true;
 		//the number of classes of the classification
 		out.clnb_ = 7;
 		//for choropleth maps, color interpolation function. see https://github.com/d3/d3-scale-chromatic/   -   ex: interpolateGnBu
@@ -382,15 +383,17 @@
 		out.updateClassificationAndStyle = function() {
 
 			if(out.type_ == "ch") {
-				if(out.classMeth_ === "quantile") {
-					//build list of classes and classification based on quantiles
+				if(out.classifMethod_ === "quantile") {
+					//https://github.com/d3/d3-scale#quantile-scales
 					classif = d3.scaleQuantile().domain(values).range( [...Array(out.clnb_).keys()] );
 					classif.quantiles();
-				} else if(out.classMeth_ === "equinter") {
-					//TODO
-				} else if(out.classMeth_ === "threshold") {
+				} else if(out.classifMethod_ === "equinter") {
+					//https://github.com/d3/d3-scale#quantize-scales
+					classif = d3.scaleQuantize().domain([d3.min(values),d3.max(values)]).range( [...Array(out.clnb_).keys()] );
+					if(out.makeClassifNice_) classif.nice();
+				} else if(out.classifMethod_ === "threshold") {
 					//https://github.com/d3/d3-scale#threshold-scales
-					out.clnb_ = out.threshold_.length + 1;
+					out.clnb(out.threshold_.length + 1);
 					classif = d3.scaleThreshold().domain(out.threshold_).range( [...Array(out.clnb_).keys()] );
 				}
 
