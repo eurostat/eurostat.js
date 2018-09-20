@@ -15,12 +15,14 @@
 	//diverging ramp -> define central value (0, average, 100, etc.)
 	//add "no data" in legend
 
+	//v1
+
+	//adopt data cache ?
+	//support data flags
 	//svg export: with rounded coordinates - d3.round. test + edit in inkscape + fix. Function/button "export as svg"
 	//js dependencies
 	//choice
-	//support data flags
 	//insets (with nuts2json)
-	//adopt data cache ?
 	//transform nice nuts map using eurostat-map.js?
 	//d3.v5.js ?
 	//https://github.com/d3/d3-shape#symbols
