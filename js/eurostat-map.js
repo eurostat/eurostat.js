@@ -8,9 +8,6 @@
 (function(d3, EstLib) {
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
-	//typologies: use ordinal scale: var ordinal = d3.scaleOrdinal().domain(["a", "b", "c", "d", "e"]).range([ ... ]);
-	//d3.scaleOrdinal().domain(["a", "b", "c", "d", "e"]).range([ ... ]);
-
 	//diverging ramp -> define central value (0, average, 100, etc.)
 	//doc
 	//add "no data" in legend
@@ -24,6 +21,7 @@
 	//d3.v5.js ?
 	//https://github.com/d3/d3-shape#symbols
 	//proportional circles: extend to squares + other symbols?
+	//typologies: use ordinal scale: var ordinal = d3.scaleOrdinal().domain(["a", "b", "c", "d", "e"]).range([ ... ]);
 
 	//map with proportionnal rectangle (only height varies)/squares
 	//composition chroploth + prop circle
