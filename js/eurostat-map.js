@@ -11,7 +11,6 @@
 	//domains as parameter
 	//typologies: use ordinal scale: var ordinal = d3.scaleOrdinal().domain(["a", "b", "c", "d", "e"]).range([ ... ]);
 
-
 	//doc
 	//add "no data" in legend
 	//deverging ramp -> define central value (0, average, 100, etc.)
