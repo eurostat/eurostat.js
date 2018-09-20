@@ -8,7 +8,6 @@
 (function(d3, EstLib) {
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
-	//add legend element for proportional circle
 	//domains as parameter
 	//typologies: use ordinal scale: var ordinal = d3.scaleOrdinal().domain(["a", "b", "c", "d", "e"]).range([ ... ]);
 
@@ -83,6 +82,7 @@
 		//proportional circles
 		//the maximum size for the proportional circles
 		out.psMaxSize_ = 30;
+		out.psMinSize_ = 0.8; out.psMinValue_ = 0;
 		out.psFill_ = "#B45F04";
 		out.psFillOpacity_ = 0.7;
 		out.psStroke_ = "#fff";
@@ -389,7 +389,7 @@
 					return +classif(+rg.properties.val);
 				})
 			} else if(out.type_ == "ps") {
-				classif = d3.scaleSqrt().domain([0, Math.max(...values)]).range([0, out.psMaxSize_*0.5]);
+				classif = d3.scaleSqrt().domain([out.psMinValue_, Math.max(...values)]).range([out.psMinSize_*0.5, out.psMaxSize_*0.5]);
 			} else {
 				console.log("Unknown map type: "+out.type_)
 				return out;
