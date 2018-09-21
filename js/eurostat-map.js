@@ -49,9 +49,9 @@
 		//the width of the svg element, in px
 		out.width_ = 800;
 		//the code of the eurobase database
-		out.ebcode_ = "demo_r_d3dens";
+		out.datasetCode_ = "demo_r_d3dens";
 		//the dimension projector to extract the statistical data
-		out.dimensions_ = { lastTimePeriod:1 };
+		out.filters_ = { lastTimePeriod:1 };
 		//the map lod, among 3M, 10M, 20M, 60M
 		out.scale_ = "20M";
 		//if the map is zoomable, specify the scale extent
@@ -195,7 +195,8 @@
 		//get stat data
 		out.updateStatData = function() {
 			statData = null;
-			d3.queue().defer(d3.json, EstLib.getEstatDataURL(out.ebcode_, out.dimensions_)).await(
+			out.filters_["geoLevel"] = out.nutsLvl_===0?"country":"nuts"+out.nutsLvl_;
+			d3.queue().defer(d3.json, EstLib.getEstatDataURL(out.datasetCode_, out.filters_)).await(
 				function(error, data___) {
 					statData = JSONstat(data___).Dataset(0);
 					if(!nutsData) return;
