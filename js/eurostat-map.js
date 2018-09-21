@@ -8,10 +8,13 @@
 (function(d3, EstLib) {
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
+	//fix dot: deploy
+	//unemployment
 	//get time
 	//test precision
 	//complete doc
 	//decompose?
+	//constraint pan
 
 	//youg/kos
 
@@ -126,6 +129,7 @@
 
 		//override of some accessors
 		out.colorFun = function(v) { if (!arguments.length) return out.colorFun_; out.colorFun_=v; out.classToFillStyle_ = EstLib.getColorLegend(out.colorFun_); return out; };
+		out.threshold = function(v) { if (!arguments.length) return out.threshold_; out.threshold_=v; out.clnb(v.length+1); return out; };
 
 
 		var statData, values, nutsData, nutsRG;
@@ -209,11 +213,6 @@
 			//add additional filters for fill patterns for example
 			out.filtersDefinitionFun_(svg, out.clnb_);
 
-			//draw background rectangle
-			svg.append("rect").attr("id", "sea").attr("x", 0).attr("y", 0)
-				.attr("width", out.width_).attr("height", height)
-				.style("fill", out.seaFillStyle_);
-
 			//prepare drawing group
 			var zg = svg.append("g").attr("id","zoomgroup").attr("transform", "translate(0,0)");
 			if(out.scaleExtent_) {
@@ -227,6 +226,11 @@
 							zg.attr("transform", d3.event.transform);
 						}));
 			}
+
+			//draw background rectangle
+			zg.append("rect").attr("id", "sea").attr("x", 0).attr("y", 0)
+				.attr("width", out.width_).attr("height", height)
+				.style("fill", out.seaFillStyle_);
 
 			if(out.drawCoastalMargin_) {
 				//draw coastal margin
