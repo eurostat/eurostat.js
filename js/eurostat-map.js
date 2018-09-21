@@ -10,14 +10,14 @@
 
 	//test precision
 	//complete doc
-	//decompose
+	//decompose?
 
 	//youg/kos
+
+	//*** v1 ***
+
 	//diverging ramp -> define central value (0, average, 100, etc.)
 	//add "no data" in legend
-
-	//v1
-
 	//adopt data cache ?
 	//support data flags
 	//svg export: with rounded coordinates - d3.round. test + edit in inkscape + fix. Function/button "export as svg"
