@@ -8,17 +8,15 @@
 (function(d3, EstLib) {
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
-	//unemployment
-	//get time
 	//test precision
 	//complete doc
 	//decompose?
-	//constraint pan
 
 	//youg/kos
 
 	//*** v1 ***
 
+	//constraint pan
 	//propo circles: make nicer legend...
 	//diverging ramp -> define central value (0, average, 100, etc.)
 	//add "no data" in legend
@@ -583,6 +581,17 @@
 				console.log("Unexpected map type: "+out.type_);
 			}
 			return out;
+		};
+
+
+		//retrieve the time stamp of the map, even if not specified in the dimension initially
+		out.getTime = function() {
+			var t = out.filters_.time;
+			if(t) return t;
+			if(!statData) return;
+			t = statData.Dimension("time");
+			if(!t || !t.id || t.id.length==0) return;
+			return t.id[0]
 		};
 
 		return out;

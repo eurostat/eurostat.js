@@ -19,27 +19,27 @@
 
 	EstLib.map()
 	.scale("60M")
-	.nutsLvl(3)
 	.width(1000)
 
-	.datasetCode("demo_r_d3dens").filters( opts.time? { time : opts.time } : { lastTimePeriod:1 } )
-	//.datasetCode("demo_r_pjangrp3").filters({ age:"TOTAL",sex:"T",unit:"NR", time : 2016 })
-	//.datasetCode("ilc_li41").filters( { unit:"PC", time:2015 } )
-	//.datasetCode("crim_gen_reg").filters( { unit:"NR", time:2010, iccs:"ICCS0101" } )
+	.nutsLvl(3).datasetCode("demo_r_d3dens").filters( opts.time? { time : opts.time } : { lastTimePeriod:1 } )
+	//.nutsLvl(3).datasetCode("demo_r_pjangrp3").filters({ age:"TOTAL",sex:"T",unit:"NR", time : 2016 })
+	//.nutsLvl(3).datasetCode("ilc_li41").filters( { unit:"PC", time:2015 } )
+	//.nutsLvl(3).datasetCode("crim_gen_reg").filters( { unit:"NR", time:2010, iccs:"ICCS0101" } )
+	//.nutsLvl(2).datasetCode("lfst_r_lfu3rt").filters( { unit:"PC", lastTimePeriod:1, sex:"T", age:"Y_GE15" } )
 
 	//.unitText("unit")
 	//.colorFun(d3.interpolateGnBu)
-	.clnb(7)
+	.clnb(9)
 	.drawCoastalMargin(false)
-	.filtersDefinitionFun(EstLib.getFillPatternDefinitionFun({ patternSize: 5, minSize: 1, maxSize: 5.5, shape: "circle", bckColor: "white", symbColor: "black" } ))
-	.classToFillStyle(EstLib.getFillPatternLegend())
+	//.filtersDefinitionFun(EstLib.getFillPatternDefinitionFun({ patternSize: 5, minSize: 1, maxSize: 5.5, shape: "circle", bckColor: "white", symbColor: "black" } ))
+	//.classToFillStyle(EstLib.getFillPatternLegend())
 	//.type("ps")
 	//.psMaxSize(50)
 	//.legendBoxHeight(250)
 	//.legendBoxWidth(200)
 	//.legendLabelWrap(200)
-	.classifMethod("threshold") //quantile equinter threshold
-	.threshold([30,50,75,100,150,300,850,1500])
+	//.classifMethod("threshold") //quantile equinter threshold
+	//.threshold([30,50,75,100,150,300,850,1500])
 	//.legendLabelDecNb(0)
 	.set(opts)
 	.build();
