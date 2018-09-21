@@ -8,6 +8,7 @@
 (function(d3, EstLib) {
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
+	//get time
 	//test precision
 	//complete doc
 	//decompose?
