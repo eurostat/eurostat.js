@@ -92,8 +92,8 @@ EstLib.map()
 |  |  |  |  |
 | nutsrgFillStyle | this or String | "#eee" |  |
 | nutsrgSelectionFillStyle | this or String | "#purple" |  |
-| nutsbnStroke | this or String | {0:"#777",1:"#777",2:"#777",3:"#777",oth:"#444",co:"#1f78b4"} |  |
-| nutsbnStrokeWidth | this or number | {0:1,1:0.2,2:0.2,3:0.2,oth:1,co:1} |  |
+| nutsbnStroke | this or String | {0:"#777", 1:"#777", 2:"#777", 3:"#777", oth:"#444", co:"#1f78b4"} |  |
+| nutsbnStrokeWidth | this or number | {0:1, 1:0.2, 2:0.2, 3:0.2, oth:1, co:1} |  |
 | cntrgFillStyle | this or String | "lightgray" |  |
 | cntrgSelectionFillStyle | this or String | "darkgray" |  |
 | cntbnStroke | this or String | "#777" |  |
