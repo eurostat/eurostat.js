@@ -8,6 +8,7 @@
 (function(d3, EstLib) {
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
+	//test precision
 	//complete doc
 	//decompose
 
@@ -42,53 +43,32 @@
 		//the output object
 		var out = {};
 
-		//the id of the svg element to draw into
 		out.svgId_ = "map";
-		//the map type: "ch" for choropleth and "ps" for proportionnal circles
 		out.type_ = "ch"; //or "ps"
-		//the width of the svg element, in px
 		out.width_ = 800;
-		//the code of the eurobase database
 		out.datasetCode_ = "demo_r_d3dens";
-		//the dimension projector to extract the statistical data
 		out.filters_ = { lastTimePeriod:1 };
-		//the precision of the statistical data to retrieve (nb of decimal places)
 		out.precision_ = 2;
-		//the map lod, among 3M, 10M, 20M, 60M
-		out.scale_ = "20M";
-		//if the map is zoomable, specify the scale extent
+		out.scale_ = "20M"; //3M, 10M, 20M, 60M
 		out.scaleExtent_ = [1,4];
-		//the map projection (epsg code)
 		out.proj_ = "3035";
-		//the map nuts level, from 0 to 3
 		out.nutsLvl_ = 3;
-		//the NUTS version, among 2010, 2013, 2016
-		out.NUTSyear_ = 2013;
-		//the langage
+		out.NUTSyear_ = 2013; //2010, 2013, 2016
 		out.lg_ = "en";
-		//show tooltip text when passing over map regions
 		out.showTooltip_ = true;
-		//the text to use in the tooltip for the unit of the values
 		out.unitText_ = "";
 
 		out.classifMethod_ = "quantile"; // or: equinter  threshold
 		out.threshold_ = [0];
 		out.makeClassifNice_ = true;
-		//the number of classes of the classification
 		out.clnb_ = 7;
-		//for choropleth maps, color interpolation function. see https://github.com/d3/d3-scale-chromatic/   -   ex: interpolateGnBu
-		out.colorFun_ = d3.interpolateYlOrRd;
-		//for choropleth maps, the function returning the fill style depending on the class number and the number of classes
+		out.colorFun_ = d3.interpolateYlOrRd; // see https://github.com/d3/d3-scale-chromatic/   -   ex: interpolateGnBu
 		out.classToFillStyle_ = EstLib.getColorLegend(out.colorFun_);
-		//the function defining some fill patterns to be reused for the choropleth map
 		out.filtersDefinitionFun_ = function() {};
-		//fill color for no data regions
 		out.noDataFillStyle_ = "lightgray";
-		//text to show for no data case
 		out.noDataText_ = "No data";
 
 		//proportional circles
-		//the maximum size for the proportional circles
 		out.psMaxSize_ = 30;
 		out.psMinSize_ = 0.8; out.psMinValue_ = 0;
 		out.psFill_ = "#B45F04";
@@ -105,17 +85,11 @@
 		out.cntrgSelectionFillStyle_ = "darkgray";
 		out.cntbnStroke_ = "#777";
 		out.cntbnStrokeWidth_ = 1;
-		//draw the graticule
 		out.drawGraticule_ = true;
-		//graticule stroke style
 		out.graticuleStroke_ = "gray";
-		//graticule stroke width
 		out.graticuleStrokeWidth_ = 1;
-		//sea fill style
 		out.seaFillStyle_ = "#b3cde3";
-		//draw the coastal margin
 		out.drawCoastalMargin_ = true;
-		//the color of the coastal margin
 		out.coastalMarginColor_ = "white";
 
 		//legend
@@ -198,6 +172,7 @@
 		out.updateStatData = function() {
 			statData = null;
 			out.filters_["geoLevel"] = out.nutsLvl_+""==="0"?"country":"nuts"+out.nutsLvl_;
+			out.filters_["precision"] = out.precision_;
 			d3.queue().defer(d3.json, EstLib.getEstatDataURL(out.datasetCode_, out.filters_)).await(
 				function(error, data___) {
 					statData = JSONstat(data___).Dataset(0);

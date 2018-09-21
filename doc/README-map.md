@@ -62,6 +62,7 @@ EstLib.map()
 | width | this or int | 800 | The width of the map in pixel. |
 | datasetCode | this or String | "demo_r_d3dens" for population density map. | The Eurostat database code to retrieve the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) to find them. |
 | filters | This or Object | { lastTimePeriod : 1 } |  The Eurostat dimension codes to filter the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) or [here](https://ec.europa.eu/eurostat/web/json-and-unicode-web-services/getting-started/query-builder) to find them.  |
+| precision | this or int | 2 | The precision of the statistical figures to retrieve (number of decimal places). |
 | scale | this or String | "20M" | The simplification level of the map, among "10M", "20M", "60M". |
 | scaleExtent | this or Array | [1,4] | The zoom extent. Set to null to forbid zooming. |
 | proj | this or String | "3035" | The map projection code. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md)  |
