@@ -71,25 +71,25 @@ EstLib.map()
 | lg | this or String | "en" | The language. |
 | showTooltip | this or boolean | true | A boolean value indicating if tooltip should appear on the map. |
 | unitText | this or String | "" | The text to display to show the unit in the tooltip |
-|  |  |  |  |
-| classifMethod | this or String | "quantile" | Among "quantile", "equinter", "threshold" |
-| threshold | this or Array | [0] |  |
-| makeClassifNice | this or boolean | true |  |
-| clnb | this or int | 7 |  |
-| colorFun | thins or function | d3.interpolateYlOrRd | see https://github.com/d3/d3-scale-chromatic/ |
-| classToFillStyle | this or function | EstLib.getColorLegend(colorFun()) |  |
-| filtersDefinitionFun | this or function | function() {} |  |
-| noDataFillStyle | this or String | "lightgray" |  |
-| noDataText | this or String | "No data" |  |
-|  |  |  |  |
-| psMaxSize | this or number | 30 |  |
-| psMinSize | this or number | 0.8 |  |
-| psMinValue | this or number | 0 |  |
-| psFill |  | this or String | "#B45F04" |
-| psFillOpacity | this or number | 0.7 |  |
-| psStroke | this or String | "#fff" |  |
-| psStrokeWidth | this or number | 0.5 |  |
-|  |  |  |  |
+| **Choropleth map (type="ch")** |  |  |  |
+| classifMethod | this or String | "quantile" | The classification method. Possible values are "quantile", "equinter" for equal intervals, and "threshold" for user defined threshol (see threshold method). |
+| threshold | this or Array | [0] | classifMethod="threshold", the breaks of the classification. |
+| makeClassifNice | this or boolean | true | Make nice break values. Works only for classifMethod="equinter". |
+| clnb | this or int | 7 | The number of classes. |
+| colorFun | thins or function | d3.interpolateYlOrRd | The color function, as defined in https://github.com/d3/d3-scale-chromatic/ |
+| classToFillStyle | this or function | EstLib.getColorLegend(colorFun()) | A function returning a fill style for each class number. |
+| filtersDefinitionFun | this or function | function() {} | A function defining SVG filter elements. To be used to defined fill patterns.  |
+| noDataFillStyle | this or String | "lightgray" | The fill style to be used for regions where no data is available. |
+| noDataText | this or String | "No data" | The text to show for regions where no data is available.  |
+| **Proportional symbol map (type="ps")** |  |  |  |
+| psMaxSize | this or number | 30 | The maximum size, in pixel. |
+| psMinSize | this or number | 0.8 | The minimum size, for non null values, in pixel. |
+| psMinValue | this or number | 0 | The minimum value of the range domain. |
+| psFill |  | this or String | "#B45F04" | The fill color or pattern of the symbol. |
+| psFillOpacity | this or number | 0.7 | The opacity of the symbol, from 0 to 1. |
+| psStroke | this or String | "#fff" | The stroke color of pattern of the symbol. |
+| psStrokeWidth | this or number | 0.5 | The width of the stroke. |
+| **Map background style** |  |  |  |
 | nutsrgFillStyle | this or String | "#eee" |  |
 | nutsrgSelectionFillStyle | this or String | "#purple" |  |
 | nutsbnStroke | this or String | {0:"#777", 1:"#777", 2:"#777", 3:"#777", oth:"#444", co:"#1f78b4"} |  |
