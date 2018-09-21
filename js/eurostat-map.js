@@ -174,8 +174,12 @@
 		//get stat data
 		out.updateStatData = function() {
 			statData = null;
-			out.filters_["geoLevel"] = out.nutsLvl_+""==="0"?"country":"nuts"+out.nutsLvl_;
+			//set precision
 			out.filters_["precision"] = out.precision_;
+			//select only required geo groups, depending on the specified nuts level
+			out.filters_["geoLevel"] = out.nutsLvl_+""==="0"?"country":"nuts"+out.nutsLvl_;
+			//force filtering of euro-geo-aggregates
+			out.filters_["filterNonGeo"] = 1;
 			d3.queue().defer(d3.json, EstLib.getEstatDataURL(out.datasetCode_, out.filters_)).await(
 				function(error, data___) {
 					statData = JSONstat(data___).Dataset(0);
