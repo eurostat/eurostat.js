@@ -8,7 +8,6 @@
 (function(d3, EstLib) {
 	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
-	//fix dot: deploy
 	//unemployment
 	//get time
 	//test precision
@@ -20,6 +19,7 @@
 
 	//*** v1 ***
 
+	//propo circles: make nicer legend...
 	//diverging ramp -> define central value (0, average, 100, etc.)
 	//add "no data" in legend
 	//adopt data cache ?
