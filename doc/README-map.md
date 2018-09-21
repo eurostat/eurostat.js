@@ -61,7 +61,7 @@ EstLib.map()
 | type | this or String | "ch" | The type of map. Possible values are "ch" for choropleth maps and "ps" for proportional symbols. |
 | width | this or int | 800 | The width of the map in pixel. |
 | ebcode | this or String | "demo_r_d3dens" for population density map. | The Eurostat database code to retrieve the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) to find them. |
-| dimensions | This or Object | { time : 2017 } |  The Eurostat dimension codes to filter the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) or [here](https://ec.europa.eu/eurostat/web/json-and-unicode-web-services/getting-started/query-builder) to find them.  |
+| dimensions | This or Object | { lastTimePeriod : 1 } |  The Eurostat dimension codes to filter the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) or [here](https://ec.europa.eu/eurostat/web/json-and-unicode-web-services/getting-started/query-builder) to find them.  |
 | scale | this or String | "20M" | The simplification level of the map, among "10M", "20M", "60M". |
 | scaleExtent | this or Array | [1,4] | The zoom extent. Set to null to forbid zooming. |
 | proj | this or String | "3035" | The map projection code. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md)  |

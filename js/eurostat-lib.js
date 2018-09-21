@@ -29,21 +29,21 @@
 
     /**
      * Build URL to fetch data from eurobase REST API.
-     * @param {string} table The Eurobase table code
-     * @param {object=} params The query parameters as fro example: {key:value,key:[value1,value2,value3]}
-     * @param {number=} language
+     * @param {string} datasetCode The Eurobase dataset code
+     * @param {object=} filters The filter parameters as for example: {key:value,key:[value1,value2,value3]}
+     * @param {number=} lang
      * @param {number=} format
      * @param {number=} version
      */
-	EstLib.getEstatDataURL = function(table, params, language, format, version){
-		language = language || "en";
+	EstLib.getEstatDataURL = function(datasetCode, filters, lang, format, version){
+		lang = lang || "en";
 		format = format || "json";
 		version = version || "2.1";
 		var url = [];
-		url.push(EstLib.getEstatRestDataURLBase,"v",version,"/",format,"/",language,"/",table,"?");
-		if(params)
-			for (var param in params) {
-				var o = params[param];
+		url.push(EstLib.getEstatRestDataURLBase,"v",version,"/",format,"/",lang,"/",datasetCode,"?");
+		if(filters)
+			for (var param in filters) {
+				var o = filters[param];
 				if(Array.isArray(o))
 					for(var i=0;i<o.length;i++)
 						url.push("&",param,"=",o[i]);

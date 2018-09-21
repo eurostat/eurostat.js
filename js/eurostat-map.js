@@ -51,7 +51,7 @@
 		//the code of the eurobase database
 		out.ebcode_ = "demo_r_d3dens";
 		//the dimension projector to extract the statistical data
-		out.dimensions_ = { time : 2017 };
+		out.dimensions_ = { lastTimePeriod:1 };
 		//the map lod, among 3M, 10M, 20M, 60M
 		out.scale_ = "20M";
 		//if the map is zoomable, specify the scale extent

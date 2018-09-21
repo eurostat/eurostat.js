@@ -21,7 +21,7 @@
 	.scale("60M")
 	.nutsLvl(3)
 	.width(1000)
-	.ebcode("demo_r_d3dens").dimensions({ time : opts.time || 2016 })
+	.ebcode("demo_r_d3dens").dimensions( opts.time? { time : opts.time } : { lastTimePeriod:1 } )
 	//.ebcode("demo_r_pjangrp3").dimensions({ age:"TOTAL",sex:"T",unit:"NR", time : 2016 })
 	.unitText("unit")
 	//.colorFun(d3.interpolateGnBu)
