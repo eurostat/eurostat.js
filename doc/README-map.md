@@ -74,7 +74,9 @@ EstLib.map()
 | showTooltip | boolean | true | A boolean value indicating if tooltip should appear on the map. |
 | unitText | String | "" | The text to display to show the unit in the tooltip |
 
-### For choropleth maps (when type="ch")
+### For choropleth maps
+
+When *type* is set to *"ch"*.
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
@@ -88,7 +90,9 @@ EstLib.map()
 | noDataFillStyle | String | "lightgray" | The fill style to be used for regions where no data is available. |
 | noDataText | String | "No data" | The text to show for regions where no data is available.  |
 
-### For proportional symbol map (when type="ps")
+### For proportional symbol map
+
+When *type* is set to *"ps"*.
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
@@ -100,12 +104,12 @@ EstLib.map()
 | psStroke | String | "#fff" | The stroke color of pattern of the symbol. |
 | psStrokeWidth | number | 0.5 | The width of the stroke. |
 
-### Specify map style
+### Specify map template style
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
-| nutsrgFillStyle | String | "#eee" |  |
-| nutsrgSelectionFillStyle | String | "#purple" |  |
+| nutsrgFillStyle | String | "#eee" | The fill style of the NUTS regions, used for proportional circle maps. |
+| nutsrgSelectionFillStyle | String | "#purple" | The fill style of the selected NUTS regions. |
 | nutsbnStroke | String | {0:"#777", 1:"#777", 2:"#777", 3:"#777", oth:"#444", co:"#1f78b4"} |  |
 | nutsbnStrokeWidth | number | {0:1, 1:0.2, 2:0.2, 3:0.2, oth:1, co:1} |  |
 | cntrgFillStyle | String | "lightgray" |  |
@@ -150,23 +154,24 @@ EstLib.map()
 
 ### Methods to update the map
 
+After changing some parameters, one of the following methods need to be executed:
+
 | Method | Returns | Description |
 | --- | --- | --- |
-| build | this |  |
-| updategeoData | this |  |
-| updateStatData | this |  |
-| buildMapTemplate | this |  |
-| updateStatValues | this |  |
-| updateClassificationAndStyle | this |  |
-| updateLegend | this |  |
-| updateStyle | this |  |
+| build | this | Build (or rebuild) the entire map. |
+| updategeoData | this | Update the map when paramters on the geometries have changed. |
+| updateStatData | this | Update the map when paramters on the statistical data have changed. |
+| buildMapTemplate | this | Update the map when paramters on the map template have changed. |
+| updateClassificationAndStyle | this | Update the map when paramters on the classification have changed. |
+| updateLegend | this | Update the map when paramters on the legend have changed.  |
+| updateStyle | this | Update the map when paramters on the style have changed.  |
 
 ### Others
 
 | Method | Returns | Description |
 | --- | --- | --- |
 | set | this |  |
-| getTime | String |  |
+| getTime | String | Return the "time" parameter of the statistical data. It is necessary when a filter such as *{ lastTimePeriod : 1 }* is used. |
 
 Anything missing? Feel free to [ask](https://github.com/eurostat/eurostat.js/issues/new) !
 
