@@ -151,7 +151,7 @@ EstLib.map()
 ### Methods to update the map
 
 | Method | Returns | Description |
-| --- | --- | --- | --- |
+| --- | --- | --- |
 | build | this |  |
 | updategeoData | this |  |
 | updateStatData | this |  |
@@ -164,7 +164,7 @@ EstLib.map()
 ### Others
 
 | Method | Returns | Description |
-| --- | --- | --- | --- |
+| --- | --- | --- |
 | set | this |  |
 | getTime | String |  |
 
