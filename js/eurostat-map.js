@@ -283,7 +283,7 @@
 					var sel = d3.select(this);
 					sel.attr("fill___", sel.attr("fill"));
 					sel.attr("fill", out.nutsrgSelectionFillStyle_);
-					if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val? rg.properties.val + (out.unitText_?" "+out.unitText_:"") : out.noDataText_));
+					if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val||rg.properties.val==0? rg.properties.val + (out.unitText_?" "+out.unitText_:"") : out.noDataText_));
 				}).on("mousemove", function() {
 					if(out.showTooltip_) tooltip.mousemove();
 				}).on("mouseout", function() {
@@ -348,7 +348,9 @@
 			for (var i=0; i<nutsRG.length; i++) {
 				var rg = nutsRG[i];
 				var value = statData.Data({ geo : rg.properties.id });
-				if (!value || !value.value) continue;
+				if (!value) continue;
+				if (isNaN(value.value)) continue;
+				if (!value.value==0 && !value.value) continue;
 				rg.properties.val = value.value;
 				values.push(+value.value);
 			}
@@ -379,7 +381,7 @@
 				//apply classification to nuts regions based on their value
 				svg.selectAll("path.nutsrg")
 				.attr("ecl", function(rg) {
-					if (!rg.properties.val) return "nd";
+					if (rg.properties.val!=0 && !rg.properties.val) return "nd";
 					return +classif(+rg.properties.val);
 				})
 			} else if(out.type_ == "ps") {
@@ -398,7 +400,7 @@
 			return out;
 		};
 
-		
+
 		out.updateLegend = function() {
 			var lgg = d3.select("#legendg");
 
@@ -506,9 +508,7 @@
 				.shape("circle") //"rect", "circle", or "line"
 				.shapePadding(out.legendShapePadding_)
 				//.classPrefix("prefix")
-				.labels(function(d) {
-					return d.generatedLabels[d.i]
-				})
+				.labels(function(d) { return d.generatedLabels[d.i] })
 				//.labelAlign("middle") //?
 				.labelFormat(d3.format("."+out.legendLabelDecNb_+"f"))
 				.labelOffset(out.legendLabelOffset_)
@@ -520,12 +520,12 @@
 
 				//apply style to legend elements
 				svg.selectAll(".swatch")
-			    .style("fill", out.psFill_)
-			    .style("fill-opacity", out.psFillOpacity_)
-			    .style("stroke", out.psStroke_)
-			    .style("stroke-width", out.psStrokeWidth_);
+				.style("fill", out.psFill_)
+				.style("fill-opacity", out.psFillOpacity_)
+				.style("stroke", out.psStroke_)
+				.style("stroke-width", out.psStrokeWidth_);
 
-			    lgg.select(".legendTitle").style("font-size", out.legendTitleFontSize_);
+				lgg.select(".legendTitle").style("font-size", out.legendTitleFontSize_);
 				lgg.selectAll("text.label").style("font-size", out.legendLabelFontSize_);
 				lgg.style("font-family", out.legendFontFamily_);
 
@@ -557,22 +557,22 @@
 				d3.select("#g_ps").selectAll("circle")
 				.data(nutsRG.sort(function(a, b) { return b.properties.val - a.properties.val; }))
 				.enter().append("circle")
-			    .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
-			    .attr("r", function(d) { return d.properties.val? classif(d.properties.val) : 0; })
-			    .attr("class","symbol")
-			    .on("mouseover", function(rg) {
-			    	d3.select(this).style("fill", out.nutsrgSelectionFillStyle_)
-			    	if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + rg.properties.val + (out.unitText_?" "+out.unitText_:""));
-			    }).on("mousemove", function() {
-			    	if(out.showTooltip_) tooltip.mousemove();
-			    }).on("mouseout", function() {
-			    	d3.select(this).style("fill", out.psFill_)
-			    	if(out.showTooltip_) tooltip.mouseout();
-			    })
-			    .style("fill", out.psFill_)
-			    .style("fill-opacity", out.psFillOpacity_)
-			    .style("stroke", out.psStroke_)
-			    .style("stroke-width", out.psStrokeWidth_);
+				.attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+				.attr("r", function(d) { return d.properties.val? classif(+d.properties.val) : 0; })
+				.attr("class","symbol")
+				.on("mouseover", function(rg) {
+					d3.select(this).style("fill", out.nutsrgSelectionFillStyle_)
+					if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val||rg.properties.val==0? rg.properties.val + (out.unitText_?" "+out.unitText_:"") : out.noDataText_));
+				}).on("mousemove", function() {
+					if(out.showTooltip_) tooltip.mousemove();
+				}).on("mouseout", function() {
+					d3.select(this).style("fill", out.psFill_)
+					if(out.showTooltip_) tooltip.mouseout();
+				})
+				.style("fill", out.psFill_)
+				.style("fill-opacity", out.psFillOpacity_)
+				.style("stroke", out.psStroke_)
+				.style("stroke-width", out.psStrokeWidth_);
 
 			} else {
 				console.log("Unexpected map type: "+out.type_);
