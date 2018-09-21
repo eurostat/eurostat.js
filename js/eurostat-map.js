@@ -52,6 +52,8 @@
 		out.datasetCode_ = "demo_r_d3dens";
 		//the dimension projector to extract the statistical data
 		out.filters_ = { lastTimePeriod:1 };
+		//the precision of the statistical data to retrieve (nb of decimal places)
+		out.precision_ = 2;
 		//the map lod, among 3M, 10M, 20M, 60M
 		out.scale_ = "20M";
 		//if the map is zoomable, specify the scale extent
@@ -195,7 +197,7 @@
 		//get stat data
 		out.updateStatData = function() {
 			statData = null;
-			out.filters_["geoLevel"] = out.nutsLvl_===0?"country":"nuts"+out.nutsLvl_;
+			out.filters_["geoLevel"] = out.nutsLvl_+""==="0"?"country":"nuts"+out.nutsLvl_;
 			d3.queue().defer(d3.json, EstLib.getEstatDataURL(out.datasetCode_, out.filters_)).await(
 				function(error, data___) {
 					statData = JSONstat(data___).Dataset(0);
