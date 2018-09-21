@@ -64,9 +64,9 @@ EstLib.map()
 | dimensions | This or Object | { time : 2017 } |  The Eurostat dimension codes to filter the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) or [here](https://ec.europa.eu/eurostat/web/json-and-unicode-web-services/getting-started/query-builder) to find them.  |
 | scale | this or String | "20M" | The simplification level of the map, among "10M", "20M", "60M". |
 | scaleExtent | this or Array | [1,4] | The zoom extent. Set to null to forbid zooming. |
-| proj | this or String | "3035" | The map projection code. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json)  |
+| proj | this or String | "3035" | The map projection code. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md)  |
 | nutsLvl | this or int | 3 | The nuts level to show on the map, from 0 (national level) to 3 (local level) |
-| NUTSyear | this or int | 2013 | The version of the NUTS dataset to use. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json) |
+| NUTSyear | this or int | 2013 | The version of the NUTS dataset to use. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md) |
 | lg | this or String | "en" | The language. |
 | showTooltip | this or boolean | true | A boolean value indicating if tooltip should appear on the map. |
 | unitText | this or String | "" | The text to display to show the unit in the tooltip |
