@@ -55,91 +55,110 @@ EstLib.map()
 
 ## Documentation
 
-| Method | Returns | Default value | Description |
+| Method | Type | Default value | Description |
 | --- | --- | --- | --- |
-| svgId | this or String | "map" | The id of the SVG element where to draw the map. |
-| type | this or String | "ch" | The type of map. Possible values are "ch" for choropleth maps and "ps" for proportional symbols. |
-| width | this or int | 800 | The width of the map in pixel. |
-| datasetCode | this or String | "demo_r_d3dens" for population density map. | The Eurostat database code to retrieve the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) to find them. |
-| filters | This or Object | { lastTimePeriod : 1 } |  The Eurostat dimension codes to filter the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) or [here](https://ec.europa.eu/eurostat/web/json-and-unicode-web-services/getting-started/query-builder) to find them.  |
-| precision | this or int | 2 | The precision of the statistical figures to retrieve (number of decimal places). |
-| scale | this or String | "20M" | The simplification level of the map, among "10M", "20M", "60M". |
-| scaleExtent | this or Array | [1,4] | The zoom extent. Set to null to forbid zooming. |
-| proj | this or String | "3035" | The map projection code. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md)  |
-| nutsLvl | this or int | 3 | The nuts level to show on the map, from 0 (national level) to 3 (local level) |
-| NUTSyear | this or int | 2013 | The version of the NUTS dataset to use. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md) |
-| lg | this or String | "en" | The language. |
-| showTooltip | this or boolean | true | A boolean value indicating if tooltip should appear on the map. |
-| unitText | this or String | "" | The text to display to show the unit in the tooltip |
-| **Choropleth map (type="ch")** |  |  |  |
-| classifMethod | this or String | "quantile" | The classification method. Possible values are "quantile", "equinter" for equal intervals, and "threshold" for user defined threshol (see threshold method). |
-| threshold | this or Array | [0] | classifMethod="threshold", the breaks of the classification. |
-| makeClassifNice | this or boolean | true | Make nice break values. Works only for classifMethod="equinter". |
-| clnb | this or int | 7 | The number of classes. |
+| svgId | String | "map" | The id of the SVG element where to draw the map. |
+| type | String | "ch" | The type of map. Possible values are "ch" for choropleth maps and "ps" for proportional symbols. |
+| width | int | 800 | The width of the map in pixel. |
+| datasetCode | String | "demo_r_d3dens" for population density map. | The Eurostat database code to retrieve the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) to find them. |
+| filters | Object | { lastTimePeriod : 1 } |  The Eurostat dimension codes to filter the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) or [here](https://ec.europa.eu/eurostat/web/json-and-unicode-web-services/getting-started/query-builder) to find them.  |
+| precision | int | 2 | The precision of the statistical figures to retrieve (number of decimal places). |
+| scale | String | "20M" | The simplification level of the map, among "10M", "20M", "60M". |
+| scaleExtent | Array | [1,4] | The zoom extent. Set to null to forbid zooming. |
+| proj | String | "3035" | The map projection code. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md)  |
+| nutsLvl | int | 3 | The nuts level to show on the map, from 0 (national level) to 3 (local level) |
+| NUTSyear | int | 2013 | The version of the NUTS dataset to use. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md) |
+| lg | String | "en" | The language. |
+| showTooltip | boolean | true | A boolean value indicating if tooltip should appear on the map. |
+| unitText | String | "" | The text to display to show the unit in the tooltip |
+
+## Choropleth map (type="ch")
+
+| Method | Type | Default value | Description |
+| --- | --- | --- | --- |
+| classifMethod | String | "quantile" | The classification method. Possible values are "quantile", "equinter" for equal intervals, and "threshold" for user defined threshol (see threshold method). |
+| threshold | Array | [0] | classifMethod="threshold", the breaks of the classification. |
+| makeClassifNice | boolean | true | Make nice break values. Works only for classifMethod="equinter". |
+| clnb | int | 7 | The number of classes. |
 | colorFun | thins or function | d3.interpolateYlOrRd | The color function, as defined in https://github.com/d3/d3-scale-chromatic/ |
-| classToFillStyle | this or function | EstLib.getColorLegend(colorFun()) | A function returning a fill style for each class number. |
-| filtersDefinitionFun | this or function | function() {} | A function defining SVG filter elements. To be used to defined fill patterns.  |
-| noDataFillStyle | this or String | "lightgray" | The fill style to be used for regions where no data is available. |
-| noDataText | this or String | "No data" | The text to show for regions where no data is available.  |
-| **Proportional symbol map (type="ps")** |  |  |  |
-| psMaxSize | this or number | 30 | The maximum size, in pixel. |
-| psMinSize | this or number | 0.8 | The minimum size, for non null values, in pixel. |
-| psMinValue | this or number | 0 | The minimum value of the range domain. |
-| psFill |  | this or String | "#B45F04" | The fill color or pattern of the symbol. |
-| psFillOpacity | this or number | 0.7 | The opacity of the symbol, from 0 to 1. |
-| psStroke | this or String | "#fff" | The stroke color of pattern of the symbol. |
-| psStrokeWidth | this or number | 0.5 | The width of the stroke. |
-| **Map background style** |  |  |  |
-| nutsrgFillStyle | this or String | "#eee" |  |
-| nutsrgSelectionFillStyle | this or String | "#purple" |  |
-| nutsbnStroke | this or String | {0:"#777", 1:"#777", 2:"#777", 3:"#777", oth:"#444", co:"#1f78b4"} |  |
-| nutsbnStrokeWidth | this or number | {0:1, 1:0.2, 2:0.2, 3:0.2, oth:1, co:1} |  |
-| cntrgFillStyle | this or String | "lightgray" |  |
-| cntrgSelectionFillStyle | this or String | "darkgray" |  |
-| cntbnStroke | this or String | "#777" |  |
-| cntbnStrokeWidth | this or number | 1 |  |
-| drawGraticule | this or boolean | true |  |
-| graticuleStroke | this or String | "gray" |  |
-| graticuleStrokeWidth | this or number | 1 |  |
-| seaFillStyle | this or String | "#b3cde3" |  |
-| drawCoastalMargin | this or boolean | true |  |
-| coastalMarginWidth | this or number | 12 |  |
-| coastalMarginStdDev | this or number | 12 |  |
-| coastalMarginColor | this or String | "white" |  |
-|  |  |  |  |
-| showLegend | this or boolean | true |  |
-| legendFontFamily | this or String | EstLib.fontFamilyDefault |  |
-| legendTitleText | this or String | "Legend" |  |
-| legendTitleFontSize | this or int | 20 |  |
-| legendTitleWidth | this or int | 40 |  |
-| legendAscending | this or String | true |  |
-| legendCellNb | this or int | 4 |  |
-| legendLabelWrap | this or int | 140 |  |
-| legendLabelDecNb | this or int | 2 |  |
-| legendLabelOffset | this or int | 5 |  |
-| legendLabelFontSize | this or int | 15 |  |
-| legendLabelDelimiter | this or String | " - " |  |
-| legendShapeWidth | this or int | 20 |  |
-| legendShapeHeight | this or int | 16 |  |
-| legendShapePadding | this or int | 2 |  |
-| legendBoxMargin | this or int | 10 |  |
-| legendBoxPadding | this or int | 10 |  |
-| legendBoxCornerRadius | this or int | 10 |  |
-| legendBoxOpacity | this or number | 0.5 |  |
-| legendBoxFill | this or String | "white" |  |
-| legendBoxWidth | this or int | 250 |  |
-| legendBoxHeight | this or int | 350 |  |
-|  |  |  |  |
-| set | this | - |  |
-| build | this | - |  |
-| updategeoData | this | - |  |
-| updateStatData | this | - |  |
-| buildMapTemplate | this | - |  |
-| updateStatValues | this | - |  |
-| updateClassificationAndStyle | this | - |  |
-| updateLegend | this | - |  |
-| updateStyle | this | - |  |
-| getTime | String | - |  |
+| classToFillStyle | Function | See description | A function returning a fill style for each class number. The default values is the function returned by *EstLib.getColorLegend(colorFun())*. |
+| filtersDefinitionFun | Function | function() {} | A function defining SVG filter elements. To be used to defined fill patterns.  |
+| noDataFillStyle | String | "lightgray" | The fill style to be used for regions where no data is available. |
+| noDataText | String | "No data" | The text to show for regions where no data is available.  |
+
+## Proportional symbol map (type="ps")
+
+| Method | Type | Default value | Description |
+| --- | --- | --- | --- |
+| psMaxSize | number | 30 | The maximum size, in pixel. |
+| psMinSize | number | 0.8 | The minimum size, for non null values, in pixel. |
+| psMinValue | number | 0 | The minimum value of the range domain. |
+| psFill |  | String | "#B45F04" | The fill color or pattern of the symbol. |
+| psFillOpacity | number | 0.7 | The opacity of the symbol, from 0 to 1. |
+| psStroke | String | "#fff" | The stroke color of pattern of the symbol. |
+| psStrokeWidth | number | 0.5 | The width of the stroke. |
+
+## Map background style
+
+| Method | Type | Default value | Description |
+| --- | --- | --- | --- |
+| nutsrgFillStyle | String | "#eee" |  |
+| nutsrgSelectionFillStyle | String | "#purple" |  |
+| nutsbnStroke | String | {0:"#777", 1:"#777", 2:"#777", 3:"#777", oth:"#444", co:"#1f78b4"} |  |
+| nutsbnStrokeWidth | number | {0:1, 1:0.2, 2:0.2, 3:0.2, oth:1, co:1} |  |
+| cntrgFillStyle | String | "lightgray" |  |
+| cntrgSelectionFillStyle | String | "darkgray" |  |
+| cntbnStroke | String | "#777" |  |
+| cntbnStrokeWidth | number | 1 |  |
+| drawGraticule | boolean | true |  |
+| graticuleStroke | String | "gray" |  |
+| graticuleStrokeWidth | number | 1 |  |
+| seaFillStyle | String | "#b3cde3" |  |
+| drawCoastalMargin | boolean | true |  |
+| coastalMarginWidth | number | 12 |  |
+| coastalMarginStdDev | number | 12 |  |
+| coastalMarginColor | String | "white" |  |
+
+## Legend
+
+| Method | Type | Default value | Description |
+| --- | --- | --- | --- |
+| showLegend | boolean | true |  |
+| legendFontFamily | String | EstLib.fontFamilyDefault |  |
+| legendTitleText | String | "Legend" |  |
+| legendTitleFontSize | int | 20 |  |
+| legendTitleWidth | int | 40 |  |
+| legendAscending | String | true |  |
+| legendCellNb | int | 4 |  |
+| legendLabelWrap | int | 140 |  |
+| legendLabelDecNb | int | 2 |  |
+| legendLabelOffset | int | 5 |  |
+| legendLabelFontSize | int | 15 |  |
+| legendLabelDelimiter | String | " - " |  |
+| legendShapeWidth | int | 20 |  |
+| legendShapeHeight | int | 16 |  |
+| legendShapePadding | int | 2 |  |
+| legendBoxMargin | int | 10 |  |
+| legendBoxPadding | int | 10 |  |
+| legendBoxCornerRadius | int | 10 |  |
+| legendBoxOpacity | number | 0.5 |  |
+| legendBoxFill | String | "white" |  |
+| legendBoxWidth | int | 250 |  |
+| legendBoxHeight | int | 350 |  |
+
+## Other methods
+
+| Method | Returns | Description |
+| set | this |  |
+| build | this |  |
+| updategeoData | this |  |
+| updateStatData | this |  |
+| buildMapTemplate | this |  |
+| updateStatValues | this |  |
+| updateClassificationAndStyle | this |  |
+| updateLegend | this |  |
+| updateStyle | this |  |
+| getTime | String |  |
 
 
 ## Technical details
