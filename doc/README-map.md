@@ -80,7 +80,7 @@ EstLib.map()
 | classToFillStyle | this or function | EstLib.getColorLegend(colorFun()) |  |
 | filtersDefinitionFun | this or function | function() {} |  |
 | noDataFillStyle | this or String | "lightgray" |  |
-| noDataText | this or String | "No data available" |  |
+| noDataText | this or String | "No data" |  |
 |  |  |  |  |
 | psMaxSize | this or number | 30 |  |
 | psMinSize | this or number | 0.8 |  |

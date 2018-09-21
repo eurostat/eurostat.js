@@ -67,7 +67,7 @@
 		out.classToFillStyle_ = EstLib.getColorLegend(out.colorFun_);
 		out.filtersDefinitionFun_ = function() {};
 		out.noDataFillStyle_ = "lightgray";
-		out.noDataText_ = "No data available";
+		out.noDataText_ = "No data";
 
 		//proportional circles
 		out.psMaxSize_ = 30;
