@@ -6,11 +6,10 @@
  *
  */
 (function(d3, EstLib) {
-	//https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0
 
+	//TODO
 	//complete doc
 	//decompose?
-
 	//youg/kos
 
 	//*** v1 ***
@@ -40,7 +39,7 @@
 	//etc.
 
 	EstLib.map = function() {
-		
+
 		//the output object
 		var out = {};
 
@@ -91,6 +90,8 @@
 		out.graticuleStrokeWidth_ = 1;
 		out.seaFillStyle_ = "#b3cde3";
 		out.drawCoastalMargin_ = true;
+		out.coastalMarginWidth_ = 12;
+		out.coastalMarginStdDev_ = 12;
 		out.coastalMarginColor_ = "white";
 
 		//legend
@@ -209,7 +210,7 @@
 			if(out.drawCoastalMargin_)
 				//define filter for coastal margin
 				svg.append("filter").attr("id", "coastal_blur").attr("x","-100%").attr("y", "-100%").attr("width","400%")
-					.attr("height", "400%").append("feGaussianBlur").attr("in", "SourceGraphic").attr("stdDeviation", "4");
+					.attr("height", "400%").append("feGaussianBlur").attr("in", "SourceGraphic").attr("stdDeviation", out.coastalMarginStdDev_);
 
 			//add additional filters for fill patterns for example
 			out.filtersDefinitionFun_(svg, out.clnb_);
@@ -237,22 +238,19 @@
 				//draw coastal margin
 				var cg = zg.append("g").attr("id","g_coast_margin")	
 					.style("fill", "none")
-					.style("stroke-width", "8px")
+					.style("stroke-width", out.coastalMarginWidth_)
+					.style("stroke", out.coastalMarginColor_)
 					.style("filter", "url(#coastal_blur)")
 					.style("stroke-linejoin", "round")
 					.style("stroke-linecap", "round");
 				//countries bn
 				cg.append("g").attr("id","g_coast_margin_cnt")
-					.selectAll("path").data(cntbn).enter().append("path").attr("d", path)
-					.style("stroke", function(bn) {
-						if (bn.properties.co === "T") return out.coastalMarginColor_; return "none";
-					});
+					.selectAll("path").data(cntbn).enter().filter(function(bn){ return bn.properties.co === "T"; })
+					.append("path").attr("d", path);
 				//nuts bn
 				cg.append("g").attr("id","g_coast_margin_nuts")
-					.selectAll("path").data(nutsbn).enter().append("path").attr("d", path)
-					.style("stroke", function(bn) {
-						if (bn.properties.co === "T") return out.coastalMarginColor_; return "none";
-					});
+					.selectAll("path").data(nutsbn).enter().filter(function(bn){ return bn.properties.co === "T"; })
+					.append("path").attr("d", path);
 			}
 
 			if(out.drawGraticule_) {
@@ -304,7 +302,7 @@
 				.selectAll("path").data(cntbn)
 				.enter().append("path").attr("d", path)
 				.attr("class", function(bn) {
-					if (bn.properties.co === "T")return "bn_co"; return "cntbn";
+					if (bn.properties.co === "T") return "bn_co"; return "cntbn";
 				})
 				.style("stroke", out.cntbnStroke_)
 				.style("stroke-width", out.cntbnStrokeWidth_);
@@ -562,7 +560,8 @@
 
 				d3.select("#g_ps").selectAll("circle")
 				.data(nutsRG.sort(function(a, b) { return b.properties.val - a.properties.val; }))
-				.enter().append("circle")
+				.enter().filter(function(d) { return d.properties.val; })
+				.append("circle")
 				.attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
 				.attr("r", function(d) { return d.properties.val? classif(+d.properties.val) : 0; })
 				.attr("class","symbol")

@@ -102,6 +102,8 @@ EstLib.map()
 | graticuleStrokeWidth |  |  |  |
 | seaFillStyle |  |  |  |
 | drawCoastalMargin |  |  |  |
+| coastalMarginWidth_ |  |  |  |
+| coastalMarginStdDev_ |  |  |  |
 | coastalMarginColor |  |  |  |
 |  |  |  |  |
 | showLegend |  |  |  |
