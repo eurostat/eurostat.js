@@ -128,6 +128,17 @@ EstLib.map()
 | legendBoxFill |  |  |  |
 | legendBoxWidth |  |  |  |
 | legendBoxHeight |  |  |  |
+|  |  |  |  |
+| set |  |  |  |
+| build |  |  |  |
+| updategeoData |  |  |  |
+| updateStatData |  |  |  |
+| buildMapTemplate |  |  |  |
+| updateStatValues |  |  |  |
+| updateClassificationAndStyle |  |  |  |
+| updateLegend |  |  |  |
+| updateStyle |  |  |  |
+| getTime |  |  |  |
 
 
 ## Technical details
