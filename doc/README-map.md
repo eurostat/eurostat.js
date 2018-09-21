@@ -38,7 +38,7 @@ Then, add a SVG element where the map should appear:
 <svg id="map"></svg>
 ```
 
-And finally, specify the content and style of your map in javascript with for example:
+And finally, specify the map content and style in javascript. The example below draws a map showing population density in 2016 from Eurostat database *[demo_r_d3dens](http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_d3dens)*. See [the result](https://bl.ocks.org/jgaffuri/raw/0d6e1b1c6f9e1297829f38b9c37737fe/) and [the code](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe).
 
 ```javascript
 EstLib.map()
@@ -51,8 +51,6 @@ EstLib.map()
 .legendBoxWidth(190)
 .build();
 ```
-
-This code draws a map showing population density in 2016 (Eurostat database *[demo_r_d3dens](http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_d3dens)*). See [the result](https://bl.ocks.org/jgaffuri/raw/0d6e1b1c6f9e1297829f38b9c37737fe/) and [the code](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe)
 
 
 ## Documentation
