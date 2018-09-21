@@ -77,7 +77,7 @@ EstLib.map()
 | makeClassifNice | this or boolean | true |  |
 | clnb | this or int | 7 |  |
 | colorFun | thins or function | d3.interpolateYlOrRd | see https://github.com/d3/d3-scale-chromatic/ |
-| classToFillStyle | this or function | EstLib.getColorLegend(out.colorFun_) |  |
+| classToFillStyle | this or function | EstLib.getColorLegend(colorFun()) |  |
 | filtersDefinitionFun | this or function | function() {} |  |
 | noDataFillStyle | this or String | "lightgray" |  |
 | noDataText | this or String | "No data available" |  |

@@ -8,15 +8,16 @@
 (function(d3, EstLib) {
 
 	//TODO
-	//complete doc
 	//decompose?
 	//youg/kos
+	//complete doc
 
 	//*** v1 ***
 
 	//constraint pan
-	//propo circles: make nicer legend...
 	//diverging ramp -> define central value (0, average, 100, etc.)
+	//fix zoom - line resize, etc.
+	//propo circles: make nicer legend...
 	//add "no data" in legend
 	//adopt data cache ?
 	//support data flags
