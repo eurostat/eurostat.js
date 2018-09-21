@@ -52,8 +52,6 @@
 		out.ebcode_ = "demo_r_d3dens";
 		//the dimension projector to extract the statistical data
 		out.dimensions_ = { time : 2017 };
-		//the text to use in the tooltip for the unit of the values
-		out.unitText_ = "";
 		//the map lod, among 3M, 10M, 20M, 60M
 		out.scale_ = "20M";
 		//if the map is zoomable, specify the scale extent
@@ -61,13 +59,15 @@
 		//the map projection (epsg code)
 		out.proj_ = "3035";
 		//the map nuts level, from 0 to 3
-		out.nutsLvl_ = "3";
+		out.nutsLvl_ = 3;
 		//the NUTS version, among 2010, 2013, 2016
 		out.NUTSyear_ = 2013;
 		//the langage
 		out.lg_ = "en";
 		//show tooltip text when passing over map regions
 		out.showTooltip_ = true;
+		//the text to use in the tooltip for the unit of the values
+		out.unitText_ = "";
 
 		out.classifMethod_ = "quantile"; // or: equinter  threshold
 		out.threshold_ = [0];
