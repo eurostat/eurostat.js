@@ -72,73 +72,74 @@ EstLib.map()
 | showTooltip | this or boolean | true | A boolean value indicating if tooltip should appear on the map. |
 | unitText | this or String | "" | The text to display to show the unit in the tooltip |
 |  |  |  |  |
-| classifMethod |  |  |  |
-| threshold |  |  |  |
-| makeClassifNice |  |  |  |
-| clnb |  |  |  |
-| colorFun |  |  |  |
-| classToFillStyle |  |  |  |
-| filtersDefinitionFun |  |  |  |
-| noDataFillStyle |  |  |  |
-| noDataText |  |  |  |
+| classifMethod | this or String | "quantile" | Among "quantile", "equinter", "threshold" |
+| threshold | this or Array | [0] |  |
+| makeClassifNice | this or boolean | true |  |
+| clnb | this or int | 7 |  |
+| colorFun | thins or function | d3.interpolateYlOrRd | see https://github.com/d3/d3-scale-chromatic/ |
+| classToFillStyle | this or function | EstLib.getColorLegend(out.colorFun_) |  |
+| filtersDefinitionFun | this or function | function() {} |  |
+| noDataFillStyle | this or String | "lightgray" |  |
+| noDataText | this or String | "No data available" |  |
 |  |  |  |  |
-| psMaxSize |  |  |  |
-| psMinSize |  |  |  |
-| psFill |  |  |  |
-| psFillOpacity |  |  |  |
-| psStroke |  |  |  |
-| psStrokeWidth |  |  |  |
+| psMaxSize | this or number | 30 |  |
+| psMinSize | this or number | 0.8 |  |
+| psMinValue | this or number | 0 |  |
+| psFill |  | this or String | "#B45F04" |
+| psFillOpacity | this or number | 0.7 |  |
+| psStroke | this or String | "#fff" |  |
+| psStrokeWidth | this or number | 0.5 |  |
 |  |  |  |  |
-| nutsrgFillStyle |  |  |  |
-| nutsrgSelectionFillStyle |  |  |  |
-| nutsbnStroke |  |  |  |
-| nutsbnStrokeWidth |  |  |  |
-| cntrgFillStyle |  |  |  |
-| cntrgSelectionFillStyle |  |  |  |
-| cntbnStroke |  |  |  |
-| cntbnStrokeWidth |  |  |  |
-| drawGraticule |  |  |  |
-| graticuleStroke |  |  |  |
-| graticuleStrokeWidth |  |  |  |
-| seaFillStyle |  |  |  |
-| drawCoastalMargin |  |  |  |
-| coastalMarginWidth_ |  |  |  |
-| coastalMarginStdDev_ |  |  |  |
-| coastalMarginColor |  |  |  |
+| nutsrgFillStyle | this or String | "#eee" |  |
+| nutsrgSelectionFillStyle | this or String | "#purple" |  |
+| nutsbnStroke | this or String | {0:"#777",1:"#777",2:"#777",3:"#777",oth:"#444",co:"#1f78b4"} |  |
+| nutsbnStrokeWidth | this or number | {0:1,1:0.2,2:0.2,3:0.2,oth:1,co:1} |  |
+| cntrgFillStyle | this or String | "lightgray" |  |
+| cntrgSelectionFillStyle | this or String | "darkgray" |  |
+| cntbnStroke | this or String | "#777" |  |
+| cntbnStrokeWidth | this or number | 1 |  |
+| drawGraticule | this or boolean | true |  |
+| graticuleStroke | this or String | "gray" |  |
+| graticuleStrokeWidth | this or number | 1 |  |
+| seaFillStyle | this or String | "#b3cde3" |  |
+| drawCoastalMargin | this or boolean | true |  |
+| coastalMarginWidth | this or number | 12 |  |
+| coastalMarginStdDev | this or number | 12 |  |
+| coastalMarginColor | this or String | "white" |  |
 |  |  |  |  |
-| showLegend |  |  |  |
-| legendFontFamily |  |  |  |
-| legendTitleText |  |  |  |
-| legendTitleFontSize |  |  |  |
-| legendTitleWidth |  |  |  |
-| legendAscending |  |  |  |
-| legendCellNb |  |  |  |
-| legendLabelWrap |  |  |  |
-| legendLabelDecNb |  |  |  |
-| legendLabelOffset |  |  |  |
-| legendLabelFontSize |  |  |  |
-| legendLabelDelimiter |  |  |  |
-| legendShapeWidth |  |  |  |
-| legendShapeHeight |  |  |  |
-| legendShapePadding |  |  |  |
-| legendBoxMargin |  |  |  |
-| legendBoxPadding |  |  |  |
-| legendBoxCornerRadius |  |  |  |
-| legendBoxOpacity |  |  |  |
-| legendBoxFill |  |  |  |
-| legendBoxWidth |  |  |  |
-| legendBoxHeight |  |  |  |
+| showLegend | this or boolean | true |  |
+| legendFontFamily | this or String | EstLib.fontFamilyDefault |  |
+| legendTitleText | this or String | "Legend" |  |
+| legendTitleFontSize | this or int | 20 |  |
+| legendTitleWidth | this or int | 40 |  |
+| legendAscending | this or String | true |  |
+| legendCellNb | this or int | 4 |  |
+| legendLabelWrap | this or int | 140 |  |
+| legendLabelDecNb | this or int | 2 |  |
+| legendLabelOffset | this or int | 5 |  |
+| legendLabelFontSize | this or int | 15 |  |
+| legendLabelDelimiter | this or String | " - " |  |
+| legendShapeWidth | this or int | 20 |  |
+| legendShapeHeight | this or int | 16 |  |
+| legendShapePadding | this or int | 2 |  |
+| legendBoxMargin | this or int | 10 |  |
+| legendBoxPadding | this or int | 10 |  |
+| legendBoxCornerRadius | this or int | 10 |  |
+| legendBoxOpacity | this or number | 0.5 |  |
+| legendBoxFill | this or String | "white" |  |
+| legendBoxWidth | this or int | 250 |  |
+| legendBoxHeight | this or int | 350 |  |
 |  |  |  |  |
-| set |  |  |  |
-| build |  |  |  |
-| updategeoData |  |  |  |
-| updateStatData |  |  |  |
-| buildMapTemplate |  |  |  |
-| updateStatValues |  |  |  |
-| updateClassificationAndStyle |  |  |  |
-| updateLegend |  |  |  |
-| updateStyle |  |  |  |
-| getTime |  |  |  |
+| set | this | - |  |
+| build | this | - |  |
+| updategeoData | this | - |  |
+| updateStatData | this | - |  |
+| buildMapTemplate | this | - |  |
+| updateStatValues | this | - |  |
+| updateClassificationAndStyle | this | - |  |
+| updateLegend | this | - |  |
+| updateStyle | this | - |  |
+| getTime | String | - |  |
 
 
 ## Technical details
