@@ -55,6 +55,8 @@ EstLib.map()
 
 ## Documentation
 
+### Overall parameters
+
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
 | svgId | String | "map" | The id of the SVG element where to draw the map. |
@@ -72,7 +74,7 @@ EstLib.map()
 | showTooltip | boolean | true | A boolean value indicating if tooltip should appear on the map. |
 | unitText | String | "" | The text to display to show the unit in the tooltip |
 
-## Choropleth map (type="ch")
+### For choropleth maps (when type="ch")
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
@@ -86,7 +88,7 @@ EstLib.map()
 | noDataFillStyle | String | "lightgray" | The fill style to be used for regions where no data is available. |
 | noDataText | String | "No data" | The text to show for regions where no data is available.  |
 
-## Proportional symbol map (type="ps")
+### For proportional symbol map (when type="ps")
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
@@ -98,7 +100,7 @@ EstLib.map()
 | psStroke | String | "#fff" | The stroke color of pattern of the symbol. |
 | psStrokeWidth | number | 0.5 | The width of the stroke. |
 
-## Map background style
+### Specify map style
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
@@ -119,7 +121,7 @@ EstLib.map()
 | coastalMarginStdDev | number | 12 |  |
 | coastalMarginColor | String | "white" |  |
 
-## Legend
+### Specify the legend
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
@@ -146,10 +148,10 @@ EstLib.map()
 | legendBoxWidth | int | 250 |  |
 | legendBoxHeight | int | 350 |  |
 
-## Other methods
+### Methods to update the map
 
 | Method | Returns | Description |
-| set | this |  |
+| --- | --- | --- | --- |
 | build | this |  |
 | updategeoData | this |  |
 | updateStatData | this |  |
@@ -158,8 +160,15 @@ EstLib.map()
 | updateClassificationAndStyle | this |  |
 | updateLegend | this |  |
 | updateStyle | this |  |
+
+### Others
+
+| Method | Returns | Description |
+| --- | --- | --- | --- |
+| set | this |  |
 | getTime | String |  |
 
+Anything missing? Feel free to [ask](https://github.com/eurostat/eurostat.js/issues/new) !
 
 ## Technical details
 
