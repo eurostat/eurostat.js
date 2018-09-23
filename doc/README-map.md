@@ -152,7 +152,7 @@ When *type* is set to *"ps"*.
 | legendBoxWidth | int | 250 |  |
 | legendBoxHeight | int | 350 |  |
 
-### Methods to update the map
+### Update the map
 
 After changing some parameters, one of the following methods need to be executed:
 
