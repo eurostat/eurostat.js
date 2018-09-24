@@ -8,9 +8,9 @@
 (function(d3, EstLib) {
 
 	//TODO
-	//decompose?
-	//youg/kos
 	//complete doc
+	//youg/kos
+	//decompose?
 
 	//*** v1 ***
 
@@ -92,9 +92,9 @@
 		out.graticuleStrokeWidth_ = 1;
 		out.seaFillStyle_ = "#b3cde3";
 		out.drawCoastalMargin_ = true;
+		out.coastalMarginColor_ = "white";
 		out.coastalMarginWidth_ = 12;
 		out.coastalMarginStdDev_ = 12;
-		out.coastalMarginColor_ = "white";
 
 		//legend
 		out.showLegend_ = true;
@@ -102,23 +102,23 @@
 		out.legendTitleText_ = "Legend";
 		out.legendTitleFontSize_ = 20;
 		out.legendTitleWidth_ = 140;
-		out.legendAscending_ = true;
-		out.legendCellNb_ = 4; // for ps only
-		out.legendLabelWrap_ = 140;
-		out.legendLabelDecNb_ = 2;
-		out.legendLabelOffset_ = 5;
-		out.legendLabelFontSize_ = 15;
-		out.legendLabelDelimiter_ = " - ";
-		out.legendShapeWidth_ = 20;
-		out.legendShapeHeight_ = 16;
-		out.legendShapePadding_ = 2;
+		out.legendBoxWidth_ = 250;
+		out.legendBoxHeight_ = 350;
 		out.legendBoxMargin_ = 10;
 		out.legendBoxPadding_ = 10;
 		out.legendBoxCornerRadius_ = out.legendBoxPadding_;
-		out.legendBoxOpacity_ = 0.5;
 		out.legendBoxFill_ = "white";
-		out.legendBoxWidth_ = 250;
-		out.legendBoxHeight_ = 350;
+		out.legendBoxOpacity_ = 0.5;
+		out.legendCellNb_ = 4; // for ps only
+		out.legendAscending_ = true;
+		out.legendShapeWidth_ = 20;
+		out.legendShapeHeight_ = 16;
+		out.legendShapePadding_ = 2;
+		out.legendLabelFontSize_ = 15;
+		out.legendLabelDelimiter_ = " - ";
+		out.legendLabelWrap_ = 140;
+		out.legendLabelDecNb_ = 2;
+		out.legendLabelOffset_ = 5;
 
 		//definition of generic accessors based on the name of each property name
 		for(var p in out)

@@ -32,7 +32,7 @@ First, add the various required libraries, replacing *X.Y.Z* with the version nu
 <script src="https://cdn.jsdelivr.net/gh/eurostat/eurostat.js@X.Y.Z/js/eurostat-tooltip.js"></script>
 ```
 
-Then, add a SVG element where the map should appear:
+Then, add the SVG element where the map should appear somewhere on your page:
 
 ```html
 <svg id="map"></svg>
@@ -54,8 +54,6 @@ EstLib.map()
 
 
 ## Documentation
-
-### Overall parameters
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
@@ -110,47 +108,47 @@ When *type* is set to *"ps"*.
 | --- | --- | --- | --- |
 | nutsrgFillStyle | String | "#eee" | The fill style of the NUTS regions, used for proportional circle maps. |
 | nutsrgSelectionFillStyle | String | "#purple" | The fill style of the selected NUTS regions. |
-| nutsbnStroke | String | {0:"#777", 1:"#777", 2:"#777", 3:"#777", oth:"#444", co:"#1f78b4"} |  |
-| nutsbnStrokeWidth | number | {0:1, 1:0.2, 2:0.2, 3:0.2, oth:1, co:1} |  |
-| cntrgFillStyle | String | "lightgray" |  |
-| cntrgSelectionFillStyle | String | "darkgray" |  |
-| cntbnStroke | String | "#777" |  |
-| cntbnStrokeWidth | number | 1 |  |
-| drawGraticule | boolean | true |  |
-| graticuleStroke | String | "gray" |  |
-| graticuleStrokeWidth | number | 1 |  |
-| seaFillStyle | String | "#b3cde3" |  |
-| drawCoastalMargin | boolean | true |  |
-| coastalMarginWidth | number | 12 |  |
-| coastalMarginStdDev | number | 12 |  |
-| coastalMarginColor | String | "white" |  |
+| nutsbnStroke | String | {0:"#777", 1:"#777", 2:"#777", 3:"#777", oth:"#444", co:"#1f78b4"} | The stroke style of the NUTS boundaries, depending on the NUTS level. |
+| nutsbnStrokeWidth | number | {0:1, 1:0.2, 2:0.2, 3:0.2, oth:1, co:1} | The stroke width of the NUTS boundaries, depending on the NUTS level. |
+| cntrgFillStyle | String | "lightgray" | The fill style of the countries. |
+| cntrgSelectionFillStyle | String | "darkgray" | The fill style of the selected countries. |
+| cntbnStroke | String | "#777" | The stroke style of the country boundaries. |
+| cntbnStrokeWidth | number | 1 | The stroke width of the country boundaries. |
+| drawGraticule | boolean | true | Set to true to show the graticule (meridian and parallel lines). False otherwise. |
+| graticuleStroke | String | "gray" | The stroke style of the graticule. |
+| graticuleStrokeWidth | number | 1 | The stroke width of the graticule. |
+| seaFillStyle | String | "#b3cde3" | The fill style of the sea areas. |
+| drawCoastalMargin | boolean | true | Set to true to show a coastal blurry margin. False otherwise. |
+| coastalMarginColor | String | "white" | The color of the coastal blurry margin. |
+| coastalMarginWidth | number | 12 | The width of the coastal blurry margin. |
+| coastalMarginStdDev | number | 12 | The standard deviation of the coastal blurry margin. |
 
 ### Specify the legend
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
-| showLegend | boolean | true |  |
-| legendFontFamily | String | EstLib.fontFamilyDefault |  |
-| legendTitleText | String | "Legend" |  |
-| legendTitleFontSize | int | 20 |  |
-| legendTitleWidth | int | 40 |  |
-| legendAscending | String | true |  |
-| legendCellNb | int | 4 |  |
-| legendLabelWrap | int | 140 |  |
-| legendLabelDecNb | int | 2 |  |
-| legendLabelOffset | int | 5 |  |
-| legendLabelFontSize | int | 15 |  |
-| legendLabelDelimiter | String | " - " |  |
-| legendShapeWidth | int | 20 |  |
-| legendShapeHeight | int | 16 |  |
-| legendShapePadding | int | 2 |  |
-| legendBoxMargin | int | 10 |  |
-| legendBoxPadding | int | 10 |  |
-| legendBoxCornerRadius | int | 10 |  |
-| legendBoxOpacity | number | 0.5 |  |
-| legendBoxFill | String | "white" |  |
-| legendBoxWidth | int | 250 |  |
-| legendBoxHeight | int | 350 |  |
+| showLegend | boolean | true | Set to true to show a legend. False otherwise. |
+| legendFontFamily | String | EstLib.fontFamilyDefault | The legend font. |
+| legendTitleText | String | "Legend" | The legend title. |
+| legendTitleFontSize | int | 20 | The legend title font size. |
+| legendTitleWidth | int | 140 | The legend title text wrap, in pixel. |
+| legendBoxWidth | int | 250 | The legend box width. |
+| legendBoxHeight | int | 350 | The legend box height. |
+| legendBoxMargin | int | 10 | The legend box margin, in pixel. |
+| legendBoxPadding | int | 10 | The legend box padding, in pixel. |
+| legendBoxCornerRadius | int | 10 | The legend box corner radius, in pixel. |
+| legendBoxFill | String | "white" | The legend box fill style. |
+| legendBoxOpacity | number | 0.5 | The legend box opacity, from 0 to 1. |
+| legendCellNb | int | 4 | The legend cells number (used for proportional symbol maps only). |
+| legendAscending | String | true | The legend cells order. |
+| legendShapeWidth | int | 20 | The cell width (used for choropleth maps only). |
+| legendShapeHeight | int | 16 | The cell heigth (used for choropleth maps only). |
+| legendShapePadding | int | 2 | The distance between 2 cells, in pixel. |
+| legendLabelFontSize | int | 15 | The label font size. |
+| legendLabelDelimiter | String | " - " | The label delimiter size (used for choropleth maps only). |
+| legendLabelWrap | int | 140 | The label text wrap length, in pixel. |
+| legendLabelDecNb | int | 2 | The number of decimal places to show in text labels. |
+| legendLabelOffset | int | 5 | The number of pixels between the legend shape and its label, in pixel. |
 
 ### Update the map
 
@@ -170,8 +168,8 @@ After changing some parameters, one of the following methods need to be executed
 
 | Method | Returns | Description |
 | --- | --- | --- |
-| set | this |  |
 | getTime | String | Return the "time" parameter of the statistical data. It is necessary when a filter such as *{ lastTimePeriod : 1 }* is used. |
+| set | this | Run 'myMap.set(EstLib.getURLParameters())' to retrieve parameters defined in the URL and apply them to a map element directly. |
 
 Anything missing? Feel free to [ask](https://github.com/eurostat/eurostat.js/issues/new) !
 
