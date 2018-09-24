@@ -210,7 +210,7 @@
 
 			if(out.drawCoastalMargin_)
 				//define filter for coastal margin
-				svg.append("filter").attr("id", "coastal_blur").attr("x","-100%").attr("y", "-100%").attr("width","400%")
+				svg.append("filter").attr("id", "coastal_blur").attr("x","-200%").attr("y", "-200%").attr("width","400%")
 					.attr("height", "400%").append("feGaussianBlur").attr("in", "SourceGraphic").attr("stdDeviation", out.coastalMarginStdDev_);
 
 			//add additional filters for fill patterns for example
