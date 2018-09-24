@@ -84,16 +84,16 @@
 		out.nutsbnStrokeWidth_ = {0:1,1:0.2,2:0.2,3:0.2,oth:1,co:1};
 		out.cntrgFillStyle_ = "lightgray";
 		out.cntrgSelectionFillStyle_ = "darkgray";
-		out.cntbnStroke_ = "#777";
-		out.cntbnStrokeWidth_ = 1;
-		out.drawGraticule_ = true;
-		out.graticuleStroke_ = "gray";
-		out.graticuleStrokeWidth_ = 1;
+		out.cntbnStroke_ = {def:"#777", co:"#1f78b4"};
+		out.cntbnStrokeWidth_ = {def:1, co:1};
 		out.seaFillStyle_ = "#b3cde3";
 		out.drawCoastalMargin_ = true;
 		out.coastalMarginColor_ = "white";
 		out.coastalMarginWidth_ = 12;
 		out.coastalMarginStdDev_ = 12;
+		out.drawGraticule_ = true;
+		out.graticuleStroke_ = "gray";
+		out.graticuleStrokeWidth_ = 1;
 
 		//legend
 		out.showLegend_ = true;
@@ -222,12 +222,13 @@
 				//add zoom function
 				svg.call(d3.zoom().scaleExtent(out.scaleExtent_)
 					.on("zoom", function() {
-							var k = d3.event.transform.k;
-							var cs = ["gra","bn_0","bn_oth","bn_co","cntbn"];
-							for(var i=0; i<cs.length; i++)
-								d3.selectAll("."+cs[i]).style("stroke-width", (1/k)+"px");
-							zg.attr("transform", d3.event.transform);
-						}));
+						//TODO fix that
+						var k = d3.event.transform.k;
+						var cs = ["gra","bn_0","bn_oth","bn_co","cntbn"];
+						for(var i=0; i<cs.length; i++)
+							d3.selectAll("."+cs[i]).style("stroke-width", (1/k)+"px");
+						zg.attr("transform", d3.event.transform);
+					}));
 			}
 
 			//draw background rectangle
@@ -302,11 +303,9 @@
 				.style("fill", "none").style("stroke-linecap", "round").style("stroke-linejoin", "round")
 				.selectAll("path").data(cntbn)
 				.enter().append("path").attr("d", path)
-				.attr("class", function(bn) {
-					if (bn.properties.co === "T") return "bn_co"; return "cntbn";
-				})
-				.style("stroke", out.cntbnStroke_)
-				.style("stroke-width", out.cntbnStrokeWidth_);
+				.attr("class", function(bn) { if (bn.properties.co === "T") return "bn_co"; return "cntbn"; })
+				.style("stroke", function(bn) { if (bn.properties.co === "T") return out.cntbnStroke_.co; return out.cntbnStroke_.def; })
+				.style("stroke-width", function(bn) { if (bn.properties.co === "T") return out.cntbnStrokeWidth_.co; return out.cntbnStrokeWidth_.def; });
 
 			//draw NUTS boundaries
 			nutsbn.sort(function(bn1, bn2) { return bn2.properties.lvl - bn1.properties.lvl; });

@@ -110,20 +110,20 @@ When *type* is set to *"ps"*.
 | --- | --- | --- | --- |
 | nutsrgFillStyle | String | "#eee" | The fill style of the NUTS regions, used for proportional circle maps. |
 | nutsrgSelectionFillStyle | String | "#purple" | The fill style of the selected NUTS regions. |
-| nutsbnStroke | String | {0:"#777", 1:"#777", 2:"#777", 3:"#777", oth:"#444", co:"#1f78b4"} | The stroke style of the NUTS boundaries, depending on the NUTS level. |
-| nutsbnStrokeWidth | number | {0:1, 1:0.2, 2:0.2, 3:0.2, oth:1, co:1} | The stroke width of the NUTS boundaries, depending on the NUTS level. |
+| nutsbnStroke | Object | {0:"#777", 1:"#777", 2:"#777", 3:"#777", oth:"#444", co:"#1f78b4"} | The stroke style of the NUTS boundaries, depending on the NUTS level, if it is a border with another country ('oth') and if it is coastal ('co') |
+| nutsbnStrokeWidth | Object | {0:1, 1:0.2, 2:0.2, 3:0.2, oth:1, co:1} | The stroke width of the NUTS boundaries, depending on the NUTS level, if it is a border with another country ('oth') and if it is coastal ('co'). |
 | cntrgFillStyle | String | "lightgray" | The fill style of the countries. |
 | cntrgSelectionFillStyle | String | "darkgray" | The fill style of the selected countries. |
-| cntbnStroke | String | "#777" | The stroke style of the country boundaries. |
-| cntbnStrokeWidth | number | 1 | The stroke width of the country boundaries. |
-| drawGraticule | boolean | true | Set to true to show the graticule (meridian and parallel lines). False otherwise. |
-| graticuleStroke | String | "gray" | The stroke style of the graticule. |
-| graticuleStrokeWidth | number | 1 | The stroke width of the graticule. |
+| cntbnStroke | Object | {def:"#777", co:"#1f78b4"} | The stroke style of the country boundaries ('co' is for coastal boundaries). |
+| cntbnStrokeWidth | Object | {def:1, co:1} | The stroke width of the country boundaries ('co' is for coastal boundaries). |
 | seaFillStyle | String | "#b3cde3" | The fill style of the sea areas. |
 | drawCoastalMargin | boolean | true | Set to true to show a coastal blurry margin. False otherwise. |
 | coastalMarginColor | String | "white" | The color of the coastal blurry margin. |
 | coastalMarginWidth | number | 12 | The width of the coastal blurry margin. |
 | coastalMarginStdDev | number | 12 | The standard deviation of the coastal blurry margin. |
+| drawGraticule | boolean | true | Set to true to show the graticule (meridian and parallel lines). False otherwise. |
+| graticuleStroke | String | "gray" | The stroke style of the graticule. |
+| graticuleStrokeWidth | number | 1 | The stroke width of the graticule. |
 
 ### Legend customisation
 
