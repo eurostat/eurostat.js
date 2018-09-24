@@ -1,12 +1,12 @@
 # eurostat-map.js
 
-Reusable library for web maps showing [Eurostat](https://ec.europa.eu/eurostat) data.
+Reusable library to easily create and customise web maps showing [Eurostat](https://ec.europa.eu/eurostat) data.
 
 [![Example](img/ch_ex.png)](https://bl.ocks.org/jgaffuri/raw/0d6e1b1c6f9e1297829f38b9c37737fe/)
 [![Example](img/ps_ex.png)](https://bl.ocks.org/jgaffuri/raw/cf5f187bd195f9c8771a1a3a4898079a/)
 [![Example](img/pp_ex.png)](https://bl.ocks.org/jgaffuri/raw/c8b99b207bb80a923bf1fd19f5d6de7e/)
 
-## Examples
+## Some examples
 
 * [Population density map](https://bl.ocks.org/jgaffuri/raw/0d6e1b1c6f9e1297829f38b9c37737fe/) (see [the code](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe))
 * [Population density map with dot pattern](https://bl.ocks.org/jgaffuri/raw/c8b99b207bb80a923bf1fd19f5d6de7e/) (see [the code](https://bl.ocks.org/jgaffuri/c8b99b207bb80a923bf1fd19f5d6de7e))
@@ -14,7 +14,7 @@ Reusable library for web maps showing [Eurostat](https://ec.europa.eu/eurostat) 
 
 ## Quick start
 
-First, add the various required libraries, replacing *X.Y.Z* with the version number of the last release (see [here](https://github.com/eurostat/eurostat.js/releases)):
+First, add the required libraries, replacing *X.Y.Z* with the version number of the last release (see [here](https://github.com/eurostat/eurostat.js/releases)):
 
 ```html
 <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -32,13 +32,13 @@ First, add the various required libraries, replacing *X.Y.Z* with the version nu
 <script src="https://cdn.jsdelivr.net/gh/eurostat/eurostat.js@X.Y.Z/js/eurostat-tooltip.js"></script>
 ```
 
-Then, add the SVG element where the map should appear somewhere on your page:
+Then, add somewhere on your page the SVG element where the map should appear:
 
 ```html
 <svg id="map"></svg>
 ```
 
-And finally, specify the map content and style in javascript. The example below draws a map showing population density in 2016 from Eurostat database *[demo_r_d3dens](http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_d3dens)*. See [the result](https://bl.ocks.org/jgaffuri/raw/0d6e1b1c6f9e1297829f38b9c37737fe/) and [the code](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe).
+Finally, customize the map content and style in javascript. The example below shows a map on population density in 2016 from Eurostat database *[demo_r_d3dens](http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_d3dens)*. See [the result](https://bl.ocks.org/jgaffuri/raw/0d6e1b1c6f9e1297829f38b9c37737fe/) and [the code](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe).
 
 ```javascript
 EstLib.map()
@@ -54,6 +54,8 @@ EstLib.map()
 
 
 ## Documentation
+
+### Map definition
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
@@ -102,7 +104,7 @@ When *type* is set to *"ps"*.
 | psStroke | String | "#fff" | The stroke color of pattern of the symbol. |
 | psStrokeWidth | number | 0.5 | The width of the stroke. |
 
-### Specify map template style
+### Some styling customisation
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
@@ -123,7 +125,7 @@ When *type* is set to *"ps"*.
 | coastalMarginWidth | number | 12 | The width of the coastal blurry margin. |
 | coastalMarginStdDev | number | 12 | The standard deviation of the coastal blurry margin. |
 
-### Specify the legend
+### Legend customisation
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
@@ -150,7 +152,7 @@ When *type* is set to *"ps"*.
 | legendLabelDecNb | int | 2 | The number of decimal places to show in text labels. |
 | legendLabelOffset | int | 5 | The number of pixels between the legend shape and its label, in pixel. |
 
-### Update the map
+### Build and update
 
 After changing some parameters, one of the following methods need to be executed:
 
@@ -164,7 +166,7 @@ After changing some parameters, one of the following methods need to be executed
 | updateLegend | this | Update the map when paramters on the legend have changed.  |
 | updateStyle | this | Update the map when paramters on the style have changed.  |
 
-### Others
+### Miscellaneous
 
 | Method | Returns | Description |
 | --- | --- | --- |
