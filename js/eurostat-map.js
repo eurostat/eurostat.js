@@ -8,17 +8,16 @@
 (function(d3, EstLib) {
 
 	//TODO
-	//complete doc
-	//youg/kos
+	//youg/kos: check drawing order first. List all problems... fix them.
 	//decompose?
 
 	//*** v1 ***
 
-	//constraint pan
 	//diverging ramp -> define central value (0, average, 100, etc.)
 	//fix zoom - line resize, etc.
 	//propo circles: make nicer legend...
 	//add "no data" in legend
+	//constraint pan
 	//adopt data cache ?
 	//support data flags
 	//svg export: with rounded coordinates - d3.round. test + edit in inkscape + fix. Function/button "export as svg"
