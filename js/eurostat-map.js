@@ -9,11 +9,11 @@
 
 	//TODO
 	//RS-K
-	//decompose?
 
 	//*** v1 ***
 
 	//diverging ramp -> define central value (0, average, 100, etc.)
+	//decompose?
 	//fix zoom - line resize, etc.
 	//propo circles: make nicer legend...
 	//add "no data" in legend
