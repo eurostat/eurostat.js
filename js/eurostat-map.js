@@ -8,7 +8,7 @@
 (function(d3, EstLib) {
 
 	//TODO
-	//youg/kos: check drawing order first. List all problems... fix them.
+	//RS-K
 	//decompose?
 
 	//*** v1 ***
