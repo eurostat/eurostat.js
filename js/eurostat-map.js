@@ -142,7 +142,7 @@
 			if(opts.w) out.width(opts.w);
 			if(opts.s) out.scale(opts.s);
 			if(opts.lvl) out.nutsLvl(opts.lvl);
-			//if(opts.time)  = opts.time;
+			if(opts.time) { out.filters_.time = opts.time; delete out.filters_.lastTimePeriod; }
 			if(opts.proj) out.proj(opts.proj);
 			if(opts.y) out.NUTSyear(opts.y);
 			if(opts.clnb) out.clnb(+opts.clnb);
