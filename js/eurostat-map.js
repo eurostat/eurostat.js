@@ -7,11 +7,6 @@
  */
 (function(d3, EstLib) {
 
-	//TODO
-	//RS-K
-
-	//*** v1 ***
-
 	//diverging ramp -> define central value (0, average, 100, etc.)
 	//decompose?
 	//fix zoom - line resize, etc.
@@ -25,7 +20,7 @@
 	//choice
 	//insets (with nuts2json)
 	//transform nice nuts map using eurostat-map.js?
-	//d3.v5.js ?
+	//move to d3.v5.js ?
 	//https://github.com/d3/d3-shape#symbols
 	//proportional circles: extend to squares + other symbols?
 	//typologies: use ordinal scale: var ordinal = d3.scaleOrdinal().domain(["a", "b", "c", "d", "e"]).range([ ... ]);
