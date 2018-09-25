@@ -1,6 +1,6 @@
 # eurostat-map.js
 
-Reusable library to easily create and customise web maps showing [Eurostat](https://ec.europa.eu/eurostat) data.
+Reusable library to quickly create and customise web maps showing [Eurostat](https://ec.europa.eu/eurostat) data.
 
 [![Example](img/ch_ex.png)](https://bl.ocks.org/jgaffuri/raw/0d6e1b1c6f9e1297829f38b9c37737fe/)
 [![Example](img/ps_ex.png)](https://bl.ocks.org/jgaffuri/raw/cf5f187bd195f9c8771a1a3a4898079a/)
@@ -38,7 +38,7 @@ Then, add somewhere on your page the SVG element where the map should appear:
 <svg id="map"></svg>
 ```
 
-Finally, customize the map content and style in javascript. The example below shows a map on population density in 2016 from Eurostat database *[demo_r_d3dens](http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_d3dens)*. See [the result](https://bl.ocks.org/jgaffuri/raw/0d6e1b1c6f9e1297829f38b9c37737fe/) and [the code](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe).
+Finally, customize the map content and style with a bit of javascript code. The example below shows a map on population density in 2016 from Eurostat database *[demo_r_d3dens](http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_d3dens)*. See [the result](https://bl.ocks.org/jgaffuri/raw/0d6e1b1c6f9e1297829f38b9c37737fe/) and [the code](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe).
 
 ```javascript
 EstLib.map()
@@ -52,6 +52,7 @@ EstLib.map()
 .build();
 ```
 
+For further customisation, find a (more) complete documentation below.
 
 ## Documentation
 
