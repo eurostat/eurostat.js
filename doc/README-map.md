@@ -86,7 +86,9 @@ Once the parameters have been set or changed, the map should be built or updated
 
 ### For choropleth maps
 
-A [choropleth map](https://en.wikipedia.org/wiki/Choropleth_map) shows areas **colored or patterned** in proportion to a statistical variable. These maps should be used to show statistical variables such as proportions, ratios, densities, rates of change, percentages, etc. For choropleth maps, *type* should be set to *"ch"*. The following parameters are then considered:
+A [choropleth map](https://en.wikipedia.org/wiki/Choropleth_map) shows areas **colored or patterned** in proportion to a statistical variable. These maps should be used to show statistical variables such as proportions, ratios, densities, rates of change, percentages, etc. Here is [an example](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe).
+
+To show a choropleth map, *type* should be set to *"ch"*. The following parameters are then considered:
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
@@ -102,7 +104,9 @@ A [choropleth map](https://en.wikipedia.org/wiki/Choropleth_map) shows areas **c
 
 ### For proportional symbol map
 
-A a proportional symbol map shows symbols (typically circles) **sized** in proportion to a statistical variable. These maps should be used to show statistical variables such as quantities, populations, numbers, etc. To show a proportional symbol map, *type* should be set to *"ps"*. The following parameters are then considered:
+A a proportional symbol map shows symbols (typically circles) **sized** in proportion to a statistical variable. These maps should be used to show statistical variables such as quantities, populations, numbers, etc. Here is [an example](https://bl.ocks.org/jgaffuri/cf5f187bd195f9c8771a1a3a4898079a).
+
+To show a proportional symbol map, *type* should be set to *"ps"*. The following parameters are then considered:
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
