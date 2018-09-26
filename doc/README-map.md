@@ -87,15 +87,15 @@ When *type* is set to *"ch"*.
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
-| classifMethod | String | "quantile" | The classification method. Possible values are "quantile", "equinter" for equal intervals, and "threshold" for user defined threshol (see threshold method). |
-| threshold | Array | [0] | classifMethod="threshold", the breaks of the classification. |
-| makeClassifNice | boolean | true | Make nice break values. Works only for classifMethod="equinter". |
-| clnb | int | 7 | The number of classes. |
-| colorFun | thins or function | d3.interpolateYlOrRd | The color function, as defined in https://github.com/d3/d3-scale-chromatic/ |
-| classToFillStyle | Function | See description | A function returning a fill style for each class number. The default values is the function returned by *EstLib.getColorLegend(colorFun())*. |
-| filtersDefinitionFun | Function | function() {} | A function defining SVG filter elements. To be used to defined fill patterns.  |
-| noDataFillStyle | String | "lightgray" | The fill style to be used for regions where no data is available. |
-| noDataText | String | "No data" | The text to show for regions where no data is available.  |
+| *map*.**classifMethod**([*value*]) | String | "quantile" | The classification method. Possible values are "quantile", "equinter" for equal intervals, and "threshold" for user defined threshol (see threshold method). |
+| *map*.**threshold**([*value*]) | Array | [0] | classifMethod="threshold", the breaks of the classification. |
+| *map*.**makeClassifNice**([*value*]) | boolean | true | Make nice break values. Works only for classifMethod="equinter". |
+| *map*.**clnb**([*value*]) | int | 7 | The number of classes. |
+| *map*.**colorFun**([*value*]) | thins or function | d3.interpolateYlOrRd | The color function, as defined in https://github.com/d3/d3-scale-chromatic/ |
+| *map*.**classToFillStyle**([*value*]) | Function | See description | A function returning a fill style for each class number. The default values is the function returned by *EstLib.getColorLegend(colorFun())*. |
+| *map*.**filtersDefinitionFun**([*value*]) | Function | function() {} | A function defining SVG filter elements. To be used to defined fill patterns.  |
+| *map*.**noDataFillStyle**([*value*]) | String | "lightgray" | The fill style to be used for regions where no data is available. |
+| *map*.**noDataText**([*value*]) | String | "No data" | The text to show for regions where no data is available.  |
 
 ### For proportional symbol map
 
@@ -103,34 +103,34 @@ When *type* is set to *"ps"*.
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
-| psMaxSize | number | 30 | The maximum size, in pixel. |
-| psMinSize | number | 0.8 | The minimum size, for non null values, in pixel. |
-| psMinValue | number | 0 | The minimum value of the range domain. |
-| psFill |  | String | "#B45F04" | The fill color or pattern of the symbol. |
-| psFillOpacity | number | 0.7 | The opacity of the symbol, from 0 to 1. |
-| psStroke | String | "#fff" | The stroke color of pattern of the symbol. |
-| psStrokeWidth | number | 0.5 | The width of the stroke. |
+| *map*.**psMaxSize**([*value*]) | number | 30 | The maximum size, in pixel. |
+| *map*.**psMinSize**([*value*]) | number | 0.8 | The minimum size, for non null values, in pixel. |
+| *map*.**psMinValue**([*value*]) | number | 0 | The minimum value of the range domain. |
+| *map*.**psFill**([*value*]) |  | String | "#B45F04" | The fill color or pattern of the symbol. |
+| *map*.**psFillOpacity**([*value*]) | number | 0.7 | The opacity of the symbol, from 0 to 1. |
+| *map*.**psStroke**([*value*]) | String | "#fff" | The stroke color of pattern of the symbol. |
+| *map*.**psStrokeWidth**([*value*]) | number | 0.5 | The width of the stroke. |
 
 ### Some styling customisation
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
-| nutsrgFillStyle | String | "#eee" | The fill style of the NUTS regions, used for proportional circle maps. |
-| nutsrgSelectionFillStyle | String | "#purple" | The fill style of the selected NUTS regions. |
-| nutsbnStroke | Object | {0:"#777", 1:"#777", 2:"#777", 3:"#777", oth:"#444", co:"#1f78b4"} | The stroke style of the NUTS boundaries, depending on the NUTS level, if it is a border with another country ('oth') and if it is coastal ('co') |
-| nutsbnStrokeWidth | Object | {0:1, 1:0.2, 2:0.2, 3:0.2, oth:1, co:1} | The stroke width of the NUTS boundaries, depending on the NUTS level, if it is a border with another country ('oth') and if it is coastal ('co'). |
-| cntrgFillStyle | String | "lightgray" | The fill style of the countries. |
-| cntrgSelectionFillStyle | String | "darkgray" | The fill style of the selected countries. |
-| cntbnStroke | Object | {def:"#777", co:"#1f78b4"} | The stroke style of the country boundaries ('co' is for coastal boundaries). |
-| cntbnStrokeWidth | Object | {def:1, co:1} | The stroke width of the country boundaries ('co' is for coastal boundaries). |
-| seaFillStyle | String | "#b3cde3" | The fill style of the sea areas. |
-| drawCoastalMargin | boolean | true | Set to true to show a coastal blurry margin. False otherwise. |
-| coastalMarginColor | String | "white" | The color of the coastal blurry margin. |
-| coastalMarginWidth | number | 12 | The width of the coastal blurry margin. |
-| coastalMarginStdDev | number | 12 | The standard deviation of the coastal blurry margin. |
-| drawGraticule | boolean | true | Set to true to show the graticule (meridian and parallel lines). False otherwise. |
-| graticuleStroke | String | "gray" | The stroke style of the graticule. |
-| graticuleStrokeWidth | number | 1 | The stroke width of the graticule. |
+| *map*.**nutsrgFillStyle**([*value*]) | String | "#eee" | The fill style of the NUTS regions, used for proportional circle maps. |
+| *map*.**nutsrgSelectionFillStyle**([*value*]) | String | "#purple" | The fill style of the selected NUTS regions. |
+| *map*.**nutsbnStroke**([*value*]) | Object | {0:"#777", 1:"#777", 2:"#777", 3:"#777", oth:"#444", co:"#1f78b4"} | The stroke style of the NUTS boundaries, depending on the NUTS level, if it is a border with another country ('oth') and if it is coastal ('co') |
+| *map*.**nutsbnStrokeWidth**([*value*]) | Object | {0:1, 1:0.2, 2:0.2, 3:0.2, oth:1, co:1} | The stroke width of the NUTS boundaries, depending on the NUTS level, if it is a border with another country ('oth') and if it is coastal ('co'). |
+| *map*.**cntrgFillStyle**([*value*]) | String | "lightgray" | The fill style of the countries. |
+| *map*.**cntrgSelectionFillStyle**([*value*]) | String | "darkgray" | The fill style of the selected countries. |
+| *map*.**cntbnStroke**([*value*]) | Object | {def:"#777", co:"#1f78b4"} | The stroke style of the country boundaries ('co' is for coastal boundaries). |
+| *map*.**cntbnStrokeWidth**([*value*]) | Object | {def:1, co:1} | The stroke width of the country boundaries ('co' is for coastal boundaries). |
+| *map*.**seaFillStyle**([*value*]) | String | "#b3cde3" | The fill style of the sea areas. |
+| *map*.**drawCoastalMargin**([*value*]) | boolean | true | Set to true to show a coastal blurry margin. False otherwise. |
+| *map*.**coastalMarginColor**([*value*]) | String | "white" | The color of the coastal blurry margin. |
+| *map*.**coastalMarginWidth**([*value*]) | number | 12 | The width of the coastal blurry margin. |
+| *map*.**coastalMarginStdDev**([*value*]) | number | 12 | The standard deviation of the coastal blurry margin. |
+| *map*.**drawGraticule**([*value*]) | boolean | true | Set to true to show the graticule (meridian and parallel lines). False otherwise. |
+| *map*.**graticuleStroke**([*value*]) | String | "gray" | The stroke style of the graticule. |
+| *map*.**graticuleStrokeWidth**([*value*]) | number | 1 | The stroke width of the graticule. |
 
 ### Legend customisation
 
