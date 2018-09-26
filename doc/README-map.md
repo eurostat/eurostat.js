@@ -15,7 +15,7 @@ Reusable library to quickly create and customise web maps showing [Eurostat](htt
 
 ## Quick start
 
-First, add the required libraries, replacing *X.Y.Z* with the version number of the last release (see [here](https://github.com/eurostat/eurostat.js/releases)):
+First, create an HTML file and add the following required libraries, replacing *X.Y.Z* with the version number of the last release (see [here](https://github.com/eurostat/eurostat.js/releases)):
 
 ```html
 <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -25,15 +25,13 @@ First, add the required libraries, replacing *X.Y.Z* with the version number of 
 <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/jsonstat@0.13.3/json-stat.js"></script>
-
 <script src="https://cdn.jsdelivr.net/gh/eurostat/eurostat.js@X.Y.Z/js/eurostat-lib.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/eurostat/eurostat.js@X.Y.Z/js/eurostat-map.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/eurostat/eurostat.js@X.Y.Z/js/eurostat-tooltip.js"></script>
 ```
 
-Then, add somewhere on your page the SVG element where the map should appear:
+Then, add somewhere on the HTML page the SVG element where the map should appear:
 
 ```html
 <svg id="map"></svg>
@@ -61,68 +59,68 @@ For further customisation, find a (more) complete documentation below.
 
 Create a map with ``var map = EstLib.map();`` and customise it with the methods below.
 
-Most of the methods follow the pattern *map*.**myMethod**([*value*]): If a *value* is specified, the method sets the parameter value and return the object itself. If no *value* is specified, the method returns the current value of the parameter.
+Most of these methods follow the pattern *map*.**myMethod**([*value*]): If a *value* is specified, the method sets the parameter value and return the *map* object itself. If no *value* is specified, the method returns the current value of the parameter.
 
-Once the parameters have been set or changed, the map should be built or updated using one of [these methods](#build-and-update).
+Once the parameters have been set or changed, the map needs to be built or updated using one of [these methods](#build-and-update).
 
 ### Map definition
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
 | *map*.**svgId**([*value*]) | String | "map" | The id of the SVG element of the HTML page where to draw the map. |
-| *map*.**type**([*value*]) | String | "ch" | The type of map. Possible values are "ch" for choropleth maps and "ps" for proportional symbols. |
+| *map*.**type**([*value*]) | String | "ch" | The type of map. Possible values are "ch" for choropleth maps and "ps" for proportional symbols. See below for a description of these map types. |
 | *map*.**width**([*value*]) | int | 800 | The width of the map in pixel. |
-| *map*.**datasetCode**([*value*]) | String | "demo_r_d3dens" for population density map. | The Eurostat database code to retrieve the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) to find them. |
-| *map*.**filters**([*value*]) | Object | { lastTimePeriod : 1 } |  The Eurostat dimension codes to filter the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) or [here](https://ec.europa.eu/eurostat/web/json-and-unicode-web-services/getting-started/query-builder) to find them.  |
-| *map*.**precision**([*value*]) | int | 2 | The precision of the statistical figures to retrieve (number of decimal places). |
-| *map*.**scale**([*value*]) | String | "20M" | The simplification level of the map, among "10M", "20M", "60M". |
-| *map*.**scaleExtent**([*value*]) | Array | [1,4] | The zoom extent. Set to null to forbid zooming. |
-| *map*.**proj**([*value*]) | String | "3035" | The map projection code. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md)  |
-| *map*.**nutsLvl**([*value*]) | int | 3 | The nuts level to show on the map, from 0 (national level) to 3 (local level) |
-| *map*.**NUTSyear**([*value*]) | int | 2013 | The version of the NUTS dataset to use. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md) |
-| *map*.**lg**([*value*]) | String | "en" | The language. |
-| *map*.**showTooltip**([*value*]) | boolean | true | A boolean value indicating if tooltip should appear on the map. |
-| *map*.**unitText**([*value*]) | String | "" | The text to display to show the unit in the tooltip |
+| *map*.**datasetCode**([*value*]) | String | "demo_r_d3dens", for a population density map. | The Eurostat database code of the statistical variable. See [here](https://ec.europa.eu/eurostat/data/database) to find them. |
+| *map*.**filters**([*value*]) | Object | { lastTimePeriod : 1 } |  The Eurostat dimension codes to filter/select the chosen statistical variable. See [here](https://ec.europa.eu/eurostat/data/database) or [here](https://ec.europa.eu/eurostat/web/json-and-unicode-web-services/getting-started/query-builder) to find them.  |
+| *map*.**precision**([*value*]) | int | 2 | The precision of the statistical variable to retrieve (number of decimal places). |
+| *map*.**scale**([*value*]) | String | "20M" | The simplification level of the map, among "10M", "20M", "60M". The most simplified version is "60M". |
+| *map*.**scaleExtent**([*value*]) | Array | [1,4] | The zoom extent. The first value within [0,1] defines the maximum zoom out - the second value within [1,infinity] defines the maximum zoom in. Set to null or [1,1] to forbid zooming. |
+| *map*.**proj**([*value*]) | String | "3035" | The map projection EPSG code. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md).  |
+| *map*.**nutsLvl**([*value*]) | int | 3 | The nuts level to show on the map, from 0 (national level) to 3 (more local level). Note that not all NUTS levels are always available for Eurostat databases. |
+| *map*.**NUTSyear**([*value*]) | int | 2013 | The version of the NUTS dataset to use. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md). |
+| *map*.**lg**([*value*]) | String | "en" | The language code, for multilingual maps. |
+| *map*.**showTooltip**([*value*]) | boolean | true | A boolean value indicating if a tooltip should appear on the map when the mouse passes over map features. |
+| *map*.**unitText**([*value*]) | String | "" | The text of the unit to show in the tooltip. |
 
 ### For choropleth maps
 
-A [choropleth map](https://en.wikipedia.org/wiki/Choropleth_map) shows areas **colored or patterned** in proportion to a statistical variable. These maps should be used to show statistical variables such as proportions, ratios, densities, rates of change, percentages, etc. Here is [an example](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe).
+A [choropleth map](https://en.wikipedia.org/wiki/Choropleth_map) shows areas **colored or patterned** in proportion to a statistical variable. These maps should be used to show *intensive* statistical variables such as proportions, ratios, densities, rates of change, percentages, etc. Here is [an example](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe).
 
 To show a choropleth map, *type* should be set to *"ch"*. The following parameters are then considered:
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
 | *map*.**classifMethod**([*value*]) | String | "quantile" | The classification method. Possible values are "quantile", "equinter" for equal intervals, and "threshold" for user defined threshol (see threshold method). |
-| *map*.**threshold**([*value*]) | Array | [0] | classifMethod="threshold", the breaks of the classification. |
-| *map*.**makeClassifNice**([*value*]) | boolean | true | Make nice break values. Works only for classifMethod="equinter". |
-| *map*.**clnb**([*value*]) | int | 7 | The number of classes. |
-| *map*.**colorFun**([*value*]) | thins or function | d3.interpolateYlOrRd | The color function, as defined in https://github.com/d3/d3-scale-chromatic/ |
-| *map*.**classToFillStyle**([*value*]) | Function | See description | A function returning a fill style for each class number. The default values is the function returned by *EstLib.getColorLegend(colorFun())*. |
+| *map*.**threshold**([*value*]) | Array | [0] | If *classifMethod = "threshold"*, the breaks of the classification. |
+| *map*.**makeClassifNice**([*value*]) | boolean | true | Make nice break values. Works only for *classifMethod = "equinter"*. |
+| *map*.**clnb**([*value*]) | int | 7 | The number of classes. When *classifMethod = "threshold"*, this parameter is inferred from the number of breaks specified. |
+| *map*.**colorFun**([*value*]) | Function | d3.interpolateYlOrRd | The color function, as defined in https://github.com/d3/d3-scale-chromatic/ |
+| *map*.**classToFillStyle**([*value*]) | Function | See description | A function returning a fill style for each class number. The default values is the function returned by ``EstLib.getColorLegend(colorFun())``. |
 | *map*.**filtersDefinitionFun**([*value*]) | Function | function() {} | A function defining SVG filter elements. To be used to defined fill patterns.  |
 | *map*.**noDataFillStyle**([*value*]) | String | "lightgray" | The fill style to be used for regions where no data is available. |
 | *map*.**noDataText**([*value*]) | String | "No data" | The text to show for regions where no data is available.  |
 
 ### For proportional symbol map
 
-A a proportional symbol map shows symbols (typically circles) **sized** in proportion to a statistical variable. These maps should be used to show statistical variables such as quantities, populations, numbers, etc. Here is [an example](https://bl.ocks.org/jgaffuri/cf5f187bd195f9c8771a1a3a4898079a).
+A proportional symbol map shows symbols (typically circles) **sized** in proportion to a statistical variable. These maps should be used to show statistical *extensive* variables such as quantities, populations, numbers, etc. Here is [an example](https://bl.ocks.org/jgaffuri/cf5f187bd195f9c8771a1a3a4898079a).
 
 To show a proportional symbol map, *type* should be set to *"ps"*. The following parameters are then considered:
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
-| *map*.**psMaxSize**([*value*]) | number | 30 | The maximum size, in pixel. |
-| *map*.**psMinSize**([*value*]) | number | 0.8 | The minimum size, for non null values, in pixel. |
+| *map*.**psMaxSize**([*value*]) | number | 30 | The maximum size of the symbol, in pixel. |
+| *map*.**psMinSize**([*value*]) | number | 0.8 | The minimum size of the symbol, for non null values, in pixel. |
 | *map*.**psMinValue**([*value*]) | number | 0 | The minimum value of the range domain. |
 | *map*.**psFill**([*value*]) |  | String | "#B45F04" | The fill color or pattern of the symbol. |
 | *map*.**psFillOpacity**([*value*]) | number | 0.7 | The opacity of the symbol, from 0 to 1. |
-| *map*.**psStroke**([*value*]) | String | "#fff" | The stroke color of pattern of the symbol. |
+| *map*.**psStroke**([*value*]) | String | "#fff" | The stroke color of the symbol. |
 | *map*.**psStrokeWidth**([*value*]) | number | 0.5 | The width of the stroke. |
 
 ### Some styling customisation
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
-| *map*.**nutsrgFillStyle**([*value*]) | String | "#eee" | The fill style of the NUTS regions, used for proportional circle maps. |
+| *map*.**nutsrgFillStyle**([*value*]) | String | "#eee" | The fill style of the NUTS regions, used for proportional symbol maps only. |
 | *map*.**nutsrgSelectionFillStyle**([*value*]) | String | "#purple" | The fill style of the selected NUTS regions. |
 | *map*.**nutsbnStroke**([*value*]) | Object | {0:"#777", 1:"#777", 2:"#777", 3:"#777", oth:"#444", co:"#1f78b4"} | The stroke style of the NUTS boundaries, depending on the NUTS level, if it is a border with another country ('oth') and if it is coastal ('co') |
 | *map*.**nutsbnStrokeWidth**([*value*]) | Object | {0:1, 1:0.2, 2:0.2, 3:0.2, oth:1, co:1} | The stroke width of the NUTS boundaries, depending on the NUTS level, if it is a border with another country ('oth') and if it is coastal ('co'). |
@@ -173,21 +171,21 @@ After changing some parameters, one of the following methods need to be executed
 | Method | Returns | Description |
 | --- | --- | --- |
 | *map*.**build**() | this | Build (or rebuild) the entire map. |
-| *map*.**updategeoData**() | this | Update the map when paramters on the geometries have changed. |
-| *map*.**updateStatData**() | this | Update the map when paramters on the statistical data have changed. |
-| *map*.**buildMapTemplate**() | this | Update the map when paramters on the map template have changed. |
-| *map*.**updateClassificationAndStyle**() | this | Update the map when paramters on the classification have changed. |
-| *map*.**updateLegend**() | this | Update the map when paramters on the legend have changed.  |
-| *map*.**updateStyle**() | this | Update the map when paramters on the style have changed.  |
+| *map*.**updategeoData**() | this | Get new geometrical data. It should be used to update the map when parameters on the map geometries have changed. |
+| *map*.**updateStatData**() | this | Get new statistical data. It should be used to update the map when parameters on the statistical data have changed. |
+| *map*.**buildMapTemplate**() | this | Update the map when parameters on the map template have changed. |
+| *map*.**updateClassificationAndStyle**() | this | Update the map when parameters on the classification have changed. |
+| *map*.**updateLegend**() | this | Update the map when parameters on the legend have changed.  |
+| *map*.**updateStyle**() | this | Update the map when parameters on the classification style have changed.  |
 
 ### Miscellaneous
 
 | Method | Returns | Description |
 | --- | --- | --- |
-| *map*.**getTime**() | String | Return the "time" parameter of the statistical data. It is necessary when a filter such as *{ lastTimePeriod : 1 }* is used. |
-| *map*.**set**([options]) | this | Run 'myMap.set(EstLib.getURLParameters())' to retrieve parameters defined in the URL and apply them to a map element directly. |
+| *map*.**getTime**() | String | Return the *time* parameter of the statistical data. When a filter such as *{ lastTimePeriod : 1 }* is used, this method allows a retrieval of the map timestamp. |
+| *map*.**set**([options]) | this | Run "myMap.set(EstLib.getURLParameters())" to retrieve parameters defined in the URL and apply them to a map element directly. |
 
-Anything missing? Feel free to [ask](https://github.com/eurostat/eurostat.js/issues/new) !
+Anything unclear or missing? Feel free to [ask](https://github.com/eurostat/eurostat.js/issues/new) !
 
 ## Technical details
 
@@ -196,3 +194,7 @@ Maps based on [NUTS regions](http://ec.europa.eu/eurostat/web/nuts/overview) rel
 ## Support and contribution
 
 Feel free to [ask support](https://github.com/eurostat/eurostat.js/issues/new), fork the project or simply star it (it's always a pleasure).
+
+## Copyright
+
+The [Eurostat NUTS dataset](http://ec.europa.eu/eurostat/web/nuts/overview) is copyrighted. There are [specific provisions](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units) for the usage of this datasets which must be respected. The usage of these data is subject to their acceptance. See the [Eurostat-GISCO website](http://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts) for more information.
