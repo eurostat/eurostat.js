@@ -1,6 +1,7 @@
 # eurostat-map.js
 
-Reusable library to quickly create and customise web maps showing [Eurostat](https://ec.europa.eu/eurostat) data.
+Reusable library to quickly create and customise web maps showing [Eurostat](https://ec.europa.eu/eurostat) data directly retrieved from
+[Eurobase](https://ec.europa.eu/eurostat/data/database).
 
 [![Example](img/ch_ex.png)](https://bl.ocks.org/jgaffuri/raw/0d6e1b1c6f9e1297829f38b9c37737fe/)
 [![Example](img/ps_ex.png)](https://bl.ocks.org/jgaffuri/raw/cf5f187bd195f9c8771a1a3a4898079a/)
@@ -62,6 +63,8 @@ Create a map with ``var map = EstLib.map();`` and customise it with the methods 
 
 Most of the methods follow the pattern *map*.**myMethod**([*value*]): If a *value* is specified, the method sets the parameter value and return the object itself. If no *value* is specified, the method returns the current value of the parameter.
 
+Once the parameters have been set or changed, the map should be built or updated using one of [these methods](#build-and-update).
+
 ### Map definition
 
 | Method | Type | Default value | Description |
@@ -83,7 +86,7 @@ Most of the methods follow the pattern *map*.**myMethod**([*value*]): If a *valu
 
 ### For choropleth maps
 
-When *type* is set to *"ch"*.
+A [choropleth map](https://en.wikipedia.org/wiki/Choropleth_map) shows areas **colored or patterned** in proportion to a statistical variable. These maps should be used to show statistical variables such as proportions, ratios, densities, rates of change, percentages, etc. For choropleth maps, *type* should be set to *"ch"*. The following parameters are then considered:
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
@@ -99,7 +102,7 @@ When *type* is set to *"ch"*.
 
 ### For proportional symbol map
 
-When *type* is set to *"ps"*.
+A a proportional symbol map shows symbols (typically circles) **sized** in proportion to a statistical variable. These maps should be used to show statistical variables such as quantities, populations, numbers, etc. To show a proportional symbol map, *type* should be set to *"ps"*. The following parameters are then considered:
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
