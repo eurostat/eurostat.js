@@ -136,28 +136,28 @@ When *type* is set to *"ps"*.
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
-| showLegend | boolean | true | Set to true to show a legend. False otherwise. |
-| legendFontFamily | String | EstLib.fontFamilyDefault | The legend font. |
-| legendTitleText | String | "Legend" | The legend title. |
-| legendTitleFontSize | int | 20 | The legend title font size. |
-| legendTitleWidth | int | 140 | The legend title text wrap, in pixel. |
-| legendBoxWidth | int | 250 | The legend box width. |
-| legendBoxHeight | int | 350 | The legend box height. |
-| legendBoxMargin | int | 10 | The legend box margin, in pixel. |
-| legendBoxPadding | int | 10 | The legend box padding, in pixel. |
-| legendBoxCornerRadius | int | 10 | The legend box corner radius, in pixel. |
-| legendBoxFill | String | "white" | The legend box fill style. |
-| legendBoxOpacity | number | 0.5 | The legend box opacity, from 0 to 1. |
-| legendCellNb | int | 4 | The legend cells number (used for proportional symbol maps only). |
-| legendAscending | String | true | The legend cells order. |
-| legendShapeWidth | int | 20 | The cell width (used for choropleth maps only). |
-| legendShapeHeight | int | 16 | The cell heigth (used for choropleth maps only). |
-| legendShapePadding | int | 2 | The distance between 2 cells, in pixel. |
-| legendLabelFontSize | int | 15 | The label font size. |
-| legendLabelDelimiter | String | " - " | The label delimiter size (used for choropleth maps only). |
-| legendLabelWrap | int | 140 | The label text wrap length, in pixel. |
-| legendLabelDecNb | int | 2 | The number of decimal places to show in text labels. |
-| legendLabelOffset | int | 5 | The number of pixels between the legend shape and its label, in pixel. |
+| *map*.**showLegend**([*value*]) | boolean | true | Set to true to show a legend. False otherwise. |
+| *map*.**legendFontFamily**([*value*]) | String | EstLib.fontFamilyDefault | The legend font. |
+| *map*.**legendTitleText**([*value*]) | String | "Legend" | The legend title. |
+| *map*.**legendTitleFontSize**([*value*]) | int | 20 | The legend title font size. |
+| *map*.**legendTitleWidth**([*value*]) | int | 140 | The legend title text wrap, in pixel. |
+| *map*.**legendBoxWidth**([*value*]) | int | 250 | The legend box width. |
+| *map*.**legendBoxHeight**([*value*]) | int | 350 | The legend box height. |
+| *map*.**legendBoxMargin**([*value*]) | int | 10 | The legend box margin, in pixel. |
+| *map*.**legendBoxPadding**([*value*]) | int | 10 | The legend box padding, in pixel. |
+| *map*.**legendBoxCornerRadius**([*value*]) | int | 10 | The legend box corner radius, in pixel. |
+| *map*.**legendBoxFill**([*value*]) | String | "white" | The legend box fill style. |
+| *map*.**legendBoxOpacity**([*value*]) | number | 0.5 | The legend box opacity, from 0 to 1. |
+| *map*.**legendCellNb**([*value*]) | int | 4 | The legend cells number (used for proportional symbol maps only). |
+| *map*.**legendAscending**([*value*]) | String | true | The legend cells order. |
+| *map*.**legendShapeWidth**([*value*]) | int | 20 | The cell width (used for choropleth maps only). |
+| *map*.**legendShapeHeight**([*value*]) | int | 16 | The cell heigth (used for choropleth maps only). |
+| *map*.**legendShapePadding**([*value*]) | int | 2 | The distance between 2 cells, in pixel. |
+| *map*.**legendLabelFontSize**([*value*]) | int | 15 | The label font size. |
+| *map*.**legendLabelDelimiter**([*value*]) | String | " - " | The label delimiter size (used for choropleth maps only). |
+| *map*.**legendLabelWrap**([*value*]) | int | 140 | The label text wrap length, in pixel. |
+| *map*.**legendLabelDecNb**([*value*]) | int | 2 | The number of decimal places to show in text labels. |
+| *map*.**legendLabelOffset**([*value*]) | int | 5 | The number of pixels between the legend shape and its label, in pixel. |
 
 ### Build and update
 
@@ -165,20 +165,20 @@ After changing some parameters, one of the following methods need to be executed
 
 | Method | Returns | Description |
 | --- | --- | --- |
-| build | this | Build (or rebuild) the entire map. |
-| updategeoData | this | Update the map when paramters on the geometries have changed. |
-| updateStatData | this | Update the map when paramters on the statistical data have changed. |
-| buildMapTemplate | this | Update the map when paramters on the map template have changed. |
-| updateClassificationAndStyle | this | Update the map when paramters on the classification have changed. |
-| updateLegend | this | Update the map when paramters on the legend have changed.  |
-| updateStyle | this | Update the map when paramters on the style have changed.  |
+| *map*.**build | this | Build (or rebuild) the entire map. |
+| *map*.**updategeoData**() | this | Update the map when paramters on the geometries have changed. |
+| *map*.**updateStatData**() | this | Update the map when paramters on the statistical data have changed. |
+| *map*.**buildMapTemplate**() | this | Update the map when paramters on the map template have changed. |
+| *map*.**updateClassificationAndStyle**() | this | Update the map when paramters on the classification have changed. |
+| *map*.**updateLegend**() | this | Update the map when paramters on the legend have changed.  |
+| *map*.**updateStyle**() | this | Update the map when paramters on the style have changed.  |
 
 ### Miscellaneous
 
 | Method | Returns | Description |
 | --- | --- | --- |
-| getTime | String | Return the "time" parameter of the statistical data. It is necessary when a filter such as *{ lastTimePeriod : 1 }* is used. |
-| set | this | Run 'myMap.set(EstLib.getURLParameters())' to retrieve parameters defined in the URL and apply them to a map element directly. |
+| *map*.**getTime**() | String | Return the "time" parameter of the statistical data. It is necessary when a filter such as *{ lastTimePeriod : 1 }* is used. |
+| *map*.**set**([options]) | this | Run 'myMap.set(EstLib.getURLParameters())' to retrieve parameters defined in the URL and apply them to a map element directly. |
 
 Anything missing? Feel free to [ask](https://github.com/eurostat/eurostat.js/issues/new) !
 
