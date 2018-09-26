@@ -8,6 +8,7 @@
 (function(d3, EstLib) {
 
 	//diverging ramp -> define central value (0, average, 100, etc.)
+	//https://github.com/d3/d3-scale-chromatic/blob/master/README.md#diverging
 	//decompose?
 	//fix zoom - line resize, etc.
 	//propo circles: make nicer legend...
@@ -57,7 +58,7 @@
 		out.threshold_ = [0];
 		out.makeClassifNice_ = true;
 		out.clnb_ = 7;
-		out.colorFun_ = d3.interpolateYlOrRd; // see https://github.com/d3/d3-scale-chromatic/   -   ex: interpolateGnBu
+		out.colorFun_ = d3.interpolateYlOrBr; // see https://github.com/d3/d3-scale-chromatic/   -   ex: interpolateGnBu
 		out.classToFillStyle_ = EstLib.getColorLegend(out.colorFun_);
 		out.filtersDefinitionFun_ = function() {};
 		out.noDataFillStyle_ = "lightgray";
