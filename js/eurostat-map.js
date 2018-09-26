@@ -7,8 +7,8 @@
  */
 (function(d3, EstLib) {
 
-	//diverging ramp -> define central value (0, average, 100, etc.)
-	//https://github.com/d3/d3-scale-chromatic/blob/master/README.md#diverging
+	//copr
+	//diverging ramp -> define central value (0, average, 100, etc.). See https://github.com/d3/d3-scale-chromatic/blob/master/README.md#diverging
 	//decompose?
 	//fix zoom - line resize, etc.
 	//propo circles: make nicer legend...
