@@ -1,7 +1,7 @@
 # eurostat-map.js
 
 Reusable library to quickly create and customise web maps showing [Eurostat](https://ec.europa.eu/eurostat) data directly retrieved from
-[Eurobase](https://ec.europa.eu/eurostat/data/database).
+[Eurostat database](https://ec.europa.eu/eurostat/data/database).
 
 [![Example](img/ch_ex.png)](https://bl.ocks.org/jgaffuri/raw/0d6e1b1c6f9e1297829f38b9c37737fe/)
 [![Example](img/ps_ex.png)](https://bl.ocks.org/jgaffuri/raw/cf5f187bd195f9c8771a1a3a4898079a/)
