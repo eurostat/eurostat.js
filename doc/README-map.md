@@ -165,7 +165,7 @@ After changing some parameters, one of the following methods need to be executed
 
 | Method | Returns | Description |
 | --- | --- | --- |
-| *map*.**build | this | Build (or rebuild) the entire map. |
+| *map*.**build**() | this | Build (or rebuild) the entire map. |
 | *map*.**updategeoData**() | this | Update the map when paramters on the geometries have changed. |
 | *map*.**updateStatData**() | this | Update the map when paramters on the statistical data have changed. |
 | *map*.**buildMapTemplate**() | this | Update the map when paramters on the map template have changed. |
