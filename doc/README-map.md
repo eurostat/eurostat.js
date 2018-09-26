@@ -54,26 +54,32 @@ EstLib.map()
 
 For further customisation, find a (more) complete documentation below.
 
-## Documentation
+## Documentation - API
+
+### Map creation
+
+Create a map with ``var map = EstLib.map();`` and customise it with the methods below.
+
+Most of the methods follow the pattern *map*.**myMethod**([*value*]): If a *value* is specified, the method sets the parameter value and return the object itself. If no *value* is specified, the method returns the current value of the parameter.
 
 ### Map definition
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
-| svgId | String | "map" | The id of the SVG element where to draw the map. |
-| type | String | "ch" | The type of map. Possible values are "ch" for choropleth maps and "ps" for proportional symbols. |
-| width | int | 800 | The width of the map in pixel. |
-| datasetCode | String | "demo_r_d3dens" for population density map. | The Eurostat database code to retrieve the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) to find them. |
-| filters | Object | { lastTimePeriod : 1 } |  The Eurostat dimension codes to filter the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) or [here](https://ec.europa.eu/eurostat/web/json-and-unicode-web-services/getting-started/query-builder) to find them.  |
-| precision | int | 2 | The precision of the statistical figures to retrieve (number of decimal places). |
-| scale | String | "20M" | The simplification level of the map, among "10M", "20M", "60M". |
-| scaleExtent | Array | [1,4] | The zoom extent. Set to null to forbid zooming. |
-| proj | String | "3035" | The map projection code. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md)  |
-| nutsLvl | int | 3 | The nuts level to show on the map, from 0 (national level) to 3 (local level) |
-| NUTSyear | int | 2013 | The version of the NUTS dataset to use. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md) |
-| lg | String | "en" | The language. |
-| showTooltip | boolean | true | A boolean value indicating if tooltip should appear on the map. |
-| unitText | String | "" | The text to display to show the unit in the tooltip |
+| *map*.**svgId**([*value*]) | String | "map" | The id of the SVG element of the HTML page where to draw the map. |
+| *map*.**type**([*value*]) | String | "ch" | The type of map. Possible values are "ch" for choropleth maps and "ps" for proportional symbols. |
+| *map*.**width**([*value*]) | int | 800 | The width of the map in pixel. |
+| *map*.**datasetCode**([*value*]) | String | "demo_r_d3dens" for population density map. | The Eurostat database code to retrieve the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) to find them. |
+| *map*.**filters**([*value*]) | Object | { lastTimePeriod : 1 } |  The Eurostat dimension codes to filter the statistical figures. See [here](https://ec.europa.eu/eurostat/data/database) or [here](https://ec.europa.eu/eurostat/web/json-and-unicode-web-services/getting-started/query-builder) to find them.  |
+| *map*.**precision**([*value*]) | int | 2 | The precision of the statistical figures to retrieve (number of decimal places). |
+| *map*.**scale**([*value*]) | String | "20M" | The simplification level of the map, among "10M", "20M", "60M". |
+| *map*.**scaleExtent**([*value*]) | Array | [1,4] | The zoom extent. Set to null to forbid zooming. |
+| *map*.**proj**([*value*]) | String | "3035" | The map projection code. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md)  |
+| *map*.**nutsLvl**([*value*]) | int | 3 | The nuts level to show on the map, from 0 (national level) to 3 (local level) |
+| *map*.**NUTSyear**([*value*]) | int | 2013 | The version of the NUTS dataset to use. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md) |
+| *map*.**lg**([*value*]) | String | "en" | The language. |
+| *map*.**showTooltip**([*value*]) | boolean | true | A boolean value indicating if tooltip should appear on the map. |
+| *map*.**unitText**([*value*]) | String | "" | The text to display to show the unit in the tooltip |
 
 ### For choropleth maps
 
