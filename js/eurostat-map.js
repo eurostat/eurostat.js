@@ -365,17 +365,21 @@
 		out.updateClassificationAndStyle = function() {
 
 			if(out.type_ == "ch") {
+
+				//return [0,1,2,3,...,nb-1]
+				var getA = function(nb){ var a=[]; for(var i=0; i<nb; i++) a.push(i); return a; }
+
 				if(out.classifMethod_ === "quantile") {
 					//https://github.com/d3/d3-scale#quantile-scales
-					classif = d3.scaleQuantile().domain(values).range( [...Array(out.clnb_).keys()] );
+					classif = d3.scaleQuantile().domain(values).range( getA(out.clnb_) );
 				} else if(out.classifMethod_ === "equinter") {
 					//https://github.com/d3/d3-scale#quantize-scales
-					classif = d3.scaleQuantize().domain([d3.min(values),d3.max(values)]).range( [...Array(out.clnb_).keys()] );
+					classif = d3.scaleQuantize().domain([d3.min(values),d3.max(values)]).range( getA(out.clnb_) );
 					if(out.makeClassifNice_) classif.nice();
 				} else if(out.classifMethod_ === "threshold") {
 					//https://github.com/d3/d3-scale#threshold-scales
 					out.clnb(out.threshold_.length + 1);
-					classif = d3.scaleThreshold().domain(out.threshold_).range( [...Array(out.clnb_).keys()] );
+					classif = d3.scaleThreshold().domain(out.threshold_).range( getA(out.clnb_) );
 				}
 
 				//apply classification to nuts regions based on their value
@@ -385,7 +389,7 @@
 					return +classif(+rg.properties.val);
 				})
 			} else if(out.type_ == "ps") {
-				classif = d3.scaleSqrt().domain([out.psMinValue_, Math.max(...values)]).range([out.psMinSize_*0.5, out.psMaxSize_*0.5]);
+				classif = d3.scaleSqrt().domain([out.psMinValue_, Math.max.apply(Math, values)]).range([out.psMinSize_*0.5, out.psMaxSize_*0.5]);
 			} else {
 				console.log("Unknown map type: "+out.type_)
 				return out;
