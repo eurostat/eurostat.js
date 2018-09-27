@@ -37,19 +37,23 @@ Then, add somewhere on the HTML page the SVG element where the map should appear
 <svg id="map"></svg>
 ```
 
-Finally, customize the map content and style with a bit of javascript code. The example below shows a map on population density in 2016 from Eurostat database *[demo_r_d3dens](http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_d3dens)*. See [the result](https://bl.ocks.org/jgaffuri/raw/0d6e1b1c6f9e1297829f38b9c37737fe/) and [the code](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe).
+Finally, customize the map content and style with a bit of javascript code:
 
-```javascript
-EstLib.map()
-.width(1000)
-.datasetCode("demo_r_d3dens")
-.filters({time : 2016})
-.unitText("people/km²")
-.legendTitleText("Population density (people/km²)")
-.legendBoxHeight(210)
-.legendBoxWidth(190)
-.build();
+```html
+<script>
+  EstLib.map()
+  .width(1000)
+  .datasetCode("demo_r_d3dens")
+  .filters({time : 2016})
+  .unitText("people/km²")
+  .legendTitleText("Population density (people/km²)")
+  .legendBoxHeight(210)
+  .legendBoxWidth(190)
+  .build();
+</script>
 ```
+
+This code builds a map showing population density in 2016, based on statistical figures retrieved directly from Eurostat database *[demo_r_d3dens](http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_d3dens)*. See [the result](https://bl.ocks.org/jgaffuri/raw/0d6e1b1c6f9e1297829f38b9c37737fe/) and [the code](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe).
 
 For further customisation, find a (more) complete documentation below.
 
