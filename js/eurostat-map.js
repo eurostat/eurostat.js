@@ -7,32 +7,6 @@
  */
 (function(d3, EstLib) {
 
-	//diverging ramp -> define central value (0, average, 100, etc.). See https://github.com/d3/d3-scale-chromatic/blob/master/README.md#diverging
-	//decompose?
-	//fix zoom - line resize, etc.
-	//propo circles: make nicer legend...
-	//add "no data" in legend
-	//constraint pan
-	//adopt data cache ?
-	//support data flags
-	//svg export: with rounded coordinates - d3.round. test + edit in inkscape + fix. Function/button "export as svg"
-	//js dependencies
-	//choice
-	//insets (with nuts2json)
-	//transform nice nuts map using eurostat-map.js?
-	//move to d3.v5.js ?
-	//https://github.com/d3/d3-shape#symbols
-	//proportional circles: extend to squares + other symbols?
-	//typologies: use ordinal scale: var ordinal = d3.scaleOrdinal().domain(["a", "b", "c", "d", "e"]).range([ ... ]);
-
-	//map with proportionnal rectangle (only height varies)/squares
-	//composition chroploth + prop circle
-	//composition choropleth map showing variation (diverging colors) + rectangle/bar showing quantities +/-
-	//composition choropleth map showing share of something + pie chart (as ring if large) showing total quantity and further info on composition
-	//maps with hash pattern. Test new patterns from https://riccardoscalco.it/textures/
-	//map with fill pattern (hashes?) indicating composition
-	//etc.
-
 	EstLib.map = function() {
 
 		//the output object
@@ -651,7 +625,5 @@
 			}
 		};
 	};
-
-
 
 }(d3, window.EstLib = window.EstLib || {} ));
