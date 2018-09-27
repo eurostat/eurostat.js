@@ -18,11 +18,11 @@
 		out.datasetCode_ = "demo_r_d3dens";
 		out.filters_ = { lastTimePeriod:1 };
 		out.precision_ = 2;
-		out.scale_ = "20M"; //3M, 10M, 20M, 60M
+		out.scale_ = "20M";
 		out.scaleExtent_ = [1,4];
 		out.proj_ = "3035";
 		out.nutsLvl_ = 3;
-		out.NUTSyear_ = 2013; //2010, 2013, 2016
+		out.NUTSyear_ = 2013;
 		out.lg_ = "en";
 		out.showTooltip_ = true;
 		out.unitText_ = "";
@@ -31,7 +31,7 @@
 		out.threshold_ = [0];
 		out.makeClassifNice_ = true;
 		out.clnb_ = 7;
-		out.colorFun_ = d3.interpolateYlOrBr; // see https://github.com/d3/d3-scale-chromatic/   -   ex: interpolateGnBu
+		out.colorFun_ = d3.interpolateYlOrBr;
 		out.classToFillStyle_ = EstLib.getColorLegend(out.colorFun_);
 		out.filtersDefinitionFun_ = function() {};
 		out.noDataFillStyle_ = "lightgray";
