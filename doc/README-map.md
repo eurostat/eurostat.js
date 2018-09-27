@@ -164,6 +164,18 @@ To show a proportional symbol map, *type* should be set to *"ps"*. The following
 | *map*.**legendLabelDecNb**([*value*]) | int | *2* | The number of decimal places to show in text labels. |
 | *map*.**legendLabelOffset**([*value*]) | int | *5* | The number of pixels between the legend shape and its label, in pixel. |
 
+### Bottom text customisation
+
+This text field is intended to be used for copyright text. It can however be customised.
+
+| Method | Type | Default value | Description |
+| --- | --- | --- | --- |
+| *map*.**bottomText**([*value*]) |  | *"(C)EuroGeographics (C)UN-FAO (C)Turkstat"* | The text. Note that the default value is mandatory. |
+| *map*.**bottomTextFontSize**([*value*]) |  | *12* | The font size. |
+| *map*.**bottomTextFill**([*value*]) |  | *"black"* | The text color. |
+| *map*.**bottomTextFontFamily**([*value*]) |  | *EstLib.fontFamilyDefault* | The font. |
+| *map*.**bottomTextPadding**([*value*]) |  | *10* | The padding, in pixel. |
+
 ### Build and update
 
 After changing some parameters, one of the following methods need to be executed:

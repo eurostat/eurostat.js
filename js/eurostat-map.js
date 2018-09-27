@@ -7,7 +7,6 @@
  */
 (function(d3, EstLib) {
 
-	//copr
 	//diverging ramp -> define central value (0, average, 100, etc.). See https://github.com/d3/d3-scale-chromatic/blob/master/README.md#diverging
 	//decompose?
 	//fix zoom - line resize, etc.
@@ -114,6 +113,13 @@
 		out.legendLabelWrap_ = 140;
 		out.legendLabelDecNb_ = 2;
 		out.legendLabelOffset_ = 5;
+
+		//copyright text
+		out.bottomText_ = "(C)EuroGeographics (C)UN-FAO (C)Turkstat";
+		out.bottomTextFontSize_ = 12;
+		out.bottomTextFill_ = "black";
+		out.bottomTextFontFamily_ = EstLib.fontFamilyDefault;
+		out.bottomTextPadding_ = 10;
 
 		//definition of generic accessors based on the name of each property name
 		for(var p in out)
@@ -334,6 +340,15 @@
 
 			//prepare group for legend
 			svg.append("g").attr("id","legendg");
+
+			//add bottom text
+			if(out.bottomText_)
+				svg.append("text").attr("id","bottomtext").attr("x",out.bottomTextPadding_).attr("y",height-out.bottomTextPadding_)
+				.text(out.bottomText_)
+				.style("font-family",out.bottomTextFontFamily_)
+				.style("font-size",out.bottomTextFontSize_)
+				.style("fill",out.bottomTextFill_)
+				;
 
 			return out;
 		};
