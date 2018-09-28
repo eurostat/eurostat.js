@@ -18,7 +18,7 @@ Reusable library to quickly create and customise web maps showing [Eurostat](htt
 
 ## Quick start
 
-First, create an HTML file and add the following required libraries, replacing *X.Y.Z* with the version number of the last release (see [here](https://github.com/eurostat/eurostat.js/releases)):
+First, add the following required libraries to your HTML file. Replace *X.Y.Z* with the version number of the last release (see [here](https://github.com/eurostat/eurostat.js/releases)):
 
 ```html
 <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -34,13 +34,13 @@ First, create an HTML file and add the following required libraries, replacing *
 <script src="https://cdn.jsdelivr.net/gh/eurostat/eurostat.js@X.Y.Z/js/eurostat-tooltip.js"></script>
 ```
 
-Then, add somewhere on the HTML page the SVG element where the map should appear:
+Then, add a SVG element where the map should appear:
 
 ```html
 <svg id="map"></svg>
 ```
 
-Finally, customize the map content and style with a bit of javascript code:
+Finally, customize the map content and style with a bit of javascript code such as:
 
 ```html
 <script>
@@ -75,7 +75,7 @@ Once the parameters have been set or changed, the map needs to be built or updat
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
 | *map*.**svgId**([*value*]) | String | *"map"* | The id of the SVG element of the HTML page where to draw the map. |
-| *map*.**type**([*value*]) | String | *"ch"* | The type of map. Possible values are "ch" for choropleth maps and *"ps"* for proportional symbols. See below for a description of these map types. |
+| *map*.**type**([*value*]) | String | *"ch"* | The type of map. Possible values are *"ch"* for choropleth maps and *"ps"* for proportional symbols. See below for a description of these map types. |
 | *map*.**width**([*value*]) | int | *800* | The width of the map in pixel. |
 | *map*.**datasetCode**([*value*]) | String | *"demo_r_d3dens"* | The Eurostat database code of the statistical variable. See [here](https://ec.europa.eu/eurostat/data/database) to find them. |
 | *map*.**filters**([*value*]) | Object | *{ lastTimePeriod : 1 }* |  The Eurostat dimension codes to filter/select the chosen statistical variable. See [here](https://ec.europa.eu/eurostat/data/database) or [here](https://ec.europa.eu/eurostat/web/json-and-unicode-web-services/getting-started/query-builder) to find them.  |
@@ -84,14 +84,14 @@ Once the parameters have been set or changed, the map needs to be built or updat
 | *map*.**scaleExtent**([*value*]) | Array | *[1,4]* | The zoom extent. The first value within [0,1] defines the maximum zoom out - the second value within [1,infinity] defines the maximum zoom in. Set to null or *[1,1]* to forbid zooming. |
 | *map*.**proj**([*value*]) | String | *"3035"* | The map projection EPSG code. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md).  |
 | *map*.**nutsLvl**([*value*]) | int | *3* | The nuts level to show on the map, from 0 (national level) to 3 (more local level). Note that not all NUTS levels are always available for Eurostat databases. |
-| *map*.**NUTSyear**([*value*]) | int | *2013* | The version of the NUTS dataset to use. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md). |
+| *map*.**NUTSyear**([*value*]) | int | *2013* | The version of the NUTS dataset to use. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md). Note that the default value will be adjusted in the future depending on the [NUTS legislation in force](https://ec.europa.eu/eurostat/web/nuts/legislation). |
 | *map*.**lg**([*value*]) | String | *"en"* | The language code, for multilingual maps. |
 | *map*.**showTooltip**([*value*]) | boolean | *true* | A boolean value indicating if a tooltip should appear on the map when the mouse passes over map features. |
 | *map*.**unitText**([*value*]) | String | *""* | The text of the unit to show in the tooltip. |
 
 ### For choropleth maps
 
-A [choropleth map](https://en.wikipedia.org/wiki/Choropleth_map) shows areas **colored or patterned** in proportion to a statistical variable. These maps should be used to show *intensive* statistical variables such as proportions, ratios, densities, rates of change, percentages, etc. Here is [an example](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe).
+A [choropleth map](https://en.wikipedia.org/wiki/Choropleth_map) shows areas **colored or patterned** in proportion to a statistical variable. These maps should be used to show *intensive* statistical variables such as proportions, ratios, densities, rates of change, percentages, etc. Here is [an example](https://bl.ocks.org/jgaffuri/0d6e1b1c6f9e1297829f38b9c37737fe) with color value, [another](https://bl.ocks.org/jgaffuri/raw/e10d3e5540bbf89ee572030f1b13b8e6) with a diverging color scheme, and [a last one](https://bl.ocks.org/jgaffuri/raw/c8b99b207bb80a923bf1fd19f5d6de7e/) with a texture pattern.
 
 To show a choropleth map, *type* should be set to *"ch"*. The following parameters are then considered:
 
@@ -101,7 +101,7 @@ To show a choropleth map, *type* should be set to *"ch"*. The following paramete
 | *map*.**threshold**([*value*]) | Array | *[0]* | If *classifMethod = "threshold"*, the breaks of the classification. |
 | *map*.**makeClassifNice**([*value*]) | *boolean* | true | Make nice break values. Works only for *classifMethod = "equinter"*. |
 | *map*.**clnb**([*value*]) | int | *7* | The number of classes. When *classifMethod = "threshold"*, this parameter is inferred from the number of breaks specified. |
-| *map*.**colorFun**([*value*]) | Function | *d3.interpolateYlOrBr* | The color function, as defined in https://github.com/d3/d3-scale-chromatic/ |
+| *map*.**colorFun**([*value*]) | Function | *d3.interpolateYlOrBr* | The color function, as defined in [d3-scale-chromatic](https://github.com/d3/d3-scale-chromatic/) |
 | *map*.**classToFillStyle**([*value*]) | Function | See description | A function returning a fill style for each class number. The default values is the function returned by ``EstLib.getColorLegend(colorFun())``. |
 | *map*.**filtersDefinitionFun**([*value*]) | Function | *function() {}* | A function defining SVG filter elements. To be used to defined fill patterns.  |
 | *map*.**noDataFillStyle**([*value*]) | String | *"lightgray"* | The fill style to be used for regions where no data is available. |
@@ -118,7 +118,7 @@ To show a proportional symbol map, *type* should be set to *"ps"*. The following
 | *map*.**psMaxSize**([*value*]) | number | *30* | The maximum size of the symbol, in pixel. |
 | *map*.**psMinSize**([*value*]) | number | *0.8* | The minimum size of the symbol, for non null values, in pixel. |
 | *map*.**psMinValue**([*value*]) | number | *0* | The minimum value of the range domain. |
-| *map*.**psFill**([*value*]) |  | String | *"#B45F04"* | The fill color or pattern of the symbol. |
+| *map*.**psFill**([*value*]) | String | *"#B45F04"* | The fill color or pattern of the symbol. |
 | *map*.**psFillOpacity**([*value*]) | number | *0.7* | The opacity of the symbol, from 0 to 1. |
 | *map*.**psStroke**([*value*]) | String | *"#fff"* | The stroke color of the symbol. |
 | *map*.**psStrokeWidth**([*value*]) | number | *0.5* | The width of the stroke. |
@@ -129,12 +129,12 @@ To show a proportional symbol map, *type* should be set to *"ps"*. The following
 | --- | --- | --- | --- |
 | *map*.**nutsrgFillStyle**([*value*]) | String | *"#eee"* | The fill style of the NUTS regions, used for proportional symbol maps only. |
 | *map*.**nutsrgSelectionFillStyle**([*value*]) | String | *"#purple"* | The fill style of the selected NUTS regions. |
-| *map*.**nutsbnStroke**([*value*]) | Object | *{0:"#777", 1:"#777", 2:"#777", 3:"#777", oth:"#444", co:"#1f78b4"}* | The stroke style of the NUTS boundaries, depending on the NUTS level, if it is a border with another country ('oth') and if it is coastal ('co') |
-| *map*.**nutsbnStrokeWidth**([*value*]) | Object | *{0:1, 1:0.2, 2:0.2, 3:0.2, oth:1, co:1}* | The stroke width of the NUTS boundaries, depending on the NUTS level, if it is a border with another country ('oth') and if it is coastal ('co'). |
+| *map*.**nutsbnStroke**([*value*]) | Object | *{0:"#777", 1:"#777", 2:"#777", 3:"#777", oth:"#444", co:"#1f78b4"}* | The stroke style of the NUTS boundaries, depending on the NUTS level, if it is a border with another country (*'oth'*) and if it is coastal (*'co'*) |
+| *map*.**nutsbnStrokeWidth**([*value*]) | Object | *{0:1, 1:0.2, 2:0.2, 3:0.2, oth:1, co:1}* | The stroke width of the NUTS boundaries, depending on the NUTS level, if it is a border with another country (*'oth'*) and if it is coastal (*'co'*). |
 | *map*.**cntrgFillStyle**([*value*]) | String | *"lightgray"* | The fill style of the countries. |
 | *map*.**cntrgSelectionFillStyle**([*value*]) | String | *"darkgray"* | The fill style of the selected countries. |
-| *map*.**cntbnStroke**([*value*]) | Object | *{def:"#777", co:"#1f78b4"}* | The stroke style of the country boundaries ('co' is for coastal boundaries). |
-| *map*.**cntbnStrokeWidth**([*value*]) | Object | *{def:1, co:1}* | The stroke width of the country boundaries ('co' is for coastal boundaries). |
+| *map*.**cntbnStroke**([*value*]) | Object | *{def:"#777", co:"#1f78b4"}* | The stroke style of the country boundaries. *'co'* is for coastal boundaries, *'def'* for other boundaries. |
+| *map*.**cntbnStrokeWidth**([*value*]) | Object | *{def:1, co:1}* | The stroke width of the country boundaries. *'co'* is for coastal boundaries, *'def'* for other boundaries. |
 | *map*.**seaFillStyle**([*value*]) | String | *"#b3cde3"* | The fill style of the sea areas. |
 | *map*.**drawCoastalMargin**([*value*]) | boolean | *true* | Set to true to show a coastal blurry margin. False otherwise. |
 | *map*.**coastalMarginColor**([*value*]) | String | *"white"* | The color of the coastal blurry margin. |
@@ -177,11 +177,11 @@ This text field is intended to be used for copyright text. It can however be cus
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
-| *map*.**bottomText**([*value*]) |  | *"(C)EuroGeographics (C)UN-FAO (C)Turkstat"* | The text. Note that the default value is mandatory. |
-| *map*.**bottomTextFontSize**([*value*]) |  | *12* | The font size. |
-| *map*.**bottomTextFill**([*value*]) |  | *"black"* | The text color. |
-| *map*.**bottomTextFontFamily**([*value*]) |  | *EstLib.fontFamilyDefault* | The font. |
-| *map*.**bottomTextPadding**([*value*]) |  | *10* | The padding, in pixel. |
+| *map*.**bottomText**([*value*]) | String | *"(C)EuroGeographics (C)UN-FAO (C)Turkstat"* | The text. Note that the default value is mandatory. |
+| *map*.**bottomTextFontSize**([*value*]) | int | *12* | The font size. |
+| *map*.**bottomTextFill**([*value*]) | String | *"black"* | The text color. |
+| *map*.**bottomTextFontFamily**([*value*]) | String | *EstLib.fontFamilyDefault* | The font. |
+| *map*.**bottomTextPadding**([*value*]) | number | *10* | The padding, in pixel. |
 
 ### Build and update
 
