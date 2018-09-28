@@ -18,7 +18,7 @@ Reusable library to quickly create and customise web maps showing [Eurostat](htt
 
 ## Quick start
 
-First, add the following required libraries to your HTML file. Replace *X.Y.Z* with the version number of the last release (see [here](https://github.com/eurostat/eurostat.js/releases)):
+First, add the following required libraries to your HTML page. Replace *X.Y.Z* with the version number of the last release (see [here](https://github.com/eurostat/eurostat.js/releases)):
 
 ```html
 <script src="https://d3js.org/d3.v4.min.js"></script>
