@@ -17,6 +17,7 @@
 		out.width_ = 800;
 		out.datasetCode_ = "demo_r_d3dens";
 		out.filters_ = { lastTimePeriod:1 };
+		out.csvDataSource_ = null;
 		out.precision_ = 2;
 		out.scale_ = "20M";
 		out.scaleExtent_ = [1,4];
@@ -151,18 +152,34 @@
 		//get stat data
 		out.updateStatData = function() {
 			statData = null;
-			//set precision
-			out.filters_["precision"] = out.precision_;
-			//select only required geo groups, depending on the specified nuts level
-			out.filters_["geoLevel"] = out.nutsLvl_+""==="0"?"country":"nuts"+out.nutsLvl_;
-			//force filtering of euro-geo-aggregates
-			out.filters_["filterNonGeo"] = 1;
-			d3.queue().defer(d3.json, EstLib.getEstatDataURL(out.datasetCode_, out.filters_)).await(
-				function(error, data___) {
-					statData = EstLib.jsonstatToIndex( JSONstat(data___).Dataset(0) );
-					if(!geoData) return;
-					out.updateStatValues();
-				});
+
+			if(out.csvDataSource_ == null) {
+				//set precision
+				out.filters_["precision"] = out.precision_;
+				//select only required geo groups, depending on the specified nuts level
+				out.filters_["geoLevel"] = out.nutsLvl_+""==="0"?"country":"nuts"+out.nutsLvl_;
+				//force filtering of euro-geo-aggregates
+				out.filters_["filterNonGeo"] = 1;
+				d3.queue().defer(d3.json, EstLib.getEstatDataURL(out.datasetCode_, out.filters_)).await(
+					function(error, data___) {
+						statData = EstLib.jsonstatToIndex( JSONstat(data___).Dataset(0) );
+						if(!geoData) return;
+						out.updateStatValues();
+					});
+			} else {
+				//retrieve csv data
+				//TODO
+				d3.queue().defer(d3.csv, out.csvDataSource_).await(
+						function(error, data___) {
+							//TODO
+							console.log(data___)
+							//statData = EstLib.jsonstatToIndex( JSONstat(data___).Dataset(0) );
+							if(!geoData) return;
+							out.updateStatValues();
+						});
+
+			}
+
 			return out;
 		}
 
