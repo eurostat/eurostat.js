@@ -103,7 +103,7 @@ To show a choropleth map, *type* should be set to *"ch"*. The following paramete
 | *map*.**makeClassifNice**([*value*]) | *boolean* | true | Make nice break values. Works only for *classifMethod = "equinter"*. |
 | *map*.**clnb**([*value*]) | int | *7* | The number of classes. When *classifMethod = "threshold"*, this parameter is inferred from the number of breaks specified. |
 | *map*.**colorFun**([*value*]) | Function | *d3.interpolateYlOrBr* | The color function, as defined in [d3-scale-chromatic](https://github.com/d3/d3-scale-chromatic/) |
-| *map*.**classToFillStyle**([*value*]) | Function | See description | A function returning a fill style for each class number. The default values is the function returned by ``EstLib.getColorLegend(colorFun())``. |
+| *map*.**classToFillStyleCH**([*value*]) | Function | See description | A function returning a fill style for each class number. The default values is the function returned by ``EstLib.getColorLegend(colorFun())``. |
 | *map*.**filtersDefinitionFun**([*value*]) | Function | *function() {}* | A function defining SVG filter elements. To be used to defined fill patterns.  |
 | *map*.**noDataFillStyle**([*value*]) | String | *"lightgray"* | The fill style to be used for regions where no data is available. |
 | *map*.**noDataText**([*value*]) | String | *"No data"* | The text to show for regions where no data is available.  |
@@ -127,6 +127,14 @@ To show a proportional symbol map, *type* should be set to *"ps"*. The following
 ### For categorical maps
 
 TODO
+
+| Method | Type | Default value | Description |
+| --- | --- | --- | --- |
+| *map*.**classToFillStyleCT**([*value*]) | Object | null | An object giving the fill style depending on the class code. |
+| *map*.**classToText**([*value*]) | Object | null | An object giving the legend label text depending on the class code. |
+| *map*.**filtersDefinitionFun**([*value*]) | Function | *function() {}* | A function defining SVG filter elements. To be used to defined fill patterns.  |
+| *map*.**noDataFillStyle**([*value*]) | String | *"lightgray"* | The fill style to be used for regions where no data is available. |
+| *map*.**noDataText**([*value*]) | String | *"No data"* | The text to show for regions where no data is available.  |
 
 ### Some styling customisation
 

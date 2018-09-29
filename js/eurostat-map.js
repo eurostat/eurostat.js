@@ -33,7 +33,9 @@
 		out.makeClassifNice_ = true;
 		out.clnb_ = 7;
 		out.colorFun_ = d3.interpolateYlOrBr;
-		out.classToFillStyle_ = EstLib.getColorLegend(out.colorFun_);
+		out.classToFillStyleCH_ = EstLib.getColorLegend(out.colorFun_);
+		out.classToFillStyleCT_ = null;
+		out.classToText_ = null;
 		out.filtersDefinitionFun_ = function() {};
 		out.noDataFillStyle_ = "lightgray";
 		out.noDataText_ = "No data";
@@ -104,7 +106,7 @@
 			})();
 
 		//override of some accessors
-		out.colorFun = function(v) { if (!arguments.length) return out.colorFun_; out.colorFun_=v; out.classToFillStyle_ = EstLib.getColorLegend(out.colorFun_); return out; };
+		out.colorFun = function(v) { if (!arguments.length) return out.colorFun_; out.colorFun_=v; out.classToFillStyleCH_ = EstLib.getColorLegend(out.colorFun_); return out; };
 		out.threshold = function(v) { if (!arguments.length) return out.threshold_; out.threshold_=v; out.clnb(v.length+1); return out; };
 
 
@@ -393,7 +395,7 @@
 				classif = d3.scaleSqrt().domain([out.psMinValue_, Math.max.apply(Math, values)]).range([out.psMinSize_*0.5, out.psMaxSize_*0.5]);
 			} else if(out.type_ == "ct") {
 				classif = null;
-				//count number of values
+				//count number of unique values
 				var unique = values.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
 				out.clnb(unique.length);
 				//apply classification to nuts regions based on their value
@@ -489,7 +491,7 @@
 				.attr("fill", function() {
 					var ecl = d3.select(this).attr("class").replace("swatch ","");
 					if(!ecl||ecl==="nd") return out.noDataFillStyle_ || "gray";
-					return out.classToFillStyle_( ecl, out.clnb_ );
+					return out.classToFillStyleCH_( ecl, out.clnb_ );
 				})
 				//.attr("stroke", "black")
 				//.attr("stroke-width", 0.5)
@@ -497,6 +499,10 @@
 				lgg.select(".legendTitle").style("font-size", out.legendTitleFontSize_);
 				lgg.selectAll("text.label").style("font-size", out.legendLabelFontSize_);
 				lgg.style("font-family", out.legendFontFamily_);
+
+			} else if(out.type_ == "ct") {
+				//TODO
+				//http://d3-legend.susielu.com/#symbol ?
 
 			} else if(out.type_ == "ps") {
 
@@ -563,7 +569,9 @@
 				.attr("fill", function() {
 					var ecl = d3.select(this).attr("ecl");
 					if(!ecl||ecl==="nd") return out.noDataFillStyle_ || "gray";
-					return out.classToFillStyle_( ecl, out.clnb_ );
+					if(out.type_ == "ch") return out.classToFillStyleCH_( ecl, out.clnb_ );
+					if(out.type_ == "ct") return out.classToFillStyleCT_[ecl] || out.noDataFillStyle_ || "gray";
+					return out.noDataFillStyle_ || "gray";
 				});
 
 			} else if (out.type_ == "ps") {
