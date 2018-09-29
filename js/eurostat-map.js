@@ -107,7 +107,7 @@
 		out.threshold = function(v) { if (!arguments.length) return out.threshold_; out.threshold_=v; out.clnb(v.length+1); return out; };
 
 
-		var statData, values, nutsData, nutsRG;
+		var statData, values, geoData, nutsRG;
 		var height, svg, path;
 		var classif;
 
@@ -129,18 +129,18 @@
 
 		//use that for initial build of a map
 		out.build = function() {
-			out.updategeoData();
+			out.updateGeoData();
 			out.updateStatData();
 			return out;
 		};
 
 		//get nuts geometries
-		out.updategeoData = function() {
-			nutsData = null;
+		out.updateGeoData = function() {
+			geoData = null;
 			d3.queue()
 			.defer(d3.json, "https://raw.githubusercontent.com/eurostat/Nuts2json/gh-pages/" + out.NUTSyear_ + "/" + out.proj_ + "/" + out.scale_ + "/" + out.nutsLvl_ + ".json")
-			.await( function(error, nuts___) {
-					nutsData = nuts___;
+			.await( function(error, geo___) {
+					geoData = geo___;
 					out.buildMapTemplate();
 					if(!statData) return;
 					out.updateStatValues();
@@ -159,8 +159,8 @@
 			out.filters_["filterNonGeo"] = 1;
 			d3.queue().defer(d3.json, EstLib.getEstatDataURL(out.datasetCode_, out.filters_)).await(
 				function(error, data___) {
-					statData = JSONstat(data___).Dataset(0);
-					if(!nutsData) return;
+					statData = EstLib.jsonstatToIndex( JSONstat(data___).Dataset(0) );
+					if(!geoData) return;
 					out.updateStatValues();
 				});
 			return out;
@@ -173,16 +173,16 @@
 			if(svg) svg.selectAll("*").remove();
 
 			//decode topojson to geojson
-			var gra = topojson.feature(nutsData, nutsData.objects.gra).features;
-			nutsRG = topojson.feature(nutsData, nutsData.objects.nutsrg).features;
-			var nutsbn = topojson.feature(nutsData, nutsData.objects.nutsbn).features;
-			var cntrg = topojson.feature(nutsData, nutsData.objects.cntrg).features;
-			var cntbn = topojson.feature(nutsData, nutsData.objects.cntbn).features;
+			var gra = topojson.feature(geoData, geoData.objects.gra).features;
+			nutsRG = topojson.feature(geoData, geoData.objects.nutsrg).features;
+			var nutsbn = topojson.feature(geoData, geoData.objects.nutsbn).features;
+			var cntrg = topojson.feature(geoData, geoData.objects.cntrg).features;
+			var cntbn = topojson.feature(geoData, geoData.objects.cntbn).features;
 
 			//prepare SVG element
-			height = out.width_ * (nutsData.bbox[3] - nutsData.bbox[1]) / (nutsData.bbox[2] - nutsData.bbox[0]),
+			height = out.width_ * (geoData.bbox[3] - geoData.bbox[1]) / (geoData.bbox[2] - geoData.bbox[0]),
 			svg = d3.select("#"+out.svgId_).attr("width", out.width_).attr("height", height)
-			path = d3.geoPath().projection(d3.geoIdentity().reflectY(true).fitSize([ out.width_, height ], topojson.feature(nutsData, nutsData.objects.gra)));
+			path = d3.geoPath().projection(d3.geoIdentity().reflectY(true).fitSize([ out.width_, height ], topojson.feature(geoData, geoData.objects.gra)));
 
 			if(out.drawCoastalMargin_)
 				//define filter for coastal margin
@@ -336,7 +336,7 @@
 			values = [];
 			for (var i=0; i<nutsRG.length; i++) {
 				var rg = nutsRG[i];
-				var value = statData.Data({ geo : rg.properties.id });
+				var value = statData[ rg.properties.id ];
 				if (!value) continue;
 				if (isNaN(value.value)) continue;
 				if (!value.value==0 && !value.value) continue;
@@ -624,6 +624,15 @@
 					patt.append("circle").attr("cx",ps*0.5).attr("cy",ps*0.5).attr("r",si*0.5).style("stroke","none").style("fill",opts.symbColor)
 			}
 		};
+	};
+
+	//{geo:{value:0,status:""}}
+	EstLib.jsonstatToIndex = function(jsData) {
+		var ind = {};
+		var geos = jsData.Dimension("geo").id;
+		for(var i=0; i<geos.length; i++)
+			ind[ geos[i] ] = jsData.Data({ geo : geos[i] });
+		return ind;
 	};
 
 }(d3, window.EstLib = window.EstLib || {} ));

@@ -190,7 +190,7 @@ After changing some parameters, one of the following methods need to be executed
 | Method | Returns | Description |
 | --- | --- | --- |
 | *map*.**build**() | *this* | Build (or rebuild) the entire map. |
-| *map*.**updategeoData**() | *this* | Get new geometrical data. It should be used to update the map when parameters on the map geometries have changed. |
+| *map*.**updateGeoData**() | *this* | Get new geometrical data. It should be used to update the map when parameters on the map geometries have changed. |
 | *map*.**updateStatData**() | *this* | Get new statistical data. It should be used to update the map when parameters on the statistical data have changed. |
 | *map*.**buildMapTemplate**() | *this* | Update the map when parameters on the map template have changed. |
 | *map*.**updateClassificationAndStyle**() | this | Update the map when parameters on the classification have changed. |
