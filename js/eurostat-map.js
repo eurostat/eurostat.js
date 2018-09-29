@@ -170,7 +170,7 @@
 				//retrieve csv data
 				d3.queue().defer(d3.csv, out.csvDataSource_.url).await(
 						function(error, data___) {
-							statData = EstLib.csvToIndex(data___, out.csvDataSource_.geokey, out.csvDataSource_.valuekey);
+							statData = EstLib.csvToIndex(data___, out.csvDataSource_.geoCol, out.csvDataSource_.valueCol);
 							if(!geoData) return;
 							out.updateStatValues();
 						});
@@ -650,11 +650,11 @@
 
 
 	//{geo:{value:0,status:""}}
-	EstLib.csvToIndex = function(csvData, geoKey, valueKey) {
+	EstLib.csvToIndex = function(csvData, geoCol, valueCol) {
 		var ind = {};
 		for(var i=0; i<csvData.length; i++) {
 			var d = csvData[i];
-			ind[ d[geoKey] ] = { value : +d[valueKey], status:"" };
+			ind[ d[geoCol] ] = { value : +d[valueCol], status:"" };
 		}
 		return ind;
 	};
