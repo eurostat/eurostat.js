@@ -126,7 +126,9 @@ To show a proportional symbol map, *type* should be set to *"ps"*. The following
 
 ### For categorical maps
 
-TODO
+TODO explanation
+
+To show a categorical map, *type* should be set to *"ct"*. The following parameters are then considered:
 
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |

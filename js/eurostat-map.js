@@ -278,7 +278,9 @@
 					var sel = d3.select(this);
 					sel.attr("fill___", sel.attr("fill"));
 					sel.attr("fill", out.nutsrgSelectionFillStyle_);
-					if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val||rg.properties.val==0? rg.properties.val + (out.unitText_?" "+out.unitText_:"") : out.noDataText_));
+					if(out.showTooltip_) {
+						tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val||rg.properties.val==0? (out.type_==="ct"&&out.classToText_)? out.classToText_[rg.properties.val] : (rg.properties.val + (out.unitText_?" "+out.unitText_:"")) : out.noDataText_));
+					}
 				}).on("mousemove", function() {
 					if(out.showTooltip_) tooltip.mousemove();
 				}).on("mouseout", function() {
