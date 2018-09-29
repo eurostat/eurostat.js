@@ -649,11 +649,12 @@
 	};
 
 
+	//{geo:{value:0,status:""}}
 	EstLib.csvToIndex = function(csvData, geoKey, valueKey) {
 		var ind = {};
 		for(var i=0; i<csvData.length; i++) {
 			var d = csvData[i];
-			ind[ d[geoKey] ] = { value : +d[valueKey] };
+			ind[ d[geoKey] ] = { value : +d[valueKey], status:"" };
 		}
 		return ind;
 	};
