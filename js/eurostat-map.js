@@ -168,21 +168,15 @@
 					});
 			} else {
 				//retrieve csv data
-				//TODO
-				d3.queue().defer(d3.csv, out.csvDataSource_).await(
+				d3.queue().defer(d3.csv, out.csvDataSource_.url).await(
 						function(error, data___) {
-							//TODO
-							console.log(data___)
-							//statData = EstLib.jsonstatToIndex( JSONstat(data___).Dataset(0) );
+							statData = EstLib.csvToIndex(data___, out.csvDataSource_.geokey, out.csvDataSource_.valuekey);
 							if(!geoData) return;
 							out.updateStatValues();
 						});
-
 			}
-
 			return out;
 		}
-
 
 		//buid a map template, based on the geometries only
 		out.buildMapTemplate = function() {
@@ -647,9 +641,22 @@
 	EstLib.jsonstatToIndex = function(jsData) {
 		var ind = {};
 		var geos = jsData.Dimension("geo").id;
-		for(var i=0; i<geos.length; i++)
-			ind[ geos[i] ] = jsData.Data({ geo : geos[i] });
+		for(var i=0; i<geos.length; i++) {
+			var geoi = geos[i];
+			ind[geoi] = jsData.Data({ geo : geoi });
+		}
 		return ind;
 	};
+
+
+	EstLib.csvToIndex = function(csvData, geoKey, valueKey) {
+		var ind = {};
+		for(var i=0; i<csvData.length; i++) {
+			var d = csvData[i];
+			ind[ d[geoKey] ] = { value : +d[valueKey] };
+		}
+		return ind;
+	};
+
 
 }(d3, window.EstLib = window.EstLib || {} ));
