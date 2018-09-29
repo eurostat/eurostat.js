@@ -13,7 +13,7 @@
 		var out = {};
 
 		out.svgId_ = "map";
-		out.type_ = "ch"; //or "ps"
+		out.type_ = "ch"; //or "ps" or "ct"
 		out.width_ = 800;
 		out.datasetCode_ = "demo_r_d3dens";
 		out.filters_ = { lastTimePeriod:1 };
@@ -361,6 +361,7 @@
 			return out;
 		}
 
+
 		//run when the classification has changed
 		out.updateClassificationAndStyle = function() {
 
@@ -390,6 +391,17 @@
 				})
 			} else if(out.type_ == "ps") {
 				classif = d3.scaleSqrt().domain([out.psMinValue_, Math.max.apply(Math, values)]).range([out.psMinSize_*0.5, out.psMaxSize_*0.5]);
+			} else if(out.type_ == "ct") {
+				classif = null;
+				//count number of values
+				var unique = values.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+				out.clnb(unique.length);
+				//apply classification to nuts regions based on their value
+				svg.selectAll("path.nutsrg")
+				.attr("ecl", function(rg) {
+					if (rg.properties.val!=0 && !rg.properties.val) return "nd";
+					return rg.properties.val;
+				})
 			} else {
 				console.log("Unknown map type: "+out.type_)
 				return out;
@@ -544,7 +556,7 @@
 		//run when the map style/legend has changed
 		out.updateStyle = function() {
 
-			if(out.type_ == "ch") {
+			if(out.type_ == "ch" || out.type_ == "ct") {
 				//choropleth map
 				//apply style to nuts regions depending on class
 				svg.selectAll("path.nutsrg")
@@ -580,7 +592,7 @@
 				.style("stroke-width", out.psStrokeWidth_);
 
 			} else {
-				console.log("Unexpected map type: "+out.type_);
+				console.log("Unknown map type: "+out.type_);
 			}
 			return out;
 		};
