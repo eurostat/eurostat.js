@@ -75,7 +75,7 @@ Once the parameters have been set or changed, the map needs to be built or updat
 | Method | Type | Default value | Description |
 | --- | --- | --- | --- |
 | *map*.**svgId**([*value*]) | String | *"map"* | The id of the SVG element of the HTML page where to draw the map. |
-| *map*.**type**([*value*]) | String | *"ch"* | The type of map. Possible values are *"ch"* for choropleth maps and *"ps"* for proportional symbols. See below for a description of these map types. |
+| *map*.**type**([*value*]) | String | *"ch"* | The type of map. Possible values are *"ch"* for choropleth maps, *"ps"* for proportional symbols and *"ct"* for categorical maps. See below for a description of these map types. |
 | *map*.**width**([*value*]) | int | *800* | The width of the map in pixel. |
 | *map*.**datasetCode**([*value*]) | String | *"demo_r_d3dens"* | The Eurostat database code of the statistical variable. See [here](https://ec.europa.eu/eurostat/data/database) to find them. |
 | *map*.**filters**([*value*]) | Object | *{ lastTimePeriod : 1 }* |  The Eurostat dimension codes to filter/select the chosen statistical variable. See [here](https://ec.europa.eu/eurostat/data/database) or [here](https://ec.europa.eu/eurostat/web/json-and-unicode-web-services/getting-started/query-builder) to find them.  |
@@ -123,6 +123,10 @@ To show a proportional symbol map, *type* should be set to *"ps"*. The following
 | *map*.**psFillOpacity**([*value*]) | number | *0.7* | The opacity of the symbol, from 0 to 1. |
 | *map*.**psStroke**([*value*]) | String | *"#fff"* | The stroke color of the symbol. |
 | *map*.**psStrokeWidth**([*value*]) | number | *0.5* | The width of the stroke. |
+
+### For categorical maps
+
+TODO
 
 ### Some styling customisation
 
