@@ -169,7 +169,7 @@
 				out.filters_["filterNonGeo"] = 1;
 				d3.queue().defer(d3.json, EstLib.getEstatDataURL(out.datasetCode_, out.filters_)).await(
 					function(error, data___) {
-						out.statData_ = EstLib.jsonstatToIndex( JSONstat(data___).Dataset(0) );
+						out.statData_ = EstLib.jsonstatToIndex( JSONstat(data___) );
 						if(!geoData) return;
 						out.updateStatValues();
 					});
@@ -709,10 +709,8 @@
 	EstLib.jsonstatToIndex = function(jsData) {
 		var ind = {};
 		var geos = jsData.Dimension("geo").id;
-		for(var i=0; i<geos.length; i++) {
-			var geoi = geos[i];
-			ind[geoi] = jsData.Data({ geo : geoi });
-		}
+		for(var i=0; i<geos.length; i++)
+			ind[geos[i]] = jsData.Data(i);
 		return ind;
 	};
 
