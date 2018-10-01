@@ -19,7 +19,6 @@
 		out.filters_ = { lastTimePeriod:1 };
 		out.precision_ = 2;
 		out.csvDataSource_ = null;
-
 		//https://github.com/badosa/JSON-stat/blob/master/utils/fromtable.md
 		out.statData_ = null;
 		out.scale_ = "20M";
@@ -31,14 +30,13 @@
 		out.showTooltip_ = true;
 		out.unitText_ = "";
 
+		//choropleth map
 		out.classifMethod_ = "quantile"; // or: equinter  threshold
 		out.threshold_ = [0];
 		out.makeClassifNice_ = true;
 		out.clnb_ = 7;
 		out.colorFun_ = d3.interpolateYlOrBr;
 		out.classToFillStyleCH_ = EstLib.getColorLegend(out.colorFun_);
-		out.classToFillStyleCT_ = null;
-		out.classToText_ = null;
 		out.filtersDefinitionFun_ = function() {};
 		out.noDataFillStyle_ = "lightgray";
 		out.noDataText_ = "No data";
@@ -51,6 +49,10 @@
 		out.psFillOpacity_ = 0.7;
 		out.psStroke_ = "#fff";
 		out.psStrokeWidth_ = 0.5;
+
+		//categorical maps
+		out.classToFillStyleCT_ = null;
+		out.classToText_ = null;
 
 		//style
 		out.nutsrgFillStyle_ = "#eee"; //used for ps map

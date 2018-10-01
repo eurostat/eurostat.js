@@ -127,7 +127,7 @@ To show a proportional symbol map, *type* should be set to *"ps"*. The following
 
 ### For categorical maps
 
-TODO explanation
+A categorical map shows areas according to categories. Here is [an example](https://bl.ocks.org/jgaffuri/6bff324484f404c3e09cc2408a3e5265) of such map.
 
 To show a categorical map, *type* should be set to *"ct"*. The following parameters are then considered:
 
