@@ -356,10 +356,10 @@
 				var rg = nutsRG[i];
 				var value = out.statData_[ rg.properties.id ];
 				if (!value) continue;
-				if (isNaN(value.value)) continue;
 				if (!value.value==0 && !value.value) continue;
 				rg.properties.val = value.value;
-				values.push(+value.value);
+				var v = value.value;
+				values.push(isNaN(+v)?v:+v);
 			}
 
 			//update classification and styles
@@ -403,7 +403,7 @@
 			} else if(out.type_ == "ct") {
 
 				//get unique values
-				var dom = values.filter(function(item, i, ar){ return ar.indexOf(item) === i; }).sort();
+				var dom = values.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
 				out.clnb(dom.length);
 				var rg = getA(out.clnb_);
 				classif = d3.scaleOrdinal().domain(dom).range(rg);
@@ -412,8 +412,9 @@
 				//apply classification to nuts regions based on their value
 				svg.selectAll("path.nutsrg")
 				.attr("ecl", function(rg) {
-					if (rg.properties.val!=0 && !rg.properties.val) return "nd";
-					return classif(+rg.properties.val);
+					var v = rg.properties.val;
+					if (v!=0 && !v) return "nd";
+					return classif(isNaN(v)?v:+v);
 				})
 			} else {
 				console.log("Unknown map type: "+out.type_)
@@ -489,7 +490,7 @@
 			//remove previous content
 			lgg.selectAll("*").remove();
 
-			if(out.type_ == "ch" || out.type_ == "ct") {
+			if(out.type_ === "ch" || out.type_ === "ct") {
 				//locate
 				out.legendBoxWidth_ = out.legendBoxWidth_ || out.legendBoxPadding_*2 + Math.max(out.legendTitleWidth_, out.legendShapeWidth_ + out.legendLabelOffset_ + out.legendLabelWrap_);
 				out.legendBoxHeight_ = out.legendBoxHeight_ || out.legendBoxPadding_*2 + out.legendTitleFontSize_ + out.legendShapeHeight_ + (1+out.legendShapeHeight_+out.legendShapePadding_)*(out.clnb_-1) +12;
@@ -515,7 +516,7 @@
 				.labelFormat(d3.format(".0"+out.legendLabelDecNb_+"f"))
 				//.labels(d3.legendHelpers.thresholdLabels)
 				.labels(
-					out.type_ == "ch"? function(d) {
+					out.type_ === "ch"? function(d) {
 						if (d.i === 0)
 							return "< " + d.generatedLabels[d.i].split(d.labelDelimiter)[1];
 						else if (d.i === d.genLength-1)
@@ -525,7 +526,7 @@
 							
 					}
 					: function(d) {
-					return out.classToText_? out.classToText_[classifRec(d.i)] || classifRec(d.i) : classifRec(d.i);
+						return out.classToText_? out.classToText_[classifRec(d.i)] || classifRec(d.i) : classifRec(d.i);
 					}
 				)
 				.labelDelimiter(out.legendLabelDelimiter_)
@@ -536,11 +537,13 @@
 				//.orient("vertical")
 				//.shape("rect")
 				.on("cellover", function(ecl){
+					if(out.type_ === "ct") ecl = classif(ecl);
 					var sel = d3/*.select("#g_nutsrg")*/.selectAll("[ecl='"+ecl+"']");
 					sel.style("fill", out.nutsrgSelectionFillStyle_);
 					sel.attr("fill___", function(d) { d3.select(this).attr("fill"); });
 				})
 				.on("cellout", function(ecl){
+					if(out.type_ === "ct") ecl = classif(ecl);
 					var sel = d3/*.select("#g_nutsrg")*/.selectAll("[ecl='"+ecl+"']");
 					sel.style("fill", function(d) { d3.select(this).attr("fill___"); });
 				});
@@ -715,7 +718,8 @@
 		var ind = {};
 		for(var i=0; i<csvData.length; i++) {
 			var d = csvData[i];
-			ind[ d[geoCol] ] = { value : +d[valueCol], status:"" };
+			var v = d[valueCol];
+			ind[ d[geoCol] ] = { value : isNaN(+v)?v:+v, status:"" };
 		}
 		return ind;
 	};
