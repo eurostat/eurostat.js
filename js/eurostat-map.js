@@ -19,7 +19,7 @@
 		out.filters_ = { lastTimePeriod:1 };
 		out.precision_ = 2;
 		out.csvDataSource_ = null;
-		//https://github.com/badosa/JSON-stat/blob/master/utils/fromtable.md
+		//use https://github.com/badosa/JSON-stat/blob/master/utils/fromtable.md ?
 		out.statData_ = null;
 		out.scale_ = "20M";
 		out.scaleExtent_ = [1,4];
