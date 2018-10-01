@@ -357,9 +357,10 @@
 				var value = out.statData_[ rg.properties.id ];
 				if (!value) continue;
 				if (!value.value==0 && !value.value) continue;
-				rg.properties.val = value.value;
 				var v = value.value;
-				values.push(isNaN(+v)?v:+v);
+				if(!isNaN(+v)) v=+v;
+				rg.properties.val = v;
+				values.push(v);
 			}
 
 			//update classification and styles
@@ -393,8 +394,9 @@
 				//apply classification to nuts regions based on their value
 				svg.selectAll("path.nutsrg")
 				.attr("ecl", function(rg) {
-					if (rg.properties.val!=0 && !rg.properties.val) return "nd";
-					return +classif(+rg.properties.val);
+					var v = rg.properties.val;
+					if (v!=0 && !v) return "nd";
+					return +classif(+v);
 				})
 			} else if(out.type_ == "ps") {
 
@@ -414,7 +416,7 @@
 				.attr("ecl", function(rg) {
 					var v = rg.properties.val;
 					if (v!=0 && !v) return "nd";
-					return classif(isNaN(v)?v:+v);
+					return +classif(isNaN(v)?v:+v);
 				})
 			} else {
 				console.log("Unknown map type: "+out.type_)
@@ -443,7 +445,7 @@
 					var ecl = d3.select(this).attr("ecl");
 					if(!ecl||ecl==="nd") return out.noDataFillStyle_ || "gray";
 					if(out.type_ == "ch") return out.classToFillStyleCH_( ecl, out.clnb_ );
-					if(out.type_ == "ct") return out.classToFillStyleCT_[classifRec(ecl)] || out.noDataFillStyle_ || "gray";
+					if(out.type_ == "ct") { return out.classToFillStyleCT_[classifRec(ecl)] || out.noDataFillStyle_ || "gray"; }
 					return out.noDataFillStyle_ || "gray";
 				});
 
