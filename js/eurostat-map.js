@@ -17,8 +17,11 @@
 		out.width_ = 800;
 		out.datasetCode_ = "demo_r_d3dens";
 		out.filters_ = { lastTimePeriod:1 };
-		out.csvDataSource_ = null;
 		out.precision_ = 2;
+		out.csvDataSource_ = null;
+
+		//https://github.com/badosa/JSON-stat/blob/master/utils/fromtable.md
+		out.statData_ = null;
 		out.scale_ = "20M";
 		out.scaleExtent_ = [1,4];
 		out.proj_ = "3035";
@@ -110,9 +113,9 @@
 		out.threshold = function(v) { if (!arguments.length) return out.threshold_; out.threshold_=v; out.clnb(v.length+1); return out; };
 
 
-		var statData, values, geoData, nutsRG;
+		var values, geoData, nutsRG;
 		var height, svg, path;
-		var classif;
+		var classif, classifRec;
 
 		var tooltip = out.showTooltip_? EstLib.tooltip() : null;
 
@@ -145,7 +148,7 @@
 			.await( function(error, geo___) {
 					geoData = geo___;
 					out.buildMapTemplate();
-					if(!statData) return;
+					if(!out.statData_) return;
 					out.updateStatValues();
 				});
 			return out;
@@ -153,7 +156,7 @@
 
 		//get stat data
 		out.updateStatData = function() {
-			statData = null;
+			out.statData_ = null;
 
 			if(out.csvDataSource_ == null) {
 				//set precision
@@ -164,7 +167,7 @@
 				out.filters_["filterNonGeo"] = 1;
 				d3.queue().defer(d3.json, EstLib.getEstatDataURL(out.datasetCode_, out.filters_)).await(
 					function(error, data___) {
-						statData = EstLib.jsonstatToIndex( JSONstat(data___).Dataset(0) );
+						out.statData_ = EstLib.jsonstatToIndex( JSONstat(data___).Dataset(0) );
 						if(!geoData) return;
 						out.updateStatValues();
 					});
@@ -172,7 +175,7 @@
 				//retrieve csv data
 				d3.queue().defer(d3.csv, out.csvDataSource_.url).await(
 						function(error, data___) {
-							statData = EstLib.csvToIndex(data___, out.csvDataSource_.geoCol, out.csvDataSource_.valueCol);
+							out.statData_ = EstLib.csvToIndex(data___, out.csvDataSource_.geoCol, out.csvDataSource_.valueCol);
 							if(!geoData) return;
 							out.updateStatValues();
 						});
@@ -351,7 +354,7 @@
 			values = [];
 			for (var i=0; i<nutsRG.length; i++) {
 				var rg = nutsRG[i];
-				var value = statData[ rg.properties.id ];
+				var value = out.statData_[ rg.properties.id ];
 				if (!value) continue;
 				if (isNaN(value.value)) continue;
 				if (!value.value==0 && !value.value) continue;
@@ -369,10 +372,10 @@
 		//run when the classification has changed
 		out.updateClassificationAndStyle = function() {
 
-			if(out.type_ == "ch") {
+			//return [0,1,2,3,...,nb-1]
+			var getA = function(nb){ var a=[]; for(var i=0; i<nb; i++) a.push(i); return a; }
 
-				//return [0,1,2,3,...,nb-1]
-				var getA = function(nb){ var a=[]; for(var i=0; i<nb; i++) a.push(i); return a; }
+			if(out.type_ == "ch") {
 
 				if(out.classifMethod_ === "quantile") {
 					//https://github.com/d3/d3-scale#quantile-scales
@@ -394,17 +397,23 @@
 					return +classif(+rg.properties.val);
 				})
 			} else if(out.type_ == "ps") {
+
 				classif = d3.scaleSqrt().domain([out.psMinValue_, Math.max.apply(Math, values)]).range([out.psMinSize_*0.5, out.psMaxSize_*0.5]);
+
 			} else if(out.type_ == "ct") {
-				classif = null;
-				//count number of unique values
-				var unique = values.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
-				out.clnb(unique.length);
+
+				//get unique values
+				var dom = values.filter(function(item, i, ar){ return ar.indexOf(item) === i; }).sort();
+				out.clnb(dom.length);
+				var rg = getA(out.clnb_);
+				classif = d3.scaleOrdinal().domain(dom).range(rg);
+				classifRec = d3.scaleOrdinal().domain(rg).range(dom);
+
 				//apply classification to nuts regions based on their value
 				svg.selectAll("path.nutsrg")
 				.attr("ecl", function(rg) {
 					if (rg.properties.val!=0 && !rg.properties.val) return "nd";
-					return rg.properties.val;
+					return classif(+rg.properties.val);
 				})
 			} else {
 				console.log("Unknown map type: "+out.type_)
@@ -421,6 +430,56 @@
 		};
 
 
+
+		//run when the map style/legend has changed
+		out.updateStyle = function() {
+
+			if(out.type_ == "ch" || out.type_ == "ct") {
+				//choropleth map
+				//apply style to nuts regions depending on class
+				svg.selectAll("path.nutsrg")
+				.attr("fill", function() {
+					var ecl = d3.select(this).attr("ecl");
+					if(!ecl||ecl==="nd") return out.noDataFillStyle_ || "gray";
+					if(out.type_ == "ch") return out.classToFillStyleCH_( ecl, out.clnb_ );
+					if(out.type_ == "ct") return out.classToFillStyleCT_[classifRec(ecl)] || out.noDataFillStyle_ || "gray";
+					return out.noDataFillStyle_ || "gray";
+				});
+
+			} else if (out.type_ == "ps") {
+				//proportionnal symbol map
+				//see https://bl.ocks.org/mbostock/4342045 and https://bost.ocks.org/mike/bubble-map/
+
+				d3.select("#g_ps").selectAll("circle")
+				.data(nutsRG.sort(function(a, b) { return b.properties.val - a.properties.val; }))
+				.enter().filter(function(d) { return d.properties.val; })
+				.append("circle")
+				.attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+				.attr("r", function(d) { return d.properties.val? classif(+d.properties.val) : 0; })
+				.attr("class","symbol")
+				.on("mouseover", function(rg) {
+					d3.select(this).style("fill", out.nutsrgSelectionFillStyle_)
+					if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val||rg.properties.val==0? rg.properties.val + (out.unitText_?" "+out.unitText_:"") : out.noDataText_));
+				}).on("mousemove", function() {
+					if(out.showTooltip_) tooltip.mousemove();
+				}).on("mouseout", function() {
+					d3.select(this).style("fill", out.psFill_)
+					if(out.showTooltip_) tooltip.mouseout();
+				})
+				.style("fill", out.psFill_)
+				.style("fill-opacity", out.psFillOpacity_)
+				.style("stroke", out.psStroke_)
+				.style("stroke-width", out.psStrokeWidth_);
+
+			} else {
+				console.log("Unknown map type: "+out.type_);
+			}
+			return out;
+		};
+
+
+
+
 		out.updateLegend = function() {
 			var lgg = d3.select("#legendg");
 
@@ -430,7 +489,7 @@
 			//remove previous content
 			lgg.selectAll("*").remove();
 
-			if(out.type_ == "ch") {
+			if(out.type_ == "ch" || out.type_ == "ct") {
 				//locate
 				out.legendBoxWidth_ = out.legendBoxWidth_ || out.legendBoxPadding_*2 + Math.max(out.legendTitleWidth_, out.legendShapeWidth_ + out.legendLabelOffset_ + out.legendLabelWrap_);
 				out.legendBoxHeight_ = out.legendBoxHeight_ || out.legendBoxPadding_*2 + out.legendTitleFontSize_ + out.legendShapeHeight_ + (1+out.legendShapeHeight_+out.legendShapePadding_)*(out.clnb_-1) +12;
@@ -455,14 +514,20 @@
 				.shapePadding(out.legendShapePadding_)
 				.labelFormat(d3.format(".0"+out.legendLabelDecNb_+"f"))
 				//.labels(d3.legendHelpers.thresholdLabels)
-				.labels(function(d) {
-					if (d.i === 0)
-						return "< " + d.generatedLabels[d.i].split(d.labelDelimiter)[1];
-					else if (d.i === d.genLength-1)
-						return ">=" + d.generatedLabels[d.i].split(d.labelDelimiter)[0];
-					else
-						return d.generatedLabels[d.i]
-				})
+				.labels(
+					out.type_ == "ch"? function(d) {
+						if (d.i === 0)
+							return "< " + d.generatedLabels[d.i].split(d.labelDelimiter)[1];
+						else if (d.i === d.genLength-1)
+							return ">=" + d.generatedLabels[d.i].split(d.labelDelimiter)[0];
+						else
+							return d.generatedLabels[d.i]
+							
+					}
+					: function(d) {
+					return out.classToText_? out.classToText_[classifRec(d.i)] || classifRec(d.i) : classifRec(d.i);
+					}
+				)
 				.labelDelimiter(out.legendLabelDelimiter_)
 				.labelOffset(out.legendLabelOffset_)
 				.labelWrap(out.legendLabelWrap_)
@@ -493,7 +558,7 @@
 				.attr("fill", function() {
 					var ecl = d3.select(this).attr("class").replace("swatch ","");
 					if(!ecl||ecl==="nd") return out.noDataFillStyle_ || "gray";
-					return out.classToFillStyleCH_( ecl, out.clnb_ );
+					return out.type_ == "ch" ? out.classToFillStyleCH_( ecl, out.clnb_ ) : out.classToFillStyleCT_[classifRec(ecl)];
 				})
 				//.attr("stroke", "black")
 				//.attr("stroke-width", 0.5)
@@ -503,9 +568,29 @@
 				lgg.style("font-family", out.legendFontFamily_);
 
 			} else if(out.type_ == "ct") {
+				
 				//TODO
-				//http://d3-legend.susielu.com/#symbol ?
 
+				//define legend
+				//see http://d3-legend.susielu.com/#color
+				//http://d3-legend.susielu.com/#symbol ?
+				var d3Legend = d3.legendColor()
+				.title(out.legendTitleText_)
+				.titleWidth(out.legendTitleWidth_)
+				.useClass(true)
+				.scale(classif)
+				.ascending(out.legendAscending_)
+				.shapeWidth(out.legendShapeWidth_)
+				.shapeHeight(out.legendShapeHeight_)
+				.shapePadding(out.legendShapePadding_)
+				;
+
+				//make legend
+				lgg.call(d3Legend);
+
+
+			
+			
 			} else if(out.type_ == "ps") {
 
 				//locate
@@ -560,60 +645,14 @@
 			return out;
 		};
 
-
-		//run when the map style/legend has changed
-		out.updateStyle = function() {
-
-			if(out.type_ == "ch" || out.type_ == "ct") {
-				//choropleth map
-				//apply style to nuts regions depending on class
-				svg.selectAll("path.nutsrg")
-				.attr("fill", function() {
-					var ecl = d3.select(this).attr("ecl");
-					if(!ecl||ecl==="nd") return out.noDataFillStyle_ || "gray";
-					if(out.type_ == "ch") return out.classToFillStyleCH_( ecl, out.clnb_ );
-					if(out.type_ == "ct") return out.classToFillStyleCT_[ecl] || out.noDataFillStyle_ || "gray";
-					return out.noDataFillStyle_ || "gray";
-				});
-
-			} else if (out.type_ == "ps") {
-				//proportionnal symbol map
-				//see https://bl.ocks.org/mbostock/4342045 and https://bost.ocks.org/mike/bubble-map/
-
-				d3.select("#g_ps").selectAll("circle")
-				.data(nutsRG.sort(function(a, b) { return b.properties.val - a.properties.val; }))
-				.enter().filter(function(d) { return d.properties.val; })
-				.append("circle")
-				.attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
-				.attr("r", function(d) { return d.properties.val? classif(+d.properties.val) : 0; })
-				.attr("class","symbol")
-				.on("mouseover", function(rg) {
-					d3.select(this).style("fill", out.nutsrgSelectionFillStyle_)
-					if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val||rg.properties.val==0? rg.properties.val + (out.unitText_?" "+out.unitText_:"") : out.noDataText_));
-				}).on("mousemove", function() {
-					if(out.showTooltip_) tooltip.mousemove();
-				}).on("mouseout", function() {
-					d3.select(this).style("fill", out.psFill_)
-					if(out.showTooltip_) tooltip.mouseout();
-				})
-				.style("fill", out.psFill_)
-				.style("fill-opacity", out.psFillOpacity_)
-				.style("stroke", out.psStroke_)
-				.style("stroke-width", out.psStrokeWidth_);
-
-			} else {
-				console.log("Unknown map type: "+out.type_);
-			}
-			return out;
-		};
-
-
+		
+		
 		//retrieve the time stamp of the map, even if not specified in the dimension initially
 		out.getTime = function() {
 			var t = out.filters_.time;
 			if(t) return t;
-			if(!statData) return;
-			t = statData.Dimension("time");
+			if(!out.statData_) return;
+			t = out.statData_.Dimension("time");
 			if(!t || !t.id || t.id.length==0) return;
 			return t.id[0]
 		};
