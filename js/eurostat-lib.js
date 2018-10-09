@@ -6,22 +6,16 @@
  *
  */
 (function(EstLib) {
-
 	
 	EstLib.fontFamilyDefault = "'Myriad Pro', Myriad, MyriadPro-Regular,'Myriad Pro Regular', MyriadPro, 'Myriad Pro', 'Liberation Sans','Nimbus Sans L', 'Helvetica Neue', vegur, Vegur, Helvetica, Arial,sans-serif";
 	
-	
 	//colors
-
 	//official colors for Eurostat logo and statistical domains
 	EstLib.color = {
 			logo:{gray:"#787878",blue:"#004494",yellow:"#FFF100"},
 			theme:{genreg:"#466eb4",ecofin:"#af4b91",popsoc:"#e6a532",indtradserv:"#00a0e1",agrifish:"#7daf4b",trade:"#b93c46",transp:"#961e2d",envener:"#41afaa",scitech:"#d7642d"}
 	}
 
-
-
-	
 
 	//REST API
 
@@ -53,32 +47,11 @@
 	};
 
 
-	
+	//flags
+	EstLib.flags = { b : "break in time series", c : "confidential", d : "definition differs, see metadata", e : "estimated", f : "forecast", n : "not significant", p : "provisional", r : "revised", s : "Eurostat estimate", u : "low reliability", z : "not applicable" }
 
-	//get generic url parameters
-	EstLib.getURLParameters = function() {
-		var ps = {};
-		var p = ["w","s","lvl","time","proj","y","clnb","lg","type"];
-		for(var i=0; i<p.length; i++)
-			ps[p[i]] = EstLib.getParameterByName(p[i]);
-		return ps;
-	};
 
-	/**
-	 * @param {string} name
-	 * @returns {string}
-	 */
-	EstLib.getParameterByName = function(name) {
-		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-		results = regex.exec(location.search);
-		return !results? null : decodeURIComponent(results[1].replace(/\+/g, " "));
-	};
 
-	
-	
-	
-	
 	//geo
 
 	//Official country order to be used in Eurostat dissemination
@@ -118,13 +91,35 @@
 	};
 
 
-	
-	
 
-	
 	EstLib.getMonthTXT = function(monthInt){
 		return monthInt<=9?"0"+monthInt:""+monthInt;
 	};
+
+
+	
+	
+	//get generic url parameters
+	EstLib.getURLParameters = function() {
+		var ps = {};
+		var p = ["w","s","lvl","time","proj","y","clnb","lg","type"];
+		for(var i=0; i<p.length; i++)
+			ps[p[i]] = EstLib.getParameterByName(p[i]);
+		return ps;
+	};
+
+	/**
+	 * @param {string} name
+	 * @returns {string}
+	 */
+	EstLib.getParameterByName = function(name) {
+		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+		results = regex.exec(location.search);
+		return !results? null : decodeURIComponent(results[1].replace(/\+/g, " "));
+	};
+
+
 
 
 

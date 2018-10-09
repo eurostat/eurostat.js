@@ -108,7 +108,7 @@ To show a choropleth map, *type* should be set to *"ch"*. The following paramete
 | *map*.**classToFillStyleCH**([*value*]) | Function | See description | A function returning a fill style for each class number. The default values is the function returned by ``EstLib.getColorLegend(colorFun())``. |
 | *map*.**filtersDefinitionFun**([*value*]) | Function | *function() {}* | A function defining SVG filter elements. To be used to defined fill patterns.  |
 | *map*.**noDataFillStyle**([*value*]) | String | *"lightgray"* | The fill style to be used for regions where no data is available. |
-| *map*.**noDataText**([*value*]) | String | *"No data"* | The text to show for regions where no data is available.  |
+| *map*.**noDataText**([*value*]) | String | *"No data available"* | The text to show for regions where no data is available.  |
 
 ### For proportional symbol map
 
@@ -138,7 +138,7 @@ To show a categorical map, *type* should be set to *"ct"*. The following paramet
 | *map*.**classToText**([*value*]) | Object | null | An object giving the legend label text depending on the class code. |
 | *map*.**filtersDefinitionFun**([*value*]) | Function | *function() {}* | A function defining SVG filter elements. To be used to defined fill patterns.  |
 | *map*.**noDataFillStyle**([*value*]) | String | *"lightgray"* | The fill style to be used for regions where no data is available. |
-| *map*.**noDataText**([*value*]) | String | *"No data"* | The text to show for regions where no data is available.  |
+| *map*.**noDataText**([*value*]) | String | *"No data available"* | The text to show for regions where no data is available.  |
 
 ### Some styling customisation
 

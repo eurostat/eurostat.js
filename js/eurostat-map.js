@@ -39,7 +39,7 @@
 		out.classToFillStyleCH_ = EstLib.getColorLegend(out.colorFun_);
 		out.filtersDefinitionFun_ = function() {};
 		out.noDataFillStyle_ = "lightgray";
-		out.noDataText_ = "No data";
+		out.noDataText_ = "No data available";
 
 		//proportional circles
 		out.psMaxSize_ = 30;
@@ -285,7 +285,7 @@
 					sel.attr("fill___", sel.attr("fill"));
 					sel.attr("fill", out.nutsrgSelectionFillStyle_);
 					if(out.showTooltip_) {
-						tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val||rg.properties.val==0? (out.type_==="ct"&&out.classToText_)? out.classToText_[rg.properties.val] : (rg.properties.val + (out.unitText_?" "+out.unitText_:"")) : out.noDataText_));
+						tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val||rg.properties.val==0? (out.type_==="ct"&&out.classToText_)? out.classToText_[rg.properties.val] : (rg.properties.val + (out.unitText_?" "+out.unitText_:"") + (rg.properties.st? " ("+EstLib.flags[rg.properties.st]+")" : "")) : out.noDataText_));
 					}
 				}).on("mousemove", function() {
 					if(out.showTooltip_) tooltip.mousemove();
@@ -364,8 +364,8 @@
 
 		//run when the stat values have changed
 		out.updateStatValues = function() {
-			//link values to NUTS regions
 			//build list of values
+			//join values and status to NUTS regions
 			values = [];
 			for (var i=0; i<nutsRG.length; i++) {
 				var rg = nutsRG[i];
@@ -375,6 +375,7 @@
 				var v = value.value;
 				if(!isNaN(+v)) v=+v;
 				rg.properties.val = v;
+				if(value.status) rg.properties.st = value.status;
 				values.push(v);
 			}
 
@@ -477,7 +478,7 @@
 				.attr("class","symbol")
 				.on("mouseover", function(rg) {
 					d3.select(this).style("fill", out.nutsrgSelectionFillStyle_)
-					if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val||rg.properties.val==0? rg.properties.val + (out.unitText_?" "+out.unitText_:"") : out.noDataText_));
+					if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val||rg.properties.val==0? rg.properties.val + (out.unitText_?" "+out.unitText_:"") + (rg.properties.st? " ("+EstLib.flags[rg.properties.st]+")" : "") : out.noDataText_));
 				}).on("mousemove", function() {
 					if(out.showTooltip_) tooltip.mousemove();
 				}).on("mouseout", function() {
