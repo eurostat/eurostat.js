@@ -22,7 +22,7 @@
 		//use https://github.com/badosa/JSON-stat/blob/master/utils/fromtable.md ?
 		out.statData_ = null;
 		out.scale_ = "20M";
-		out.scaleExtent_ = [1,4];
+		out.scaleExtent_ = [1,3];
 		out.proj_ = "3035";
 		out.nutsLvl_ = 3;
 		out.NUTSyear_ = 2013;
