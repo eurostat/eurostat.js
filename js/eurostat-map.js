@@ -27,7 +27,8 @@
 		out.nutsLvl_ = 3;
 		out.NUTSyear_ = 2013;
 		out.lg_ = "en";
-		out.showTooltip_ = true;
+		out.tooltipText_ = tooltipTextDefaultFunction;
+		out.tooltipShowFlags_ = "short"; //"short" "long"
 		out.unitText_ = "";
 
 		//choropleth map
@@ -120,7 +121,7 @@
 		var height, svg, path;
 		var classif, classifRec;
 
-		var tooltip = (out.showTooltip_ || out.bottomTextTooltipMessage_)? EstLib.tooltip() : null;
+		var tooltip = (out.tooltipText_ || out.bottomTextTooltipMessage_)? EstLib.tooltip() : null;
 
 		//ease the loading of URL parameters. Use with function EstLib.loadURLParameters()
 		out.set = function(opts) {
@@ -266,13 +267,13 @@
 				.attr("class", "cntrg")
 				.style("fill", out.cntrgFillStyle_)
 				.on("mouseover",function(rg) {
-					d3.select(this).style("fill", out.cntrgSelectionFillStyle_)
-					if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b>");
+					d3.select(this).style("fill", out.cntrgSelectionFillStyle_);
+					if(out.tooltipText_) tooltip.mouseover("<b>" + rg.properties.na + "</b>");
 				}).on("mousemove", function() {
-					if(out.showTooltip_) tooltip.mousemove();
+					if(out.tooltipText_) tooltip.mousemove();
 				}).on("mouseout", function() {
-					d3.select(this).style("fill", out.cntrgFillStyle_)
-					if(out.showTooltip_) tooltip.mouseout();
+					d3.select(this).style("fill", out.cntrgFillStyle_);
+					if(out.tooltipText_) tooltip.mouseout();
 				});
 
 			//draw NUTS regions
@@ -284,15 +285,13 @@
 					var sel = d3.select(this);
 					sel.attr("fill___", sel.attr("fill"));
 					sel.attr("fill", out.nutsrgSelectionFillStyle_);
-					if(out.showTooltip_) {
-						tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val||rg.properties.val==0? (out.type_==="ct"&&out.classToText_)? out.classToText_[rg.properties.val] : (rg.properties.val + (out.unitText_?" "+out.unitText_:"") + (rg.properties.st? " ("+EstLib.flags[rg.properties.st]+")" : "")) : out.noDataText_));
-					}
+					if(out.tooltipText_) { tooltip.mouseover(out.tooltipText_(rg, out)); }
 				}).on("mousemove", function() {
-					if(out.showTooltip_) tooltip.mousemove();
+					if(out.tooltipText_) tooltip.mousemove();
 				}).on("mouseout", function() {
 					var sel = d3.select(this);
 					sel.attr("fill", sel.attr("fill___"));
-					if(out.showTooltip_) tooltip.mouseout();
+					if(out.tooltipText_) tooltip.mouseout();
 				});
 
 			//draw country boundaries
@@ -359,6 +358,7 @@
 
 			return out;
 		};
+
 
 
 
@@ -477,13 +477,13 @@
 				.attr("r", function(d) { return d.properties.val? classif(+d.properties.val) : 0; })
 				.attr("class","symbol")
 				.on("mouseover", function(rg) {
-					d3.select(this).style("fill", out.nutsrgSelectionFillStyle_)
-					if(out.showTooltip_) tooltip.mouseover("<b>" + rg.properties.na + "</b><br>" + (rg.properties.val||rg.properties.val==0? rg.properties.val + (out.unitText_?" "+out.unitText_:"") + (rg.properties.st? " ("+EstLib.flags[rg.properties.st]+")" : "") : out.noDataText_));
+					d3.select(this).style("fill", out.nutsrgSelectionFillStyle_);
+					if(out.tooltipText_) { tooltip.mouseover(out.tooltipText_(rg, out)); }
 				}).on("mousemove", function() {
-					if(out.showTooltip_) tooltip.mousemove();
+					if(out.tooltipText_) tooltip.mousemove();
 				}).on("mouseout", function() {
-					d3.select(this).style("fill", out.psFill_)
-					if(out.showTooltip_) tooltip.mouseout();
+					d3.select(this).style("fill", out.psFill_);
+					if(out.tooltipText_) tooltip.mouseout();
 				})
 				.style("fill", out.psFill_)
 				.style("fill-opacity", out.psFillOpacity_)
@@ -495,8 +495,6 @@
 			}
 			return out;
 		};
-
-
 
 
 		out.updateLegend = function() {
@@ -677,6 +675,39 @@
 
 
 
+	//default function returning the tooltip text
+	var tooltipTextDefaultFunction = function(rg, out) {
+		var buf = [];
+		//region name
+		buf.push("<b>" + rg.properties.na + "</b><br>");
+		//case when no data available
+		if(rg.properties.val!=0 && !rg.properties.val) {
+			buf.push(out.noDataText_);
+			return buf.join("");
+		}
+		//case categorical map
+		if( out.type_==="ct"&&out.classToText_ ) {
+			var lbl = out.classToText_[rg.properties.val];
+			buf.push(lbl?lbl:rg.properties.val);
+			return buf.join("");
+		}
+		//display value
+		buf.push( rg.properties.val );
+		//unit
+		if(out.unitText_) buf.push(" "+out.unitText_);
+		//flag
+		if(rg.properties.st && out.tooltipShowFlags_) {
+			if(out.tooltipShowFlags_ === "short")
+				buf.push(" "+rg.properties.st);
+			else {
+				var f = EstLib.flags[rg.properties.st];
+				buf.push(f? " ("+f+")" : " "+rg.properties.st);
+			}
+		}
+		return buf.join("");
+	};
+
+	
 	//build a color legend object
 	EstLib.getColorLegend = function(colorFun) {
 		colorFun = colorFun || d3.interpolateYlOrRd;
