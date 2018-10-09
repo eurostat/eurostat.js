@@ -89,7 +89,8 @@ Once the parameters have been set or changed, the map needs to be built or updat
 | *map*.**nutsLvl**([*value*]) | int | *3* | The nuts level to show on the map, from 0 (national level) to 3 (more local level). Note that not all NUTS levels are always available for Eurostat databases. |
 | *map*.**NUTSyear**([*value*]) | int | *2013* | The version of the NUTS dataset to use. Possible values are given in [Nuts2json](https://github.com/eurostat/Nuts2json/blob/gh-pages/README.md). Note that the default value will be adjusted in the future depending on the [NUTS legislation in force](https://ec.europa.eu/eurostat/web/nuts/legislation). |
 | *map*.**lg**([*value*]) | String | *"en"* | The language code, for multilingual maps. |
-| *map*.**showTooltip**([*value*]) | boolean | *true* | A boolean value indicating if a tooltip should appear on the map when the mouse passes over map features. |
+| *map*.**tooltipText**([*value*]) | Function | A default function. | A function returning the text to show in a tooltip which appears when the mouse passes over map features. Set to *null* if no tooltip is needed. |
+| *map*.**tooltipShowFlags**([*value*]) | String | *"short"* | Set to *null*, *0* or *false* if no [flag](https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Tutorial:Symbols_and_abbreviations#Statistical_symbols.2C_abbreviations_and_units_of_measurement) should be shown in the tooltip. Set to *"short"* to show the flag as a letter. Set to *"long"* to show the flag as a text. |
 | *map*.**unitText**([*value*]) | String | *""* | The text of the unit to show in the tooltip. |
 
 ### For choropleth maps
