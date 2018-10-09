@@ -197,8 +197,9 @@ This text field is intended to be used for copyright text. It can however be cus
 | *map*.**bottomText**([*value*]) | String | *"(C)EuroGeographics (C)UN-FAO (C)Turkstat"* | The text. Note that the default value is mandatory. |
 | *map*.**bottomTextFontSize**([*value*]) | int | *12* | The font size. |
 | *map*.**bottomTextFill**([*value*]) | String | *"black"* | The text color. |
-| *map*.**bottomTextFontFamily**([*value*]) | String | *EstLib.fontFamilyDefault* | The font. |
+| *map*.**bottomTextFontFamily**([*value*]) | String | *EstLib.fontFamilyDefault* | The font family. |
 | *map*.**bottomTextPadding**([*value*]) | number | *10* | The padding, in pixel. |
+| *map*.**bottomTextTooltipMessage**([*value*]) | String | The default disclaimer message. | Set a text to be shown in a tooltip when passing over the bottom text. Set to *null* if no tooltip has to be shown. |
 
 ### Build and update
 
