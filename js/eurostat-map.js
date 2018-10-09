@@ -97,11 +97,12 @@
 		out.legendLabelOffset_ = 5;
 
 		//copyright text
-		out.bottomText_ = "(C)EuroGeographics (C)UN-FAO (C)Turkstat";
+		out.bottomText_ = "Administrative boundaries: \u00A9EuroGeographics \u00A9UN-FAO \u00A9INSTAT \u00A9Turkstat"; //"(C)EuroGeographics (C)UN-FAO (C)Turkstat";
 		out.bottomTextFontSize_ = 12;
 		out.bottomTextFill_ = "black";
 		out.bottomTextFontFamily_ = EstLib.fontFamilyDefault;
 		out.bottomTextPadding_ = 10;
+		out.bottomTextTooltipMessage_ = "The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the European Union concerning the legal status of any country, territory, city or area or of its authorities, or concerning the delimitation of its frontiers or boundaries. Kosovo*: This designation is without prejudice to positions on status, and is in line with UNSCR 1244/1999 and the ICJ Opinion on the Kosovo declaration of independence. Palestine*: This designation shall not be construed as recognition of a State of Palestine and is without prejudice to the individual positions of the Member States on this issue.";
 
 		//definition of generic accessors based on the name of each property name
 		for(var p in out)
@@ -119,7 +120,7 @@
 		var height, svg, path;
 		var classif, classifRec;
 
-		var tooltip = out.showTooltip_? EstLib.tooltip() : null;
+		var tooltip = (out.showTooltip_ || out.bottomTextTooltipMessage_)? EstLib.tooltip() : null;
 
 		//ease the loading of URL parameters. Use with function EstLib.loadURLParameters()
 		out.set = function(opts) {
@@ -342,7 +343,19 @@
 				.style("font-family",out.bottomTextFontFamily_)
 				.style("font-size",out.bottomTextFontSize_)
 				.style("fill",out.bottomTextFill_)
-				;
+				.on("mouseover",function() {
+					tooltip.mw___ = tooltip.style("max-width");
+					tooltip.f___ = tooltip.style("font");
+					tooltip.style("max-width","800px");
+					tooltip.style("font","6px");
+					if(out.bottomTextTooltipMessage_) tooltip.mouseover(out.bottomTextTooltipMessage_);
+				}).on("mousemove", function() {
+					if(out.bottomTextTooltipMessage_) tooltip.mousemove();
+				}).on("mouseout", function() {
+					if(out.bottomTextTooltipMessage_) tooltip.mouseout();
+					tooltip.style("max-width",tooltip.mw___);
+					tooltip.style("font",tooltip.f___);
+				});
 
 			return out;
 		};
@@ -575,9 +588,6 @@
 				lgg.style("font-family", out.legendFontFamily_);
 
 			} else if(out.type_ == "ct") {
-				
-				//TODO
-
 				//define legend
 				//see http://d3-legend.susielu.com/#color
 				//http://d3-legend.susielu.com/#symbol ?
@@ -595,9 +605,6 @@
 				//make legend
 				lgg.call(d3Legend);
 
-
-			
-			
 			} else if(out.type_ == "ps") {
 
 				//locate

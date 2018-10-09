@@ -10,8 +10,8 @@
 	EstLib.tooltip= function(config) {
 		config = config || {};
 		config.div = config.div || "tooltip_eurostat";
-		config.width = config.width || "150px";
-		config.font = config.font || "14px";
+		config.maxWidth = config.maxWidth || "150px";
+		config.fontSize = config.fontSize || "16px";
 		config.background = config.background || "white";
 		config.padding = config.padding || "5px";
 		config.border = config.border || "0px";
@@ -30,8 +30,11 @@
 			if(tooltip.empty())
 				tooltip = d3.select("body").append("div").attr("id",config.div);
 
-			tooltip.style("width",config.width);
-			tooltip.style("font",config.font);
+			//tooltip.style("width",config.width);
+			tooltip.style("max-width",config.maxWidth);
+			tooltip.style("overflow","hidden");
+
+			tooltip.style("font-size",config.fontSize);
 			tooltip.style("background",config.background);
 			tooltip.style("padding",config.padding);
 			tooltip.style("border",config.border);
@@ -57,6 +60,18 @@
 
 		my.mouseout = function(){
 			tooltip.transition().duration(config.transitionDuration).style("opacity",0);
+		};
+
+		my.style = function(k,v){
+			if (arguments.length==1) return tooltip.style(k);
+			tooltip.style(k,v);
+			return my;
+		};
+
+		my.attr = function(k,v){
+			if (arguments.length==1) return tooltip.attr(k);
+			tooltip.attr(k,v);
+			return my;
 		};
 
 		my();
