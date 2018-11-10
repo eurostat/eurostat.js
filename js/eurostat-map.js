@@ -12,6 +12,7 @@
 		//the output object
 		var out = {};
 
+		//map parameters
 		out.svgId_ = "map";
 		out.type_ = "ch"; //or "ps" or "ct"
 		out.width_ = 800;
@@ -105,7 +106,7 @@
 		out.bottomTextPadding_ = 10;
 		out.bottomTextTooltipMessage_ = "The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the European Union concerning the legal status of any country, territory, city or area or of its authorities, or concerning the delimitation of its frontiers or boundaries. Kosovo*: This designation is without prejudice to positions on status, and is in line with UNSCR 1244/1999 and the ICJ Opinion on the Kosovo declaration of independence. Palestine*: This designation shall not be construed as recognition of a State of Palestine and is without prejudice to the individual positions of the Member States on this issue.";
 
-		//definition of generic accessors based on the name of each property name
+		//definition of generic accessors based on the name of each parameter name
 		for(var p in out)
 			(function(){
 				var p_=p;
@@ -116,11 +117,13 @@
 		out.colorFun = function(v) { if (!arguments.length) return out.colorFun_; out.colorFun_=v; out.classToFillStyleCH_ = EstLib.getColorLegend(out.colorFun_); return out; };
 		out.threshold = function(v) { if (!arguments.length) return out.threshold_; out.threshold_=v; out.clnb(v.length+1); return out; };
 
-
+		//some variables
 		var values, geoData, nutsRG;
 		var height, svg, path;
+		//the classifier, and the reciprocal
 		var classif, classifRec;
 
+		//the tooltip element
 		var tooltip = (out.tooltipText_ || out.bottomTextTooltipMessage_)? EstLib.tooltip() : null;
 
 		//ease the loading of URL parameters. Use with function EstLib.loadURLParameters()
@@ -186,6 +189,7 @@
 			}
 			return out;
 		}
+
 
 		//buid a map template, based on the geometries only
 		out.buildMapTemplate = function() {
