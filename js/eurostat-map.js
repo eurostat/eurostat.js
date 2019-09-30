@@ -151,7 +151,7 @@
 		out.updateGeoData = function() {
 			geoData = null;
 			d3.queue()
-			.defer(d3.json, "https://raw.githubusercontent.com/eurostat/Nuts2json/gh-pages/" + out.NUTSyear_ + "/" + out.proj_ + "/" + out.scale_ + "/" + out.nutsLvl_ + ".json")
+			.defer(d3.json, "https://raw.githubusercontent.com/eurostat/Nuts2json/master/" + out.NUTSyear_ + "/" + out.proj_ + "/" + out.scale_ + "/" + out.nutsLvl_ + ".json")
 			.await( function(error, geo___) {
 					geoData = geo___;
 					out.buildMapTemplate();
