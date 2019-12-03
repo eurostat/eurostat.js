@@ -1,0 +1,17 @@
+EstLib.coicopsDictFPMT = {
+		"CP011" : {desc:"Food", parents:[], children:["CP0111","CP0112","CP0113","CP0114","CP0115","CP0116","CP0117"]},
+		"CP0111" : {desc:"Bread and cereals", parents:["CP011"], children:[]},
+		"CP0112" : {desc:"Meat", parents:["CP011"], children:["CP01121","CP01122","CP01124"]},
+		"CP01121" : {desc:"Beef and veal", parents:["CP0112"], children:[]},
+		"CP01122" : {desc:"Pork", parents:["CP0112"], children:[]},
+		"CP01124" : {desc:"Poultry", parents:["CP0112"], children:[]},
+		"CP0113" : {desc:"Fish and seafood", parents:["CP011"], children:[]},
+		"CP0114" : {desc:"Milk, cheese and eggs", parents:["CP011"], children:["CP01141","CP01145","CP01147"]},
+		"CP01141" : {desc:"Fresh whole milk", parents:["CP0114"], children:[]},
+		"CP01145" : {desc:"Cheese and curd", parents:["CP0114"], children:[]},
+		"CP01147" : {desc:"Eggs", parents:["CP0114"], children:[]},
+		"CP0115" : {desc:"Oils and fats", parents:["CP011"], children:[]},
+		"CP0116" : {desc:"Fruit", parents:["CP011"], children:[]},
+		"CP0117" : {desc:"Vegetables", parents:["CP011"], children:["CP01174"]},
+		"CP01174" : {desc:"Potatoes", parents:["CP0117"], children:[]},
+};
