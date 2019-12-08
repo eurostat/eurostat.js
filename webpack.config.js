@@ -1,9 +1,8 @@
 module.exports = {
     mode: 'development',
-    entry: './index.js', // entry: ["./lib.js", "./index.js"],
+    entry: './src/app.js',
     output: {
-      filename: 'main.js',
-      publicPath: 'dist',
+      filename: './eurostat.js',
       library: 'EstLib'
     }
   };
