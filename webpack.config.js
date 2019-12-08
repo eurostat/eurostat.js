@@ -3,6 +3,7 @@ module.exports = {
     entry: './index.js', // entry: ["./lib.js", "./index.js"],
     output: {
       filename: 'main.js',
-      publicPath: 'dist'
+      publicPath: 'dist',
+      library: 'EstLib'
     }
   };
