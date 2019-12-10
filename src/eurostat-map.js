@@ -1,5 +1,6 @@
 
-var d3 = require(d3);
+var d3 = require("d3");
+var d3q = require("d3-queue");
 import * as base from './eurostat-base';
 import * as tp from './eurostat-tooltip';
 
@@ -146,7 +147,7 @@ export const get = function () {
 	//get nuts geometries
 	out.updateGeoData = function () {
 		geoData = null;
-		d3.queue()
+		d3q.queue()
 			.defer(d3.json, "https://raw.githubusercontent.com/eurostat/Nuts2json/master/" + out.NUTSyear_ + "/" + out.proj_ + "/" + out.scale_ + "/" + out.nutsLvl_ + ".json")
 			.await(function (error, geo___) {
 				geoData = geo___;
@@ -168,7 +169,7 @@ export const get = function () {
 			out.filters_["geoLevel"] = out.nutsLvl_ + "" === "0" ? "country" : "nuts" + out.nutsLvl_;
 			//force filtering of euro-geo-aggregates
 			out.filters_["filterNonGeo"] = 1;
-			d3.queue().defer(d3.json, getEstatDataURL(out.datasetCode_, out.filters_)).await(
+			d3q.queue().defer(d3.json, getEstatDataURL(out.datasetCode_, out.filters_)).await(
 				function (error, data___) {
 					out.statData_ = jsonstatToIndex(JSONstat(data___));
 					if (!geoData) return;
@@ -176,7 +177,7 @@ export const get = function () {
 				});
 		} else {
 			//retrieve csv data
-			d3.queue().defer(d3.csv, out.csvDataSource_.url).await(
+			d3q.queue().defer(d3.csv, out.csvDataSource_.url).await(
 				function (error, data___) {
 					out.statData_ = csvToIndex(data___, out.csvDataSource_.geoCol, out.csvDataSource_.valueCol);
 					if (!geoData) return;
