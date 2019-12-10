@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>JavaScript Example</title>
+	<meta charset="UTF-8">
+	<title>JavaScript Example</title>
 </head>
+
 <body>
-  <h1>Test</h1>
-  <svg id="map"></svg>
+	<svg id="map"></svg>
 
-  <script src="dist/eurostat.js"></script>
-  <script>
+	<script src="dist/eurostat.js"></script>
+	<script>
 
-//console.log(EstLib);
-//console.log(EstLib.test.sum(1,1));
-//console.log(EstLib.test.product(3,2));
-//EstLib.test.log("hi!");
-//console.log(EstLib.base.getEstatRestDataURLBase)
+		//console.log(EstLib);
+		//console.log(EstLib.test.sum(1,1));
+		//console.log(EstLib.test.product(3,2));
+		//EstLib.test.log("hi!");
+		//console.log(EstLib.base.getEstatRestDataURLBase)
 
-EstLib.map.get()
-	.width(900)
-	.scale("20M")
-	.NUTSyear(2016)
-	.datasetCode("demo_r_d3dens")
-	.classifMethod("threshold").threshold([50,75,100,150,300,850])
+		EstLib.map.get()
+			.width(900)
+			.scale("20M")
+			.NUTSyear(2016)
+			.datasetCode("demo_r_d3dens")
+			.classifMethod("threshold").threshold([50, 75, 100, 150, 300, 850])
 
-	.unitText("people/km²")
-	.tooltipShowFlags(false)
+			.unitText("people/km²")
+			.tooltipShowFlags(false)
 
-	.legendTitleText("Population density (people/km²)")
-	.legendLabelDecNb(0)
-	.legendBoxHeight(210)
-	.legendBoxWidth(190)
+			.legendTitleText("Population density (people/km²)")
+			.legendLabelDecNb(0)
+			.legendBoxHeight(210)
+			.legendBoxWidth(190)
 
-	.build();
+			.build();
 
-
-  </script>
-  
+	</script>
 
 </body>
+
 </html>

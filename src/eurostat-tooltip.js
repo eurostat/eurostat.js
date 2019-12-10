@@ -1,3 +1,4 @@
+var d3 = require("d3");
 import * as base from './eurostat-base';
 
 export const get = function (config) {

@@ -8,8 +8,6 @@ import * as tp from './eurostat-tooltip';
 
 export const get = function () {
 
-	console.log(d3);
-
 	//the output object
 	var out = {};
 
