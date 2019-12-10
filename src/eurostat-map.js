@@ -1,4 +1,5 @@
 
+var d3 = require(d3);
 import * as base from './eurostat-base';
 import * as tp from './eurostat-tooltip';
 
