@@ -1,10 +1,14 @@
 
 var d3 = require("d3");
 var d3q = require("d3-queue");
+var topojson = require("topojson-client");
+import JSONstat from "jsonstat-toolkit";
 import * as base from './eurostat-base';
 import * as tp from './eurostat-tooltip';
 
 export const get = function () {
+
+	console.log(d3);
 
 	//the output object
 	var out = {};
@@ -169,7 +173,7 @@ export const get = function () {
 			out.filters_["geoLevel"] = out.nutsLvl_ + "" === "0" ? "country" : "nuts" + out.nutsLvl_;
 			//force filtering of euro-geo-aggregates
 			out.filters_["filterNonGeo"] = 1;
-			d3q.queue().defer(d3.json, getEstatDataURL(out.datasetCode_, out.filters_)).await(
+			d3q.queue().defer(d3.json, base.getEstatDataURL(out.datasetCode_, out.filters_)).await(
 				function (error, data___) {
 					out.statData_ = jsonstatToIndex(JSONstat(data___));
 					if (!geoData) return;

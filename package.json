@@ -26,13 +26,13 @@
   },
   "dependencies": {
     "colorbrewer": "^1.3.0",
-    "d3": "^3.5.17",
+    "d3": "^5.14.2",
     "d3-queue": "^3.0.7",
     "d3-legend": "^1.0.0",
+    "topojson-client": "^3.1.0",
     "jquery": "^3.4.1",
     "jquery-mousewheel": "^3.1.13",
-    "jsonstat-toolkit": "^1.0.8",
-    "topojson-client": "^3.1.0"
+    "jsonstat-toolkit": "^1.0.8"
   },
   "devDependencies": {
     "webpack": "^4.41.2",
