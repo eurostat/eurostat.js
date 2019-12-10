@@ -1,10 +1,12 @@
-
 var d3 = require("d3");
 var d3q = require("d3-queue");
+var d3s = require('d3-scale-chromatic');
+var d3l = require('d3-svg-legend');
 var topojson = require("topojson-client");
 import JSONstat from "jsonstat-toolkit";
 import * as base from './eurostat-base';
 import * as tp from './eurostat-tooltip';
+
 
 export const get = function () {
 
@@ -36,7 +38,7 @@ export const get = function () {
 	out.threshold_ = [0];
 	out.makeClassifNice_ = true;
 	out.clnb_ = 7;
-	out.colorFun_ = d3.interpolateYlOrBr;
+	out.colorFun_ = d3s.interpolateYlOrBr;
 	out.classToFillStyleCH_ = getColorLegend(out.colorFun_);
 	out.filtersDefinitionFun_ = function () { };
 	out.noDataFillStyle_ = "lightgray";
@@ -523,7 +525,7 @@ export const get = function () {
 
 			//define legend
 			//see http://d3-legend.susielu.com/#color
-			var d3Legend = d3.legendColor()
+			var d3Legend = d3l.legendColor()
 				.title(out.legendTitleText_)
 				.titleWidth(out.legendTitleWidth_)
 				.useClass(true)
@@ -593,7 +595,7 @@ export const get = function () {
 			//define legend
 			//see http://d3-legend.susielu.com/#color
 			//http://d3-legend.susielu.com/#symbol ?
-			var d3Legend = d3.legendColor()
+			var d3Legend = d3l.legendColor()
 				.title(out.legendTitleText_)
 				.titleWidth(out.legendTitleWidth_)
 				.useClass(true)
@@ -622,7 +624,7 @@ export const get = function () {
 
 			//define legend
 			//see http://d3-legend.susielu.com/#size
-			var d3Legend = d3.legendSize()
+			var d3Legend = d3l.legendSize()
 				.title(out.legendTitleText_)
 				.titleWidth(out.legendTitleWidth_)
 				.scale(classif)
