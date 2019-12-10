@@ -4,9 +4,13 @@
 
 
 //var d3 = require("d3");
-import {sum, product} from './eurostat-test';
-//import "./eurostat-test";
+//var test = require("./eurostat-test");
+import {sum, product, log} from './eurostat-test';
 //import "./eurostat-lib";
 
 //console.log(EstLib.getEstatRestDataURLBase);
-//console.log(EstLib);
+console.log(sum(1,1));
+console.log(product(2,2));
+log("hi!");
+
+export {sum,product,log}
