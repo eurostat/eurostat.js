@@ -1,6 +1,12 @@
 var d3 = require("d3");
 import * as base from './eurostat-base';
 
+/**
+ *
+ *
+ * @param {*} config
+ * @returns
+ */
 export const get = function (config) {
 	config = config || {};
 	config.div = config.div || "tooltip_eurostat";
