@@ -1,4 +1,2 @@
-.idea/
-.settings/
-.project
-*.log
+node_modules/
+package-lock.json

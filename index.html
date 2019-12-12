@@ -1,25 +1,24 @@
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script src="https://d3js.org/d3-queue.v3.min.js"></script>
-<script src="https://d3js.org/topojson.v1.min.js"></script>
-<script src="https://d3js.org/d3-color.v1.min.js"></script>
-<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jsonstat@0.13.3/json-stat.js"></script>
-<script src="../js/eurostat-tooltip.js"></script>
-<script src="../js/eurostat-lib.js"></script>
-<script src="../js/eurostat-map.js"></script>
+<!DOCTYPE html>
+<html lang="en">
 
-<svg id="map"></svg>
+<head>
+	<meta charset="UTF-8">
+	<title>JavaScript Example</title>
+</head>
 
-<script>
+<body>
+	<svg id="map"></svg>
+
+	<script src="dist/eurostat.js"></script>
+	<script>
 
 	//load parameters from URL
-	var opts = EstLib.getURLParameters();
+	var opts = EstLib.base.getURLParameters();
 
-	EstLib.map()
+	EstLib.map.get()
 	.scale("60M")
 	.width(1000)
+	.NUTSyear(2016) //TODO change default year to 2016 !!!
 
 	.nutsLvl(3).datasetCode("demo_r_d3dens")
 	//.nutsLvl(3).datasetCode("demo_r_gind3").filters({ indic_de:"GROWRT", time : 2016 })
@@ -58,4 +57,8 @@
 	.set(opts)
 	.build();
 
-</script>
+	</script>
+
+</body>
+
+</html>
