@@ -1,4 +1,4 @@
-var d3 = require("d3");
+var d3 = require("d3-selection");
 import * as base from './eurostat-base';
 
 /**
