@@ -12,37 +12,38 @@
 
             //prepare SVG element
             var width = 700, height = width * (nuts.bbox[3] - nuts.bbox[1]) / (nuts.bbox[2] - nuts.bbox[0]),
-                svg = d3.select("svg").attr("width", width).attr("height", height)
-            path = d3.geoPath().projection(d3.geoIdentity()
-                .reflectY(true).fitSize([width, height], topojson.feature(nuts, nuts.objects.gra)));
+                svg = d3.select("svg").attr("width", width).attr("height", height),
+                path = d3.geoPath().projection(d3.geoIdentity()
+                    .reflectY(true).fitSize([width, height], topojson.feature(nuts, nuts.objects.gra)));
 
-            //draw graticule
-            svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.gra).features)
-                .enter().append("path").attr("d", path).attr("class", "graticule");
-
-            //draw regions
-            //countries
-            var cnts = topojson.feature(nuts, nuts.objects.cntrg).features;
-            svg.append("g").selectAll("path").data(cnts)
-                .enter().append("path").attr("d", path).attr("class", "cntrg");
-
-
-
-
+            //jsts reader and writer
             var reader = new jsts.io.GeoJSONReader();
+            var writer = new jsts.io.GeoJSONWriter();
+            var buffer = function(geom, dist) {
+                var buffer = reader.read(geom).buffer(dist);
+                    return writer.write(buffer);
+            };
+
+            //get data
+            //country regions
+            var cnts = topojson.feature(nuts, nuts.objects.cntrg).features;
+            //NUTS regions
+            var nutsrg = topojson.feature(nuts, nuts.objects.nutsrg).features;
+
+            //draw buffers
             svg.append("g").selectAll("path").data(cnts)
-                .enter().append("path").attr("d", function(cnt){
-                    var geom = reader.read(cnt.geometry);
-                    geom = geom.buffer(200000);
-                    console.log(geom);
-                    //TODO make buffer path
+                .enter().append("path").attr("d", function (cnt) {
+                    return path(buffer(cnt.geometry, 100000));
                 }).attr("class", "cntrg");
 
 
-
+            //draw regions
+            //countries
+            svg.append("g").selectAll("path").data(cnts)
+                .enter().append("path").attr("d", path).attr("class", "cntrg");
 
             //nuts
-            svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.nutsrg).features)
+            svg.append("g").selectAll("path").data(nutsrg)
                 .enter().append("path").attr("d", path).attr("class", "nutsrg");
 
             //draw boundaries
