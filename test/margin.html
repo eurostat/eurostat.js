@@ -4,6 +4,9 @@
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://d3js.org/d3-request.v1.min.js"></script>
 <script src="https://d3js.org/topojson.v3.min.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://unpkg.com/jsts@1.6.1/dist/jsts.min.js"></script>
 <script>
     d3.json("https://raw.githubusercontent.com/eurostat/Nuts2json/master/2016/3035/60M/3.json",
@@ -31,11 +34,16 @@
             var nutsrg = topojson.feature(nuts, nuts.objects.nutsrg).features;
 
             //draw buffers
-            for(var i=0; i<1; i+=0.2)
-            svg.append("g").selectAll("path").data(cnts)
+            for(var i=0; i<1; i+=0.2) {
+                svg.append("g").selectAll("path").data(cnts)
                 .enter().append("path").attr("d", function (cnt) {
                     return path(buffer(cnt.geometry, i*300000));
-                }).style("fill", "blue");
+                }).style("fill", d3.interpolateBlues(i));
+                svg.append("g").selectAll("path").data(nutsrg)
+                .enter().append("path").attr("d", function (cnt) {
+                    return path(buffer(cnt.geometry, i*300000));
+                }).style("fill", d3.interpolateBlues(i));
+            }
 
 
             //draw regions
