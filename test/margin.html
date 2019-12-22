@@ -19,7 +19,15 @@
                 path = d3.geoPath().projection(d3.geoIdentity()
                     .reflectY(true).fitSize([width, height], topojson.feature(nuts, nuts.objects.gra)));
 
-            //jsts functions
+            //prepare data
+            //country regions
+            var cnts = topojson.feature(nuts, nuts.objects.cntrg).features;
+            //NUTS regions
+            var nutsrg = topojson.feature(nuts, nuts.objects.nutsrg).features;
+
+
+
+            /*/jsts functions
             var reader = new jsts.io.GeoJSONReader();
             var writer = new jsts.io.GeoJSONWriter();
             var buffer = function (geom, dist) {
@@ -27,14 +35,8 @@
                 return writer.write(buffer);
             };
 
-            //prepare data
-            //country regions
-            var cnts = topojson.feature(nuts, nuts.objects.cntrg).features;
-            //NUTS regions
-            var nutsrg = topojson.feature(nuts, nuts.objects.nutsrg).features;
-
             //draw coastal margin with JSTS buffer
-            var dist = 200000;
+            var dist = 300000;
             for (var i = 1; i >= 0; i -= 0.2) {
                 var col = d3.interpolateBlues(1 - i);
                 svg.append("g").selectAll("path").data(cnts)
@@ -45,7 +47,18 @@
                     .enter().append("path").attr("d", function (cnt) {
                         return path(buffer(cnt.geometry, i * dist));
                     }).style("fill", col);
-            }
+           }*/
+
+//build land geometry
+var geoms = [];
+var reader = new jsts.io.GeoJSONReader();
+for(var i=0; i<cnts.length; i++) geoms.push(reader.read(cnts[i].geometry));
+var land = (new jsts.operation.union.CascadedPolygonUnion()).union(geoms);
+console.log(land);
+
+//style("fill", "none").style("stroke", "black").style("stroke-width", "0.5px");
+
+
 
             //draw graticule
             svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.gra).features)
