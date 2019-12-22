@@ -1,3 +1,9 @@
+.graticule {
+    fill: none;
+    stroke-width: 1px;
+    stroke:black;
+}
+
 .cntrg {
     fill: lightgray;
 }
@@ -6,7 +12,7 @@
 }
 
 .nutsrg {
-    fill: #fdbf6f;
+    fill: #888888;
 }
 .nutsrg:hover { 
     fill: #ff7f00;
@@ -20,7 +26,7 @@
 .nutsbn {
     fill: none;
     stroke-width: 1px;
-    stroke: #333;
+    stroke: rgb(255, 255, 255);
 }
 .white { stroke: white; }
 .thin { stroke-width: 0.5px; }

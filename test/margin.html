@@ -36,7 +36,7 @@
             //draw buffers
             for(var i=1; i>=0; i-=0.2)
             (function(i){
-                var dist = 250000;
+                var dist = 200000;
                 var col = d3.interpolateBlues(1-i);
                 svg.append("g").selectAll("path").data(cnts)
                 .enter().append("path").attr("d", function (cnt) {
@@ -49,7 +49,11 @@
             })(i);
 
 
-            //draw regions
+//draw graticule
+//svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.gra).features)
+//		.enter().append("path").attr("d", path).attr("class","graticule");
+
+        //draw regions
             //countries
             svg.append("g").selectAll("path").data(cnts)
                 .enter().append("path").attr("d", path).attr("class", "cntrg");
@@ -58,5 +62,20 @@
             svg.append("g").selectAll("path").data(nutsrg)
                 .enter().append("path").attr("d", path).attr("class", "nutsrg");
 
-        });
+
+	//draw boundaries
+	//countries
+	svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.cntbn).features)
+		.enter().append("path").attr("d", path)
+		.attr("class",function(bn) { return "cntbn" + (bn.properties.co==="T"?" coastal":""); });
+	//nuts
+	svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.nutsbn).features)
+		.enter().append("path").attr("d", path)
+		.attr("class",function(bn) {
+			return "nutsbn" + (bn.properties.co==="T"?" coastal":"")
+				+ ((bn.properties.oth==="T" || bn.properties.lvl==0)?" white":"")
+				+ (bn.properties.lvl==3?" thin":"");
+		});
+
+            });
 </script>
