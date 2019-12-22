@@ -18,25 +18,32 @@
                 path = d3.geoPath().projection(d3.geoIdentity()
                     .reflectY(true).fitSize([width, height], topojson.feature(nuts, nuts.objects.gra)));
 
-            //prepare data
-            //country regions
-            var cnts = topojson.feature(nuts, nuts.objects.cntrg).features;
-            //NUTS regions
-            var nutsrg = topojson.feature(nuts, nuts.objects.nutsrg).features;
-
             //draw coastal margin
-            /*var dist = 200000;
-            for (var i = 1; i >= 0; i -= 0.2) {
+            for (var i = 1; i >= 0; i -= 0.1) {
                 var col = d3.interpolateBlues(1 - i);
-                svg.append("g").selectAll("path").data(cnts)
-                    .enter().append("path").attr("d", function (cnt) {
-                        return path(buffer(cnt.geometry, i * dist));
-                    }).style("fill", col);
-                svg.append("g").selectAll("path").data(nutsrg)
-                    .enter().append("path").attr("d", function (cnt) {
-                        return path(buffer(cnt.geometry, i * dist));
-                    }).style("fill", col);
-            }*/
+                var sw = i*200;
+                //countries
+                svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.cntbn).features)
+                    .enter().append("path").attr("d", path)
+                    .style("fill","none")
+                    .style("stroke-width",sw+"px")
+                    .style("stroke",col)
+                    //TODO bn cap_join and cap_end
+                    //TODO hide non-coastal
+                    //.attr("class", function (bn) { return "cntbn" + (bn.properties.co === "T" ? " coastal" : ""); })
+                    ;
+                //nuts
+                svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.nutsbn).features)
+                    .enter().append("path").attr("d", path)
+                    .style("fill","none")
+                    .style("stroke-width",sw+"px")
+                    .style("stroke",col)
+                    /*.attr("class", function (bn) {
+                        return "nutsbn" + (bn.properties.co === "T" ? " coastal" : "")
+                            + ((bn.properties.oth === "T" || bn.properties.lvl == 0) ? " white" : "")
+                            + (bn.properties.lvl == 3 ? " thin" : "");
+                    })*/arguments;
+            }
 
             //draw graticule
             svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.gra).features)
@@ -44,11 +51,11 @@
 
             //draw regions
             //countries
-            svg.append("g").selectAll("path").data(cnts)
+            svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.cntrg).features)
                 .enter().append("path").attr("d", path).attr("class", "cntrg");
 
             //nuts
-            svg.append("g").selectAll("path").data(nutsrg)
+            svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.nutsrg).features)
                 .enter().append("path").attr("d", path).attr("class", "nutsrg");
 
             //draw boundaries
