@@ -4,6 +4,7 @@
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://d3js.org/d3-request.v1.min.js"></script>
 <script src="https://d3js.org/topojson.v3.min.js"></script>
+<script src="https://unpkg.com/jsts@1.6.1/dist/jsts.min.js"></script>
 <script>
     d3.json("https://raw.githubusercontent.com/eurostat/Nuts2json/master/2016/3035/60M/3.json",
         function (error, nuts) {
@@ -21,8 +22,27 @@
 
             //draw regions
             //countries
-            svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.cntrg).features)
+            var cnts = topojson.feature(nuts, nuts.objects.cntrg).features;
+            svg.append("g").selectAll("path").data(cnts)
                 .enter().append("path").attr("d", path).attr("class", "cntrg");
+
+            var reader = new jsts.io.GeoJSONReader();
+           //var a = reader.read('POINT (-20 0)');
+            //a = a.buffer(40);
+            //TODO: convert geojson to jsts geom: cntjsts = reader.read(cnt.geometry)
+            //buffer: cntjstsbuff = cntjsts.buffer(100);
+
+            cnts.forEach(cnt => {
+                var geom = reader.read(cnt.geometry);
+                geom = geom.buffer(200000);
+                console.log(geom);
+            });
+
+
+
+//console.log(cnts);
+//var reader = new jsts.io.GeoJSONReader();
+//var cnts_ = reader.read(cnts);
 
             //nuts
             svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.nutsrg).features)
