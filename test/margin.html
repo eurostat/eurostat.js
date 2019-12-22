@@ -50,23 +50,17 @@
            }*/
 
 //build land geometry
-var reader = new jsts.io.GeoJSONReader();
-/*var geoms = [];
-for(var i=0; i<cnts.length; i++) geoms.push(reader.read(cnts[i].geometry));
-var uop = new jsts.operation.union.UnaryUnionOp();
-var land = uop.union(geoms);
-console.log(land);*/
 var land;
+var reader = new jsts.io.GeoJSONReader();
 for(var i=0; i<cnts.length; i++) land = land? land.union(reader.read(cnts[i].geometry)) : reader.read(cnts[i].geometry);
 for(var i=0; i<nutsrg.length; i++) land = land? land.union(reader.read(nutsrg[i].geometry)) : reader.read(nutsrg[i].geometry);
+
+var dist = 300000;
+for (var i = 1; i >= 0; i -= 0.2) {
 var writer = new jsts.io.GeoJSONWriter();
-land = writer.write(land);
-console.log(land);
-
-
-
-//style("fill", "none").style("stroke", "black").style("stroke-width", "0.5px");
-
+svg.append("g").append("path").attr("d", path(writer.write(land.buffer(i*dist))))
+.style("fill", "none").style("stroke", "black").style("stroke-width", "0.5px");
+}
 
 
             //draw graticule
