@@ -26,23 +26,20 @@
             svg.append("g").selectAll("path").data(cnts)
                 .enter().append("path").attr("d", path).attr("class", "cntrg");
 
+
+
+
             var reader = new jsts.io.GeoJSONReader();
-           //var a = reader.read('POINT (-20 0)');
-            //a = a.buffer(40);
-            //TODO: convert geojson to jsts geom: cntjsts = reader.read(cnt.geometry)
-            //buffer: cntjstsbuff = cntjsts.buffer(100);
-
-            cnts.forEach(cnt => {
-                var geom = reader.read(cnt.geometry);
-                geom = geom.buffer(200000);
-                console.log(geom);
-            });
+            svg.append("g").selectAll("path").data(cnts)
+                .enter().append("path").attr("d", function(cnt){
+                    var geom = reader.read(cnt.geometry);
+                    geom = geom.buffer(200000);
+                    console.log(geom);
+                    //TODO make buffer path
+                }).attr("class", "cntrg");
 
 
 
-//console.log(cnts);
-//var reader = new jsts.io.GeoJSONReader();
-//var cnts_ = reader.read(cnts);
 
             //nuts
             svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.nutsrg).features)
