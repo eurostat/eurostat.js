@@ -50,11 +50,20 @@
            }*/
 
 //build land geometry
-var geoms = [];
 var reader = new jsts.io.GeoJSONReader();
+/*var geoms = [];
 for(var i=0; i<cnts.length; i++) geoms.push(reader.read(cnts[i].geometry));
-var land = (new jsts.operation.union.CascadedPolygonUnion()).union(geoms);
+var uop = new jsts.operation.union.UnaryUnionOp();
+var land = uop.union(geoms);
+console.log(land);*/
+var land;
+for(var i=0; i<cnts.length; i++) land = land? land.union(reader.read(cnts[i].geometry)) : reader.read(cnts[i].geometry);
+for(var i=0; i<nutsrg.length; i++) land = land? land.union(reader.read(nutsrg[i].geometry)) : reader.read(nutsrg[i].geometry);
+var writer = new jsts.io.GeoJSONWriter();
+land = writer.write(land);
 console.log(land);
+
+
 
 //style("fill", "none").style("stroke", "black").style("stroke-width", "0.5px");
 
