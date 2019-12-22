@@ -34,16 +34,18 @@
             var nutsrg = topojson.feature(nuts, nuts.objects.nutsrg).features;
 
             //draw buffers
-            for(var i=0; i<1; i+=0.2) {
+            for(var i=0; i<=1; i+=0.2)
+            (function(i){
+                var col = d3.interpolateBlues(i);
                 svg.append("g").selectAll("path").data(cnts)
                 .enter().append("path").attr("d", function (cnt) {
                     return path(buffer(cnt.geometry, i*300000));
-                }).style("fill", d3.interpolateBlues(i));
+                }).style("fill", col);
                 svg.append("g").selectAll("path").data(nutsrg)
                 .enter().append("path").attr("d", function (cnt) {
                     return path(buffer(cnt.geometry, i*300000));
-                }).style("fill", d3.interpolateBlues(i));
-            }
+                }).style("fill", col);
+            })(i);
 
 
             //draw regions
