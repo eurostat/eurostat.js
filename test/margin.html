@@ -31,10 +31,11 @@
             var nutsrg = topojson.feature(nuts, nuts.objects.nutsrg).features;
 
             //draw buffers
+            for(var i=0; i<1; i+=0.2)
             svg.append("g").selectAll("path").data(cnts)
                 .enter().append("path").attr("d", function (cnt) {
-                    return path(buffer(cnt.geometry, 100000));
-                }).attr("class", "cntrg");
+                    return path(buffer(cnt.geometry, i*300000));
+                }).style("fill", "blue");
 
 
             //draw regions
@@ -46,18 +47,5 @@
             svg.append("g").selectAll("path").data(nutsrg)
                 .enter().append("path").attr("d", path).attr("class", "nutsrg");
 
-            //draw boundaries
-            //countries
-            svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.cntbn).features)
-                .enter().append("path").attr("d", path)
-                .attr("class", function (bn) { return "cntbn" + (bn.properties.co === "T" ? " coastal" : ""); });
-            //nuts
-            svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.nutsbn).features)
-                .enter().append("path").attr("d", path)
-                .attr("class", function (bn) {
-                    return "nutsbn" + (bn.properties.co === "T" ? " coastal" : "")
-                        + ((bn.properties.oth === "T" || bn.properties.lvl == 0) ? " white" : "")
-                        + (bn.properties.lvl == 3 ? " thin" : "");
-                });
         });
 </script>
