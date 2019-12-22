@@ -9,7 +9,7 @@
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://unpkg.com/jsts@1.6.1/dist/jsts.min.js"></script>
 <script>
-    d3.json("https://raw.githubusercontent.com/eurostat/Nuts2json/master/2016/3035/60M/3.json",
+    d3.json("https://raw.githubusercontent.com/eurostat/Nuts2json/master/2016/3035/60M/0.json",
         function (error, nuts) {
             if (error) throw error;
 
@@ -36,7 +36,7 @@
             //draw buffers
             for(var i=1; i>=0; i-=0.2)
             (function(i){
-                var dist = 200000;
+                var dist = 250000;
                 var col = d3.interpolateBlues(1-i);
                 svg.append("g").selectAll("path").data(cnts)
                 .enter().append("path").attr("d", function (cnt) {
