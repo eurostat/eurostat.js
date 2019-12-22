@@ -14,7 +14,7 @@
             if (error) throw error;
 
             //prepare SVG element
-            var width = 700, height = width * (nuts.bbox[3] - nuts.bbox[1]) / (nuts.bbox[2] - nuts.bbox[0]),
+            var width = 1000, height = width * (nuts.bbox[3] - nuts.bbox[1]) / (nuts.bbox[2] - nuts.bbox[0]),
                 svg = d3.select("svg").attr("width", width).attr("height", height),
                 path = d3.geoPath().projection(d3.geoIdentity()
                     .reflectY(true).fitSize([width, height], topojson.feature(nuts, nuts.objects.gra)));
@@ -25,12 +25,12 @@
             //NUTS regions
             var nutsrg = topojson.feature(nuts, nuts.objects.nutsrg).features;
 
-
-
-            /*/jsts functions
+            //jsts functions
             var reader = new jsts.io.GeoJSONReader();
             var writer = new jsts.io.GeoJSONWriter();
-            var buffer = function (geom, dist) {
+
+
+            /*var buffer = function (geom, dist) {
                 var buffer = reader.read(geom).buffer(dist);
                 return writer.write(buffer);
             };
@@ -49,18 +49,22 @@
                     }).style("fill", col);
            }*/
 
-//build land geometry
-var land;
-var reader = new jsts.io.GeoJSONReader();
-for(var i=0; i<cnts.length; i++) land = land? land.union(reader.read(cnts[i].geometry)) : reader.read(cnts[i].geometry);
-for(var i=0; i<nutsrg.length; i++) land = land? land.union(reader.read(nutsrg[i].geometry)) : reader.read(nutsrg[i].geometry);
 
-var dist = 300000;
-for (var i = 1; i >= 0; i -= 0.2) {
-var writer = new jsts.io.GeoJSONWriter();
-svg.append("g").append("path").attr("d", path(writer.write(land.buffer(i*dist))))
-.style("fill", "none").style("stroke", "black").style("stroke-width", "0.5px");
-}
+
+            //build land geometry
+            var land;
+            for (var i = 0; i < cnts.length; i++) land = land ? land.union(reader.read(cnts[i].geometry)) : reader.read(cnts[i].geometry);
+            for (var i = 0; i < nutsrg.length; i++) land = land ? land.union(reader.read(nutsrg[i].geometry)) : reader.read(nutsrg[i].geometry);
+
+            //draw buffers
+            var dist = 300000;
+            for (var i = 1; i >= 0; i -= 0.15) {
+                var col = d3.interpolatePuBu(1 - i);
+                svg.append("g").append("path").attr("d", path(writer.write(land.buffer(i * dist))))
+                    .style("fill", "none").style("stroke", col).style("stroke-width", "2px");
+            }
+
+
 
 
             //draw graticule
