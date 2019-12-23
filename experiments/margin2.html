@@ -24,25 +24,19 @@
                 var sw = i*200;
                 //countries
                 svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.cntbn).features)
-                    .enter().append("path").attr("d", path)
+                    .enter().append("path").filter(function(bn){ return bn.properties.co === 'T'; }).attr("d", path)
                     .style("fill","none")
                     .style("stroke-width",sw+"px")
                     .style("stroke",col)
                     //TODO bn cap_join and cap_end
-                    //TODO hide non-coastal
-                    //.attr("class", function (bn) { return "cntbn" + (bn.properties.co === "T" ? " coastal" : ""); })
                     ;
                 //nuts
                 svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.nutsbn).features)
-                    .enter().append("path").attr("d", path)
+                    .enter().append("path").filter(function(bn){ return bn.properties.co === 'T'; }).attr("d", path)
                     .style("fill","none")
                     .style("stroke-width",sw+"px")
                     .style("stroke",col)
-                    /*.attr("class", function (bn) {
-                        return "nutsbn" + (bn.properties.co === "T" ? " coastal" : "")
-                            + ((bn.properties.oth === "T" || bn.properties.lvl == 0) ? " white" : "")
-                            + (bn.properties.lvl == 3 ? " thin" : "");
-                    })*/arguments;
+                    ;
             }
 
             //draw graticule
