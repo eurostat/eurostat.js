@@ -13,7 +13,7 @@
             if (error) throw error;
 
             //prepare SVG element
-            var width = 700, height = width * (nuts.bbox[3] - nuts.bbox[1]) / (nuts.bbox[2] - nuts.bbox[0]),
+            var width = 900, height = width * (nuts.bbox[3] - nuts.bbox[1]) / (nuts.bbox[2] - nuts.bbox[0]),
                 svg = d3.select("svg").attr("width", width).attr("height", height),
                 path = d3.geoPath().projection(d3.geoIdentity()
                     .reflectY(true).fitSize([width, height], topojson.feature(nuts, nuts.objects.gra)));
@@ -21,27 +21,24 @@
             //draw coastal margin
             for (var i = 1; i >= 0; i -= 0.1) {
                 var col = d3.interpolateBlues(1 - i);
-                var sw = i*200;
+                var sw = i*140;
                 //countries
                 svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.cntbn).features)
                     .enter().append("path").filter(function(bn){ return bn.properties.co === 'T'; }).attr("d", path)
                     .style("fill","none")
                     .style("stroke-width",sw+"px")
                     .style("stroke",col)
-                    //TODO bn cap_join and cap_end
-                    ;
+                    .style("stroke-linecap","round")
+                    .style("stroke-linejoin","round");
                 //nuts
                 svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.nutsbn).features)
                     .enter().append("path").filter(function(bn){ return bn.properties.co === 'T'; }).attr("d", path)
                     .style("fill","none")
                     .style("stroke-width",sw+"px")
                     .style("stroke",col)
-                    ;
+                    .style("stroke-linecap","round")
+                    .style("stroke-linejoin","round");
             }
-
-            //draw graticule
-            svg.append("g").selectAll("path").data(topojson.feature(nuts, nuts.objects.gra).features)
-                .enter().append("path").attr("d", path).attr("class", "graticule");
 
             //draw regions
             //countries
