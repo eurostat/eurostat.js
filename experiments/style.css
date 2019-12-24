@@ -1,3 +1,9 @@
+.cmarg {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
 .graticule {
     fill: none;
     stroke-width: 1px;
@@ -28,6 +34,3 @@
     stroke-width: 1px;
     stroke: rgb(255, 255, 255);
 }
-.white { stroke: white; }
-.thin { stroke-width: 0.5px; }
-.coastal { stroke: #1f78b4; }
