@@ -1,4 +1,4 @@
-import * as d3sel from "d3-selection";
+import * as d3 from "d3";
 import * as d3q from "d3-queue";
 import * as d3s from "d3-scale-chromatic";
 import * as d3l from "d3-svg-legend";
