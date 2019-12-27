@@ -1,5 +1,5 @@
-import { select,event } from "d3-selection";
-import * as base from './eurostat-base';
+import { select, event } from "d3-selection";
+import { fontFamilyDefault } from './eurostat-base';
 
 /**
  * @param {*} config
@@ -15,7 +15,7 @@ export const tooltip = function (config) {
 	config.border = config.border || "0px";
 	config["border-radius"] = config["border-radius"] || "5px";
 	config["box-shadow"] = config["box-shadow"] || "5px 5px 5px grey";
-	config["font-family"] = config["font-family"] || base.fontFamilyDefault;
+	config["font-family"] = config["font-family"] || fontFamilyDefault;
 
 	config.transitionDuration = config.transitionDuration || 200;
 	config.xOffset = config.xOffset || 30;

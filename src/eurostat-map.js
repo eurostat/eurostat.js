@@ -1,49 +1,27 @@
-//import * as d3 from "d3";
-//import * as d3q from "d3-queue";
-//import * as d3s from "d3-scale-chromatic";
-//import * as d3l from "d3-svg-legend";
-var d3 = Object.assign({}, require("d3-selection"), require("d3-geo"), require("d3-scale"), require("d3-scale-chromatic"), require("d3-format"), require("d3-svg-legend"));
-
 import { json,csv } from "d3-fetch";
 import { zoom } from "d3-zoom";
-
-/*
-* d3-fetch
-d3.json
-d3.csv
-
-* d3-selection
-d3.selectAll
-d3.select
-d3.event
-
-* d3-geo
-d3.geoIdentity
-
-* d3-zoom
-d3.zoom
-
-* d3-scale
-d3.scaleQuantile
-d3.scaleQuantize
-d3.scaleThreshold
-d3.scaleSqrt
-
-* d3-scale-chromatic
-d3.interpolateYlOrRd
-
-* d3-format
-d3.format
-
-* d3-svg-legend
-d3.legendColor
-d3.legendSize
-*/
-
-import * as topojson from "topojson-client";
+import { selectAll, select, event } from "d3-selection";
+import { geoIdentity, geoPath } from "d3-geo";
+import { format } from "d3-format";
+import { scaleQuantile, scaleQuantize, scaleThreshold, scaleSqrt } from "d3-scale";
+import { interpolateYlOrRd } from "d3-scale-chromatic";
+import { legendColor, legendSize } from "d3-svg-legend";
+import { feature } from "topojson-client";
 import JSONstat from "jsonstat-toolkit";
-import * as base from './eurostat-base';
+import {fontFamilyDefault, getEstatDataURL} from './eurostat-base';
 import * as tp from './eurostat-tooltip';
+
+//TODO remove that
+d3.selectAll = selectAll;
+d3.select = select;
+d3.select = select;
+d3.event = event;
+d3.geoIdentity = geoIdentity;
+d3.geoPath = geoPath;
+d3.scaleQuantile = scaleQuantile;
+d3.scaleQuantize = scaleQuantize;
+d3.scaleThreshold = scaleThreshold;
+d3.scaleSqrt = scaleSqrt;
 
 export const map = function () {
 
@@ -114,7 +92,7 @@ export const map = function () {
 
 	//legend
 	out.showLegend_ = true;
-	out.legendFontFamily_ = base.fontFamilyDefault;
+	out.legendFontFamily_ = fontFamilyDefault;
 	out.legendTitleText_ = "Legend";
 	out.legendTitleFontSize_ = 20;
 	out.legendTitleWidth_ = 140;
@@ -140,7 +118,7 @@ export const map = function () {
 	out.bottomText_ = "Administrative boundaries: \u00A9EuroGeographics \u00A9UN-FAO \u00A9INSTAT \u00A9Turkstat"; //"(C)EuroGeographics (C)UN-FAO (C)Turkstat";
 	out.bottomTextFontSize_ = 12;
 	out.bottomTextFill_ = "black";
-	out.bottomTextFontFamily_ = base.fontFamilyDefault;
+	out.bottomTextFontFamily_ = fontFamilyDefault;
 	out.bottomTextPadding_ = 10;
 	out.bottomTextTooltipMessage_ = "The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the European Union concerning the legal status of any country, territory, city or area or of its authorities, or concerning the delimitation of its frontiers or boundaries. Kosovo*: This designation is without prejudice to positions on status, and is in line with UNSCR 1244/1999 and the ICJ Opinion on the Kosovo declaration of independence. Palestine*: This designation shall not be construed as recognition of a State of Palestine and is without prejudice to the individual positions of the Member States on this issue.";
 
@@ -209,7 +187,7 @@ export const map = function () {
 			out.filters_["geoLevel"] = out.nutsLvl_ + "" === "0" ? "country" : "nuts" + out.nutsLvl_;
 			//force filtering of euro-geo-aggregates
 			out.filters_["filterNonGeo"] = 1;
-			json(base.getEstatDataURL(out.datasetCode_, out.filters_)).then(
+			json(getEstatDataURL(out.datasetCode_, out.filters_)).then(
 				function (data___) {
 					out.statData_ = jsonstatToIndex(JSONstat(data___));
 					if (!geoData) return;
@@ -234,16 +212,16 @@ export const map = function () {
 		if (svg) svg.selectAll("*").remove();
 
 		//decode topojson to geojson
-		var gra = topojson.feature(geoData, geoData.objects.gra).features;
-		nutsRG = topojson.feature(geoData, geoData.objects.nutsrg).features;
-		var nutsbn = topojson.feature(geoData, geoData.objects.nutsbn).features;
-		var cntrg = topojson.feature(geoData, geoData.objects.cntrg).features;
-		var cntbn = topojson.feature(geoData, geoData.objects.cntbn).features;
+		var gra = feature(geoData, geoData.objects.gra).features;
+		nutsRG = feature(geoData, geoData.objects.nutsrg).features;
+		var nutsbn = feature(geoData, geoData.objects.nutsbn).features;
+		var cntrg = feature(geoData, geoData.objects.cntrg).features;
+		var cntbn = feature(geoData, geoData.objects.cntbn).features;
 
 		//prepare SVG element
 		height = out.width_ * (geoData.bbox[3] - geoData.bbox[1]) / (geoData.bbox[2] - geoData.bbox[0]),
 			svg = d3.select("#" + out.svgId_).attr("width", out.width_).attr("height", height)
-		path = d3.geoPath().projection(d3.geoIdentity().reflectY(true).fitSize([out.width_, height], topojson.feature(geoData, geoData.objects.gra)));
+		path = d3.geoPath().projection(d3.geoIdentity().reflectY(true).fitSize([out.width_, height], feature(geoData, geoData.objects.gra)));
 
 		if (out.drawCoastalMargin_)
 			//define filter for coastal margin
@@ -563,7 +541,7 @@ export const map = function () {
 
 			//define legend
 			//see http://d3-legend.susielu.com/#color
-			var d3Legend = d3.legendColor()
+			var d3Legend = legendColor()
 				.title(out.legendTitleText_)
 				.titleWidth(out.legendTitleWidth_)
 				.useClass(true)
@@ -572,7 +550,7 @@ export const map = function () {
 				.shapeWidth(out.legendShapeWidth_)
 				.shapeHeight(out.legendShapeHeight_)
 				.shapePadding(out.legendShapePadding_)
-				.labelFormat(d3.format(".0" + out.legendLabelDecNb_ + "f"))
+				.labelFormat(format(".0" + out.legendLabelDecNb_ + "f"))
 				//.labels(d3.legendHelpers.thresholdLabels)
 				.labels(
 					out.type_ === "ch" ? function (d) {
@@ -633,7 +611,7 @@ export const map = function () {
 			//define legend
 			//see http://d3-legend.susielu.com/#color
 			//http://d3-legend.susielu.com/#symbol ?
-			var d3Legend = d3.legendColor()
+			var d3Legend = legendColor()
 				.title(out.legendTitleText_)
 				.titleWidth(out.legendTitleWidth_)
 				.useClass(true)
@@ -662,7 +640,7 @@ export const map = function () {
 
 			//define legend
 			//see http://d3-legend.susielu.com/#size
-			var d3Legend = d3.legendSize()
+			var d3Legend = legendSize()
 				.title(out.legendTitleText_)
 				.titleWidth(out.legendTitleWidth_)
 				.scale(classif)
@@ -675,7 +653,7 @@ export const map = function () {
 				//.classPrefix("prefix")
 				.labels(function (d) { return d.generatedLabels[d.i] })
 				//.labelAlign("middle") //?
-				.labelFormat(d3.format("." + out.legendLabelDecNb_ + "f"))
+				.labelFormat(format("." + out.legendLabelDecNb_ + "f"))
 				.labelOffset(out.legendLabelOffset_)
 				.labelWrap(out.legendLabelWrap_)
 				;
@@ -753,7 +731,7 @@ var tooltipTextDefaultFunction = function (rg, out) {
 
 //build a color legend object
 export const getColorLegend = function (colorFun) {
-	colorFun = colorFun || d3.interpolateYlOrRd;
+	colorFun = colorFun || interpolateYlOrRd;
 	return function (ecl, clnb) { return colorFun(ecl / (clnb - 1)); }
 }
 
