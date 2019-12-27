@@ -2,7 +2,10 @@
 //import * as d3q from "d3-queue";
 //import * as d3s from "d3-scale-chromatic";
 //import * as d3l from "d3-svg-legend";
-var d3 = Object.assign({}, require("d3-fetch"), require("d3-selection"), require("d3-geo"), require("d3-zoom"), require("d3-scale"), require("d3-scale-chromatic"), require("d3-format"), require("d3-svg-legend"));
+var d3 = Object.assign({}, require("d3-selection"), require("d3-geo"), require("d3-scale"), require("d3-scale-chromatic"), require("d3-format"), require("d3-svg-legend"));
+
+import { json,csv } from "d3-fetch";
+import { zoom } from "d3-zoom";
 
 /*
 * d3-fetch
@@ -185,7 +188,7 @@ export const map = function () {
 	//get nuts geometries
 	out.updateGeoData = function () {
 		geoData = null;
-		d3.json("https://raw.githubusercontent.com/eurostat/Nuts2json/master/" + out.NUTSyear_ + "/" + out.proj_ + "/" + out.scale_ + "/" + out.nutsLvl_ + ".json")
+		json("https://raw.githubusercontent.com/eurostat/Nuts2json/master/" + out.NUTSyear_ + "/" + out.proj_ + "/" + out.scale_ + "/" + out.nutsLvl_ + ".json")
 			.then(function (geo___) {
 				geoData = geo___;
 				out.buildMapTemplate();
@@ -206,7 +209,7 @@ export const map = function () {
 			out.filters_["geoLevel"] = out.nutsLvl_ + "" === "0" ? "country" : "nuts" + out.nutsLvl_;
 			//force filtering of euro-geo-aggregates
 			out.filters_["filterNonGeo"] = 1;
-			d3.json(base.getEstatDataURL(out.datasetCode_, out.filters_)).then(
+			json(base.getEstatDataURL(out.datasetCode_, out.filters_)).then(
 				function (data___) {
 					out.statData_ = jsonstatToIndex(JSONstat(data___));
 					if (!geoData) return;
@@ -214,7 +217,7 @@ export const map = function () {
 				});
 		} else {
 			//retrieve csv data
-			d3.csv(d3.csv, out.csvDataSource_.url).then(
+			csv(out.csvDataSource_.url).then(
 				function (data___) {
 					out.statData_ = csvToIndex(data___, out.csvDataSource_.geoCol, out.csvDataSource_.valueCol);
 					if (!geoData) return;
@@ -254,15 +257,17 @@ export const map = function () {
 		var zg = svg.append("g").attr("id", "zoomgroup").attr("transform", "translate(0,0)");
 		if (out.scaleExtent_) {
 			//add zoom function
-			svg.call(d3.zoom().scaleExtent(out.scaleExtent_)
-				.on("zoom", function () {
+			svg.call(zoom().scaleExtent(out.scaleExtent_)
+				/*.on("zoom", function () {
 					//TODO fix that
+					console.log(aaa);
 					var k = d3.event.transform.k;
 					var cs = ["gra", "bn_0", "bn_oth", "bn_co", "cntbn"];
 					for (var i = 0; i < cs.length; i++)
 						d3.selectAll("." + cs[i]).style("stroke-width", (1 / k) + "px");
 					zg.attr("transform", d3.event.transform);
-				}));
+				})*/
+				);
 		}
 
 		//draw background rectangle

@@ -1,4 +1,4 @@
-import * as d3 from "d3-selection";
+import { select,event } from "d3-selection";
 import * as base from './eurostat-base';
 
 /**
@@ -24,9 +24,9 @@ export const tooltip = function (config) {
 	var tooltip;
 
 	function my() {
-		tooltip = d3.select("#" + config.div);
+		tooltip = select("#" + config.div);
 		if (tooltip.empty())
-			tooltip = d3.select("body").append("div").attr("id", config.div);
+			tooltip = select("body").append("div").attr("id", config.div);
 
 		//tooltip.style("width",config.width);
 		tooltip.style("max-width", config.maxWidth);
@@ -48,12 +48,12 @@ export const tooltip = function (config) {
 
 	my.mouseover = function (html) {
 		tooltip.html(html)
-			.style("left", (d3.event.pageX + config.xOffset) + "px").style("top", (d3.event.pageY - config.yOffset) + "px")
+			.style("left", (event.pageX + config.xOffset) + "px").style("top", (event.pageY - config.yOffset) + "px")
 			.transition().duration(config.transitionDuration).style("opacity", 1);
 	};
 
 	my.mousemove = function () {
-		tooltip.style("left", (d3.event.pageX + config.xOffset) + "px").style("top", (d3.event.pageY - config.yOffset) + "px");
+		tooltip.style("left", (event.pageX + config.xOffset) + "px").style("top", (event.pageY - config.yOffset) + "px");
 	};
 
 	my.mouseout = function () {
