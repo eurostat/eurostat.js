@@ -16,10 +16,12 @@
 	<script src="dist/eurostat.js"></script>
 	<script>
 
-	//load parameters from URL
-	var opts = EstLib.base.getURLParameters();
+console.log(EstLib);
 
-	EstLib.map.get()
+	//load parameters from URL
+	var opts = EstLib.getURLParameters();
+
+	EstLib.map()
 	//.showLegend(false)
 	//.scaleExtent([1,2])
 	.scale("60M")
@@ -43,7 +45,7 @@
 	//.nutsbnStroke( {0:"#777", 1:"#777", 2:"#777", 3:"#777", oth:"#444", co:"#777"} )
 	//.clnb(14)
 	//.colorFun(d3.interpolateRdYlGn) //d3.interpolateGnBu)
-	.filtersDefinitionFun(EstLib.map.getFillPatternDefinitionFun({ patternSize: 5, minSize: 1, maxSize: 5.5, shape: "circle", bckColor: "white", symbColor: "black" } ))
+	.filtersDefinitionFun(EstLib.getFillPatternDefinitionFun({ patternSize: 5, minSize: 1, maxSize: 5.5, shape: "circle", bckColor: "white", symbColor: "black" } ))
 
 	/*
 	.NUTSyear(2013)

@@ -1,4 +1,4 @@
-var d3 = require("d3-selection");
+import * as d3 from "d3-selection";
 import * as base from './eurostat-base';
 
 /**
@@ -7,7 +7,7 @@ import * as base from './eurostat-base';
  * @param {*} config
  * @returns
  */
-export const get = function (config) {
+export const tooltip = function (config) {
 	config = config || {};
 	config.div = config.div || "tooltip_eurostat";
 	config.maxWidth = config.maxWidth || "150px";

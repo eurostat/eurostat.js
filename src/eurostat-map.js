@@ -1,14 +1,13 @@
-var d3 = require("d3");
-var d3q = require("d3-queue");
-var d3s = require('d3-scale-chromatic');
-var d3l = require('d3-svg-legend');
-var topojson = require("topojson-client");
+import * as d3sel from "d3-selection";
+import * as d3q from "d3-queue";
+import * as d3s from "d3-scale-chromatic";
+import * as d3l from "d3-svg-legend";
+import * as topojson from "topojson-client";
 import JSONstat from "jsonstat-toolkit";
 import * as base from './eurostat-base';
 import * as tp from './eurostat-tooltip';
 
-
-export const get = function () {
+export const map = function () {
 
 	//the output object
 	var out = {};
@@ -125,7 +124,7 @@ export const get = function () {
 	var classif, classifRec;
 
 	//the tooltip element
-	var tooltip = (out.tooltipText_ || out.bottomTextTooltipMessage_) ? tp.get() : null;
+	var tooltip = (out.tooltipText_ || out.bottomTextTooltipMessage_) ? tp.tooltip() : null;
 
 	//ease the loading of URL parameters. Use with function loadURLParameters()
 	out.set = function (opts) {
@@ -715,7 +714,7 @@ var tooltipTextDefaultFunction = function (rg, out) {
 
 //build a color legend object
 export const getColorLegend = function (colorFun) {
-	colorFun = colorFun || d3.interpolateYlOrRd;
+	colorFun = colorFun || d3s.interpolateYlOrRd;
 	return function (ecl, clnb) { return colorFun(ecl / (clnb - 1)); }
 }
 
