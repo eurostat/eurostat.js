@@ -8,7 +8,3 @@ export * from "./eurostat-map";
 //import * as tooltip from './eurostat-tooltip';
 //import * as map from './eurostat-map';
 //export {base, tooltip, map}
-
-
-//var d3 = Object.assign({}, require("d3-format"), require("d3-geo"), require("d3-geo-projection"));
-//import {scaleLinear} from "d3-scale";

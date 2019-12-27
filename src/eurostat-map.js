@@ -2,6 +2,11 @@ import * as d3sel from "d3-selection";
 import * as d3q from "d3-queue";
 import * as d3s from "d3-scale-chromatic";
 import * as d3l from "d3-svg-legend";
+
+//replace with:
+//var d3 = Object.assign({}, require("d3-format"), require("d3-geo"), require("d3-geo-projection"));
+
+
 import * as topojson from "topojson-client";
 import JSONstat from "jsonstat-toolkit";
 import * as base from './eurostat-base';
