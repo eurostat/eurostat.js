@@ -1,27 +1,16 @@
+import { min,max } from "d3-array";
 import { json,csv } from "d3-fetch";
 import { zoom } from "d3-zoom";
 import { selectAll, select, event } from "d3-selection";
 import { geoIdentity, geoPath } from "d3-geo";
 import { format } from "d3-format";
-import { scaleQuantile, scaleQuantize, scaleThreshold, scaleSqrt } from "d3-scale";
-import { interpolateYlOrRd } from "d3-scale-chromatic";
+import { scaleQuantile, scaleQuantize, scaleThreshold, scaleSqrt, scaleOrdinal } from "d3-scale";
+import { interpolateYlOrBr } from "d3-scale-chromatic";
 import { legendColor, legendSize } from "d3-svg-legend";
 import { feature } from "topojson-client";
 import JSONstat from "jsonstat-toolkit";
 import {fontFamilyDefault, getEstatDataURL} from './eurostat-base';
 import * as tp from './eurostat-tooltip';
-
-//TODO remove that
-d3.selectAll = selectAll;
-d3.select = select;
-d3.select = select;
-d3.event = event;
-d3.geoIdentity = geoIdentity;
-d3.geoPath = geoPath;
-d3.scaleQuantile = scaleQuantile;
-d3.scaleQuantize = scaleQuantize;
-d3.scaleThreshold = scaleThreshold;
-d3.scaleSqrt = scaleSqrt;
 
 export const map = function () {
 
@@ -53,7 +42,7 @@ export const map = function () {
 	out.threshold_ = [0];
 	out.makeClassifNice_ = true;
 	out.clnb_ = 7;
-	out.colorFun_ = d3.interpolateYlOrBr;
+	out.colorFun_ = interpolateYlOrBr;
 	out.classToFillStyleCH_ = getColorLegend(out.colorFun_);
 	out.filtersDefinitionFun_ = function () { };
 	out.noDataFillStyle_ = "lightgray";
@@ -220,8 +209,8 @@ export const map = function () {
 
 		//prepare SVG element
 		height = out.width_ * (geoData.bbox[3] - geoData.bbox[1]) / (geoData.bbox[2] - geoData.bbox[0]),
-			svg = d3.select("#" + out.svgId_).attr("width", out.width_).attr("height", height)
-		path = d3.geoPath().projection(d3.geoIdentity().reflectY(true).fitSize([out.width_, height], feature(geoData, geoData.objects.gra)));
+			svg = select("#" + out.svgId_).attr("width", out.width_).attr("height", height)
+		path = geoPath().projection(geoIdentity().reflectY(true).fitSize([out.width_, height], feature(geoData, geoData.objects.gra)));
 
 		if (out.drawCoastalMargin_)
 			//define filter for coastal margin
@@ -239,11 +228,11 @@ export const map = function () {
 				/*.on("zoom", function () {
 					//TODO fix that
 					console.log(aaa);
-					var k = d3.event.transform.k;
+					var k = event.transform.k;
 					var cs = ["gra", "bn_0", "bn_oth", "bn_co", "cntbn"];
 					for (var i = 0; i < cs.length; i++)
-						d3.selectAll("." + cs[i]).style("stroke-width", (1 / k) + "px");
-					zg.attr("transform", d3.event.transform);
+						selectAll("." + cs[i]).style("stroke-width", (1 / k) + "px");
+					zg.attr("transform", event.transform);
 				})*/
 				);
 		}
@@ -288,12 +277,12 @@ export const map = function () {
 			.attr("class", "cntrg")
 			.style("fill", out.cntrgFillStyle_)
 			.on("mouseover", function (rg) {
-				d3.select(this).style("fill", out.cntrgSelectionFillStyle_);
+				select(this).style("fill", out.cntrgSelectionFillStyle_);
 				if (out.tooltipText_) tooltip.mouseover("<b>" + rg.properties.na + "</b>");
 			}).on("mousemove", function () {
 				if (out.tooltipText_) tooltip.mousemove();
 			}).on("mouseout", function () {
-				d3.select(this).style("fill", out.cntrgFillStyle_);
+				select(this).style("fill", out.cntrgFillStyle_);
 				if (out.tooltipText_) tooltip.mouseout();
 			});
 
@@ -303,14 +292,14 @@ export const map = function () {
 			.attr("class", "nutsrg")
 			.attr("fill", out.nutsrgFillStyle_)
 			.on("mouseover", function (rg) {
-				var sel = d3.select(this);
+				var sel = select(this);
 				sel.attr("fill___", sel.attr("fill"));
 				sel.attr("fill", out.nutsrgSelectionFillStyle_);
 				if (out.tooltipText_) { tooltip.mouseover(out.tooltipText_(rg, out)); }
 			}).on("mousemove", function () {
 				if (out.tooltipText_) tooltip.mousemove();
 			}).on("mouseout", function () {
-				var sel = d3.select(this);
+				var sel = select(this);
 				sel.attr("fill", sel.attr("fill___"));
 				if (out.tooltipText_) tooltip.mouseout();
 			});
@@ -417,15 +406,15 @@ export const map = function () {
 
 			if (out.classifMethod_ === "quantile") {
 				//https://github.com/d3/d3-scale#quantile-scales
-				classif = d3.scaleQuantile().domain(values).range(getA(out.clnb_));
+				classif = scaleQuantile().domain(values).range(getA(out.clnb_));
 			} else if (out.classifMethod_ === "equinter") {
 				//https://github.com/d3/d3-scale#quantize-scales
-				classif = d3.scaleQuantize().domain([d3.min(values), d3.max(values)]).range(getA(out.clnb_));
+				classif = scaleQuantize().domain([min(values), max(values)]).range(getA(out.clnb_));
 				if (out.makeClassifNice_) classif.nice();
 			} else if (out.classifMethod_ === "threshold") {
 				//https://github.com/d3/d3-scale#threshold-scales
 				out.clnb(out.threshold_.length + 1);
-				classif = d3.scaleThreshold().domain(out.threshold_).range(getA(out.clnb_));
+				classif = scaleThreshold().domain(out.threshold_).range(getA(out.clnb_));
 			}
 
 			//apply classification to nuts regions based on their value
@@ -437,7 +426,7 @@ export const map = function () {
 				})
 		} else if (out.type_ == "ps") {
 
-			classif = d3.scaleSqrt().domain([out.psMinValue_, Math.max.apply(Math, values)]).range([out.psMinSize_ * 0.5, out.psMaxSize_ * 0.5]);
+			classif = scaleSqrt().domain([out.psMinValue_, Math.max.apply(Math, values)]).range([out.psMinSize_ * 0.5, out.psMaxSize_ * 0.5]);
 
 		} else if (out.type_ == "ct") {
 
@@ -445,8 +434,8 @@ export const map = function () {
 			var dom = values.filter(function (item, i, ar) { return ar.indexOf(item) === i; });
 			out.clnb(dom.length);
 			var rg = getA(out.clnb_);
-			classif = d3.scaleOrdinal().domain(dom).range(rg);
-			classifRec = d3.scaleOrdinal().domain(rg).range(dom);
+			classif = scaleOrdinal().domain(dom).range(rg);
+			classifRec = scaleOrdinal().domain(rg).range(dom);
 
 			//apply classification to nuts regions based on their value
 			svg.selectAll("path.nutsrg")
@@ -479,7 +468,7 @@ export const map = function () {
 			//apply style to nuts regions depending on class
 			svg.selectAll("path.nutsrg")
 				.attr("fill", function () {
-					var ecl = d3.select(this).attr("ecl");
+					var ecl = select(this).attr("ecl");
 					if (!ecl || ecl === "nd") return out.noDataFillStyle_ || "gray";
 					if (out.type_ == "ch") return out.classToFillStyleCH_(ecl, out.clnb_);
 					if (out.type_ == "ct") { return out.classToFillStyleCT_[classifRec(ecl)] || out.noDataFillStyle_ || "gray"; }
@@ -490,7 +479,7 @@ export const map = function () {
 			//proportionnal symbol map
 			//see https://bl.ocks.org/mbostock/4342045 and https://bost.ocks.org/mike/bubble-map/
 
-			d3.select("#g_ps").selectAll("circle")
+			select("#g_ps").selectAll("circle")
 				.data(nutsRG.sort(function (a, b) { return b.properties.val - a.properties.val; }))
 				.enter().filter(function (d) { return d.properties.val; })
 				.append("circle")
@@ -498,12 +487,12 @@ export const map = function () {
 				.attr("r", function (d) { return d.properties.val ? classif(+d.properties.val) : 0; })
 				.attr("class", "symbol")
 				.on("mouseover", function (rg) {
-					d3.select(this).style("fill", out.nutsrgSelectionFillStyle_);
+					select(this).style("fill", out.nutsrgSelectionFillStyle_);
 					if (out.tooltipText_) { tooltip.mouseover(out.tooltipText_(rg, out)); }
 				}).on("mousemove", function () {
 					if (out.tooltipText_) tooltip.mousemove();
 				}).on("mouseout", function () {
-					d3.select(this).style("fill", out.psFill_);
+					select(this).style("fill", out.psFill_);
 					if (out.tooltipText_) tooltip.mouseout();
 				})
 				.style("fill", out.psFill_)
@@ -519,7 +508,7 @@ export const map = function () {
 
 
 	out.updateLegend = function () {
-		var lgg = d3.select("#legendg");
+		var lgg = select("#legendg");
 
 		//draw legend
 		if (!out.showLegend_) return out;
@@ -575,14 +564,14 @@ export const map = function () {
 				//.shape("rect")
 				.on("cellover", function (ecl) {
 					if (out.type_ === "ct") ecl = classif(ecl);
-					var sel = d3/*.select("#g_nutsrg")*/.selectAll("[ecl='" + ecl + "']");
+					var sel = /*.select("#g_nutsrg")*/selectAll("[ecl='" + ecl + "']");
 					sel.style("fill", out.nutsrgSelectionFillStyle_);
-					sel.attr("fill___", function (d) { d3.select(this).attr("fill"); });
+					sel.attr("fill___", function (d) { select(this).attr("fill"); });
 				})
 				.on("cellout", function (ecl) {
 					if (out.type_ === "ct") ecl = classif(ecl);
-					var sel = d3/*.select("#g_nutsrg")*/.selectAll("[ecl='" + ecl + "']");
-					sel.style("fill", function (d) { d3.select(this).attr("fill___"); });
+					var sel = /*.select("#g_nutsrg")*/selectAll("[ecl='" + ecl + "']");
+					sel.style("fill", function (d) { select(this).attr("fill___"); });
 				});
 
 			//make legend
@@ -591,12 +580,12 @@ export const map = function () {
 			//apply style to legend elements
 			svg.selectAll(".swatch")
 				.attr("ecl", function () {
-					var ecl = d3.select(this).attr("class").replace("swatch ", "");
+					var ecl = select(this).attr("class").replace("swatch ", "");
 					if (!ecl || ecl === "nd") return "nd";
 					return ecl;
 				})
 				.attr("fill", function () {
-					var ecl = d3.select(this).attr("class").replace("swatch ", "");
+					var ecl = select(this).attr("class").replace("swatch ", "");
 					if (!ecl || ecl === "nd") return out.noDataFillStyle_ || "gray";
 					return out.type_ == "ch" ? out.classToFillStyleCH_(ecl, out.clnb_) : out.classToFillStyleCT_[classifRec(ecl)];
 				})
