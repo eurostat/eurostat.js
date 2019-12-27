@@ -1,11 +1,41 @@
-import * as d3 from "d3";
-import * as d3q from "d3-queue";
-import * as d3s from "d3-scale-chromatic";
-import * as d3l from "d3-svg-legend";
+//import * as d3 from "d3";
+//import * as d3q from "d3-queue";
+//import * as d3s from "d3-scale-chromatic";
+//import * as d3l from "d3-svg-legend";
+var d3 = Object.assign({}, require("d3-fetch"), require("d3-selection"), require("d3-geo"), require("d3-zoom"), require("d3-scale"), require("d3-scale-chromatic"), require("d3-format"), require("d3-svg-legend"));
 
-//replace with:
-//var d3 = Object.assign({}, require("d3-format"), require("d3-geo"), require("d3-geo-projection"));
+/*
+* d3-fetch
+d3.json
+d3.csv
 
+* d3-selection
+d3.selectAll
+d3.select
+d3.event
+
+* d3-geo
+d3.geoIdentity
+
+* d3-zoom
+d3.zoom
+
+* d3-scale
+d3.scaleQuantile
+d3.scaleQuantize
+d3.scaleThreshold
+d3.scaleSqrt
+
+* d3-scale-chromatic
+d3.interpolateYlOrRd
+
+* d3-format
+d3.format
+
+* d3-svg-legend
+d3.legendColor
+d3.legendSize
+*/
 
 import * as topojson from "topojson-client";
 import JSONstat from "jsonstat-toolkit";
@@ -42,7 +72,7 @@ export const map = function () {
 	out.threshold_ = [0];
 	out.makeClassifNice_ = true;
 	out.clnb_ = 7;
-	out.colorFun_ = d3s.interpolateYlOrBr;
+	out.colorFun_ = d3.interpolateYlOrBr;
 	out.classToFillStyleCH_ = getColorLegend(out.colorFun_);
 	out.filtersDefinitionFun_ = function () { };
 	out.noDataFillStyle_ = "lightgray";
@@ -155,9 +185,8 @@ export const map = function () {
 	//get nuts geometries
 	out.updateGeoData = function () {
 		geoData = null;
-		d3q.queue()
-			.defer(d3.json, "https://raw.githubusercontent.com/eurostat/Nuts2json/master/" + out.NUTSyear_ + "/" + out.proj_ + "/" + out.scale_ + "/" + out.nutsLvl_ + ".json")
-			.await(function (error, geo___) {
+		d3.json("https://raw.githubusercontent.com/eurostat/Nuts2json/master/" + out.NUTSyear_ + "/" + out.proj_ + "/" + out.scale_ + "/" + out.nutsLvl_ + ".json")
+			.then(function (geo___) {
 				geoData = geo___;
 				out.buildMapTemplate();
 				if (!out.statData_) return;
@@ -177,16 +206,16 @@ export const map = function () {
 			out.filters_["geoLevel"] = out.nutsLvl_ + "" === "0" ? "country" : "nuts" + out.nutsLvl_;
 			//force filtering of euro-geo-aggregates
 			out.filters_["filterNonGeo"] = 1;
-			d3q.queue().defer(d3.json, base.getEstatDataURL(out.datasetCode_, out.filters_)).await(
-				function (error, data___) {
+			d3.json(base.getEstatDataURL(out.datasetCode_, out.filters_)).then(
+				function (data___) {
 					out.statData_ = jsonstatToIndex(JSONstat(data___));
 					if (!geoData) return;
 					out.updateStatValues();
 				});
 		} else {
 			//retrieve csv data
-			d3q.queue().defer(d3.csv, out.csvDataSource_.url).await(
-				function (error, data___) {
+			d3.csv(d3.csv, out.csvDataSource_.url).then(
+				function (data___) {
 					out.statData_ = csvToIndex(data___, out.csvDataSource_.geoCol, out.csvDataSource_.valueCol);
 					if (!geoData) return;
 					out.updateStatValues();
@@ -529,7 +558,7 @@ export const map = function () {
 
 			//define legend
 			//see http://d3-legend.susielu.com/#color
-			var d3Legend = d3l.legendColor()
+			var d3Legend = d3.legendColor()
 				.title(out.legendTitleText_)
 				.titleWidth(out.legendTitleWidth_)
 				.useClass(true)
@@ -599,7 +628,7 @@ export const map = function () {
 			//define legend
 			//see http://d3-legend.susielu.com/#color
 			//http://d3-legend.susielu.com/#symbol ?
-			var d3Legend = d3l.legendColor()
+			var d3Legend = d3.legendColor()
 				.title(out.legendTitleText_)
 				.titleWidth(out.legendTitleWidth_)
 				.useClass(true)
@@ -628,7 +657,7 @@ export const map = function () {
 
 			//define legend
 			//see http://d3-legend.susielu.com/#size
-			var d3Legend = d3l.legendSize()
+			var d3Legend = d3.legendSize()
 				.title(out.legendTitleText_)
 				.titleWidth(out.legendTitleWidth_)
 				.scale(classif)
@@ -719,7 +748,7 @@ var tooltipTextDefaultFunction = function (rg, out) {
 
 //build a color legend object
 export const getColorLegend = function (colorFun) {
-	colorFun = colorFun || d3s.interpolateYlOrRd;
+	colorFun = colorFun || d3.interpolateYlOrRd;
 	return function (ecl, clnb) { return colorFun(ecl / (clnb - 1)); }
 }
 
