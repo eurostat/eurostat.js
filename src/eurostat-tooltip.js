@@ -2,8 +2,6 @@ import * as d3 from "d3-selection";
 import * as base from './eurostat-base';
 
 /**
- *
- *
  * @param {*} config
  * @returns
  */
