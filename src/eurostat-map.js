@@ -9,7 +9,7 @@ import { interpolateYlOrBr } from "d3-scale-chromatic";
 import { legendColor, legendSize } from "d3-svg-legend";
 import { feature } from "topojson-client";
 import JSONstat from "jsonstat-toolkit";
-import {fontFamilyDefault, getEstatDataURL} from './eurostat-base';
+import {getEstatDataURL} from './eurostat-base';
 import * as tp from './eurostat-tooltip';
 
 export const map = function () {

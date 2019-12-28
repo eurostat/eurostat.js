@@ -1,10 +1,32 @@
-module.exports = {
+module.exports = [{
     entry: './src/index.js',
     output: {
-      filename: './eurostat.js',
+      filename: './eurostat-min.js',
       publicPath: "dist",
       //filename: './dist/eurostat.js'
       library: 'EstLib'
     },
-    watch: true  
-  };
+    //watch: true
+  },
+  {
+    entry: './src/eurostat-base.js',
+    output: {
+      filename: './eurostat-base.js',
+      publicPath: "dist",
+    },
+  },
+  {
+    entry: './src/eurostat-tooltip.js',
+    output: {
+      filename: './eurostat-tooltip.js',
+      publicPath: "dist",
+    },
+  },
+  {
+    entry: './src/eurostat-map.js',
+    output: {
+      filename: './eurostat-map.js',
+      publicPath: "dist",
+    },
+  }
+];
