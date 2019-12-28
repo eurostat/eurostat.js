@@ -3,7 +3,6 @@ module.exports = [{
     output: {
       filename: './eurostat-min.js',
       publicPath: "dist",
-      //filename: './dist/eurostat.js'
       library: 'EstLib'
     },
     //watch: true
@@ -12,21 +11,29 @@ module.exports = [{
     entry: './src/eurostat-base.js',
     output: {
       filename: './eurostat-base.js',
-      publicPath: "dist",
+      publicPath: "dist"
     },
   },
   {
     entry: './src/eurostat-tooltip.js',
     output: {
       filename: './eurostat-tooltip.js',
-      publicPath: "dist",
+      publicPath: "dist"
     },
   },
   {
     entry: './src/eurostat-map.js',
     output: {
       filename: './eurostat-map.js',
+      publicPath: "dist"
+    },
+  },
+  {
+    entry: './src/eurostat-map.js',
+    output: {
+      filename: './eurostat-map-min.js',
       publicPath: "dist",
+      library: 'EstLib'
     },
   }
 ];

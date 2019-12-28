@@ -9,13 +9,13 @@
 <body>
 	<svg id="map"></svg>
 
-	<script src="dist/eurostat.js"></script>
+	<script src="dist/eurostat-map-min.js"></script>
 
 <script>
 	//test access through: https://cdn.jsdelivr.net/gh/eurostat/eurostat.js@0.9.18/dist/eurostat.js
 
 	//load parameters from URL
-	var opts = EstLib.getURLParameters();
+	//var opts = EstLib.getURLParameters();
 
 	EstLib.map()
 	//.showLegend(false)
@@ -61,7 +61,7 @@
 	//.threshold([50,75,100,150,300,850])
 	//.legendLabelDecNb(0)
 	//.legendLabelDelimiter("to")
-	.set(opts)
+	//.set(opts)
 	.build();
 
 	</script>
