@@ -81,7 +81,7 @@ export const map = function () {
 
 	//legend
 	out.showLegend_ = true;
-	out.legendFontFamily_ = fontFamilyDefault;
+	out.legendFontFamily_ = "Helvetica, Arial, sans-serif";
 	out.legendTitleText_ = "Legend";
 	out.legendTitleFontSize_ = 20;
 	out.legendTitleWidth_ = 140;
@@ -107,7 +107,7 @@ export const map = function () {
 	out.bottomText_ = "Administrative boundaries: \u00A9EuroGeographics \u00A9UN-FAO \u00A9INSTAT \u00A9Turkstat"; //"(C)EuroGeographics (C)UN-FAO (C)Turkstat";
 	out.bottomTextFontSize_ = 12;
 	out.bottomTextFill_ = "black";
-	out.bottomTextFontFamily_ = fontFamilyDefault;
+	out.bottomTextFontFamily_ = "Helvetica, Arial, sans-serif";
 	out.bottomTextPadding_ = 10;
 	out.bottomTextTooltipMessage_ = "The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the European Union concerning the legal status of any country, territory, city or area or of its authorities, or concerning the delimitation of its frontiers or boundaries. Kosovo*: This designation is without prejudice to positions on status, and is in line with UNSCR 1244/1999 and the ICJ Opinion on the Kosovo declaration of independence. Palestine*: This designation shall not be construed as recognition of a State of Palestine and is without prejudice to the individual positions of the Member States on this issue.";
 
