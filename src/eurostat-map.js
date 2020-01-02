@@ -479,7 +479,7 @@ export const map = function () {
 			//proportionnal symbol map
 			//see https://bl.ocks.org/mbostock/4342045 and https://bost.ocks.org/mike/bubble-map/
 
-			select("#g_ps").selectAll("circle")
+			svg.select("#g_ps").selectAll("circle")
 				.data(nutsRG.sort(function (a, b) { return b.properties.val - a.properties.val; }))
 				.enter().filter(function (d) { return d.properties.val; })
 				.append("circle")
