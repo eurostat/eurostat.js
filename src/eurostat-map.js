@@ -508,7 +508,7 @@ export const map = function () {
 
 
 	out.updateLegend = function () {
-		var lgg = select("#legendg");
+		var lgg = svg.select("#legendg");
 
 		//draw legend
 		if (!out.showLegend_) return out;

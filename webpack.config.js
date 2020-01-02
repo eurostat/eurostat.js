@@ -1,6 +1,6 @@
 const path = require('path');
 
-module.exports = {
+module.exports = [{
   mode: 'production',
   entry: './src/index.js',
   output: {
@@ -8,11 +8,8 @@ module.exports = {
     filename: 'eurostat.js',
     libraryTarget: 'commonjs2'
   }
-};
-
-
-/*
-module.exports = {
+},
+{
   entry: './src/index.js',
   output: {
     filename: 'eurostat-min.js',
@@ -20,5 +17,5 @@ module.exports = {
     library: 'EstLib'
   }
   //watch: true
-};
-*/
+}
+];
