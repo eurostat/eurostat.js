@@ -564,13 +564,13 @@ export const map = function () {
 				//.shape("rect")
 				.on("cellover", function (ecl) {
 					if (out.type_ === "ct") ecl = classif(ecl);
-					var sel = /*.select("#g_nutsrg")*/selectAll("[ecl='" + ecl + "']");
+					var sel = svg.select("#g_nutsrg").selectAll("[ecl='" + ecl + "']");
 					sel.style("fill", out.nutsrgSelectionFillStyle_);
 					sel.attr("fill___", function (d) { select(this).attr("fill"); });
 				})
 				.on("cellout", function (ecl) {
 					if (out.type_ === "ct") ecl = classif(ecl);
-					var sel = /*.select("#g_nutsrg")*/selectAll("[ecl='" + ecl + "']");
+					var sel = svg.select("#g_nutsrg").selectAll("[ecl='" + ecl + "']");
 					sel.style("fill", function (d) { select(this).attr("fill___"); });
 				});
 
