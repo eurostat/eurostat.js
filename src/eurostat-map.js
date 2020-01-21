@@ -147,8 +147,13 @@ export const map = function () {
 
 	//use that for initial build of a map
 	out.build = function () {
+		//empty svg
+		select("#" + out.svgId_).selectAll("*").remove();
+
+		//get geo and stat data
 		out.updateGeoData();
 		out.updateStatData();
+
 		return out;
 	};
 
@@ -198,7 +203,7 @@ export const map = function () {
 	//buid a map template, based on the geometries only
 	out.buildMapTemplate = function () {
 		//empty svg
-		if (svg) svg.selectAll("*").remove();
+		select("#" + out.svgId_).selectAll("*").remove();
 
 		//decode topojson to geojson
 		var gra = feature(geoData, geoData.objects.gra).features;
@@ -682,6 +687,11 @@ export const map = function () {
 
 	return out;
 };
+
+
+
+
+
 
 
 
