@@ -1,6 +1,6 @@
 {
   "name": "eurostat.js",
-  "version": "0.9.26",
+  "version": "1.0.0",
   "description": "Some reusable Javascript libraries for Eurostat data users and web developers",
   "keywords": [
     "eurostat",
