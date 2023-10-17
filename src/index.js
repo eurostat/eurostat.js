@@ -1,6 +1,5 @@
 export * from "./eurostat-base";
 export * from "./eurostat-tooltip";
-export * from "./eurostat-map";
 
 //see https://github.com/d3/d3/blob/master/index.js
 
