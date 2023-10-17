@@ -18,22 +18,24 @@ export const color = {
 
 //REST API
 
-export const getEstatRestDataURLBase = "https://ec.europa.eu/eurostat/wdds/rest/data/";
+export const getEstatRestDataURLBase = "https://ec.europa.eu/eurostat/api/dissemination/statistics/";
 
 /**
  * Build URL to fetch data from eurobase REST API.
  * @param {string} datasetCode The Eurobase dataset code
  * @param {object=} filters The filter parameters as for example: {key:value,key:[value1,value2,value3]}
- * @param {number=} lang
- * @param {number=} format
- * @param {number=} version
+ * @param {string=} lang
+ * @param {string=} format
+ * @param {string=} version
+ * @param {string=} version
  */
-export const getEstatDataURL = function (datasetCode, filters, lang, format, version) {
+export const getEstatDataURL = function (datasetCode, filters, lang, format, version, baseURL) {
 	lang = lang || "en";
 	format = format || "json";
-	version = version || "2.1";
+	version = version || "1.0";
+	baseURL = baseURL || getEstatRestDataURLBase;
 	var url = [];
-	url.push(getEstatRestDataURLBase, "v", version, "/", format, "/", lang, "/", datasetCode, "?");
+	url.push(baseURL, version, "/data/", datasetCode, "?format=", format, "&lang=", lang);
 	if (filters)
 		for (var param in filters) {
 			var o = filters[param];
